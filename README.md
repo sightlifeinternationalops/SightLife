@@ -11,13 +11,15 @@
 
 ### Building
 
-**Not Implemented Yet**
+**In Progress**
 
 ### Deployment
 
+**In Progress**
+
 ## Contributions
 
-**Not Implemented Yet**
+**In Progress**
 
 ## Contact Information
 
