@@ -27,6 +27,6 @@ Role | Name | Email
 ------------ | ------------- | -------------
 Project Manager / User Experience | Shruti Rajagopalan | shrutir@uw.edu
 Back-End Developer /  User Experience | Alexander Escalera | aoes@uw.edu
-Full-Stack Developer | Nathan Magdalera | magdanat2uw.edu
+Full-Stack Developer | Nathan Magdalera | magdanat@uw.edu
 Data Science | Rani Chang | yungtc22@uw.edu
 
