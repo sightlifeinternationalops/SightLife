@@ -24,7 +24,7 @@ h2 {
 }
 
 p {
-    color:#595959;
+    color:rgb(109, 110, 113);
     font-size: 1rem;
 }
 
@@ -37,13 +37,13 @@ nav {
 
 section {
     display: block;
-    background-color:  rgb(240, 230, 255);
+    background-color:  rgb(230,231,232);
     padding-top: 4rem;
     padding-bottom: 10rem;
 }
 
 section:nth-child(odd) {
-    background-color: rgb(243, 237, 253);
+    background-color: rgb(230,231,232);
 }
 
 section h2 {
@@ -117,7 +117,7 @@ section p {
 }
 
 button:hover {
-    background-color: 
+    background-color: blue; 
 }
 
 #title {
@@ -130,17 +130,15 @@ button:hover {
     margin-left: 1rem;
 }
 #title h1 {
-    /* font-size: 5rem; */
     font-size: 3rem;
-    font-weight: 800;
     display: inline-block;
-    border-bottom-style: solid;
 }
 
 #title p {
     /* font-size: 2rem; */
     font-size: 1.25rem;
     font-weight: 400;
+    margin-right: 15rem;
 }
 
 #title #me {
