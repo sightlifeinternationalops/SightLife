@@ -4,7 +4,8 @@
 }
 
 body {
-    background-color: rgb(230,231,232);
+    background-color: rgb(255,255,255);
+    /* text-align: center; */
 }
 
 h2 {
@@ -20,7 +21,7 @@ h1, h2, h3 {
 }
 
 h2 {
-    color: rgb(153, 145, 198)
+    color: rgb(100, 93, 155)
 }
 
 p {
@@ -32,29 +33,46 @@ nav {
     font-size: 1.5rem;
     margin: 0;
     padding: 0;
+    background-color: white;
+}
+
+nav h1 {
+    margin-left: 20rem;
+}
+
+nav div {
+    margin-right: 20rem;
 }
 
 
 section {
     display: block;
-    background-color:  rgb(230,231,232);
+    background-color:  rgb(213,210,233);
     padding-top: 4rem;
     padding-bottom: 10rem;
+    /* text-align: center; */
 }
 
 section:nth-child(odd) {
-    background-color: rgb(230,231,232);
+    background-color: rgb(255,255,255);
 }
 
 section h2 {
     line-height: 2rem;
     margin-top: 5rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 5rem;
+    text-align: center;
 }
 
 section p {
     line-height: 3rem;
     font-size: 1.5rem;
+}
+
+footer {
+    margin: 0 auto;
+    margin-left: 1 rem;
+    margin-right: 1 rem;
 }
 
 .section-content {
@@ -72,11 +90,38 @@ section p {
 }
 
 .column {
+    text-align: center;
     margin-right: auto;
     margin-left: auto;
 }
 
+.column h3 {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+}
+
+.column p {
+    max-width: 20rem;
+    font-size: 1rem;
+    line-height: 2rem;
+}
+
+/* .column img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: white;
+    border-width: 0.5rem;
+} */
+
 .column img {
+    width: 10rem;
+    height: 10rem;
+    margin: 0 auto;
+}
+
+#contact img {
     width: 15rem;
     height: 15rem;
     border-radius: 50%;
@@ -121,30 +166,31 @@ button:hover {
 }
 
 #title {
-    padding-top: 10rem;
-    padding-bottom: 6rem;
+    /* padding-top: 10rem;
+    padding-bottom: 6rem; */
+    margin-top: 10rem;
+    margin-bottom: 6rem;
+    background-color: rgb(255,255,255);
+    text-align: center;
 }
 
-#title div {
-    /* margin-left: 10rem; */
-    margin-left: 1rem;
-}
 #title h1 {
     font-size: 3rem;
     display: inline-block;
+    margin-right: 10rem;
 }
 
 #title p {
     /* font-size: 2rem; */
     font-size: 1.25rem;
     font-weight: 400;
-    margin-right: 15rem;
+    margin-right: 30rem;
+    margin-left: 20rem;
 }
 
 #title #me {
     display: inline;
     color: rgb(93, 45, 153);
-    margin: 1rem;
 }
 
 .screen {
@@ -153,6 +199,10 @@ button:hover {
 
 .feature-screen {
     height: 400px;
+}
+
+#contact {
+    text-align: none;
 }
 
 #our-team, #documentation {
