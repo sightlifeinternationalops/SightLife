@@ -26,7 +26,7 @@ h2 {
 
 p {
     color:rgb(109, 110, 113);
-    font-size: 1rem;
+    /* font-size: 1rem; */
 }
 
 nav {
@@ -60,19 +60,26 @@ section:nth-child(odd) {
 section h2 {
     line-height: 2rem;
     margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
     text-align: center;
 }
 
 section p {
-    line-height: 3rem;
-    font-size: 1.5rem;
+    line-height: 2rem;
+    font-size: 1.2rem;
+
+    /* 
+        Need to change margins for team information
+        separetely
+    */
+    margin-right: 10rem;
+    margin-left: 10rem;
 }
 
-footer {
+#site-footer {
     margin: 0 auto;
-    margin-left: 1 rem;
-    margin-right: 1 rem;
+    text-align: center;
+    background-color: darkgrey;
 }
 
 .section-content {
@@ -175,7 +182,7 @@ button:hover {
 }
 
 #title h1 {
-    font-size: 3rem;
+    font-size: 1rem;
     display: inline-block;
     margin-right: 10rem;
 }
@@ -205,8 +212,16 @@ button:hover {
     text-align: none;
 }
 
+#contact p {
+    margin: 0;
+}
+
 #our-team, #documentation {
     text-align: center;
+}
+
+#departments {
+    margin: 0;
 }
 
 @media (min-width: 550px) {
@@ -214,11 +229,11 @@ button:hover {
         line-height: 4rem;
     }
     h2 {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 
     p {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .section-content {
@@ -230,11 +245,11 @@ button:hover {
         margin-left: 5rem;
     }
     #title h1 {
-        font-size: 5rem;
+        font-size: 3rem;
     }
 
     #title p {
-        font-size: 2rem;
+        font-size: 1.5rem;
 
     }
 
