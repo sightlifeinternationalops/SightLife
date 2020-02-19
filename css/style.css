@@ -207,17 +207,17 @@ button:hover {
 }
 
 #title h1 {
-    font-size: 1rem;
+    font-size: 2rem;
     display: inline-block;
-    margin-right: 10rem;
+    margin-right: 15rem;
 }
 
 #title p {
     /* font-size: 2rem; */
     font-size: 1.25rem;
     font-weight: 400;
-    margin-right: 30rem;
-    margin-left: 20rem;
+    margin-right: 15rem;
+    /* margin-left: 20rem; */
 }
 
 #title #me {
@@ -249,6 +249,17 @@ button:hover {
     margin: 0;
 }
 
+@media (min-width: 300px) {
+    #title h1 {
+        margin-right: 0;
+    }
+    
+
+    #title p {
+        margin-right: 0px;
+    }
+}
+
 @media (min-width: 550px) {
     section h2 {
         line-height: 4rem;
@@ -270,13 +281,14 @@ button:hover {
         margin-left: 5rem;
     }
 
-    #title h1 {
-        font-size: 3rem;
+    /* #title h1 {
+        margin-right: 0;
     }
+    
 
     #title p {
-        font-size: 1.5rem;
-    }
+        margin-right: 10px;
+    } */
 
     .feature {
         margin-bottom: 3rem;
@@ -291,6 +303,19 @@ button:hover {
         padding-left: 1rem;
         padding-right: 1rem;
     }
+
+    #title h1 {
+        margin-right:  60px;
+    }
+
+    #title p {
+        /* font-size: 2rem; */
+        /* font-size: 1.25rem;
+        font-weight: 400; */
+        margin-right: 60px;
+        /* margin-left: 20rem; */
+    }
+
 }
 
 @media (min-width: 950px) {
@@ -302,6 +327,20 @@ button:hover {
         font-size: 1.5rem;
         padding: 16px 24px;
     }
+
+    #title h1 {
+        margin-right: 5rem;
+    }
+    
+
+    #title p {
+        /* font-size: 2rem; */
+        /* font-size: 1.25rem;
+        font-weight: 400; */
+        margin-right: 5rem;
+        /* margin-left: 20rem; */
+    }
+
 }
 
 @media (min-width: 1200px) {
@@ -316,7 +355,7 @@ button:hover {
     }
 
     #title div {
-        margin-left: 15rem;
+        margin-left: 5rem;
     }
 }
 
