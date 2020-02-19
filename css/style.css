@@ -37,19 +37,40 @@ nav {
 }
 
 nav h1 {
-    margin-left: 20rem;
+    margin-left: rem;
 }
 
 nav div {
-    margin-right: 20rem;
+    margin-right: 1rem;
 }
 
+#problem {
+    -ms-transform: skew(2deg);
+    -webkit-transform: skewY(2deg);
+    transform: skewY(2deg);
+}
+
+.problem {
+    -ms-transform: skew(-2deg);
+    -webkit-transform: skewY(-2deg);
+    transform: skewY(-2deg);
+    padding-bottom: 1.5rem;
+}
+
+.sightlife {
+    padding-top: 20px;
+    margin-left: 10px;
+}
+
+.footer {
+    padding-top: 100px;
+}
 
 section {
     display: block;
     background-color:  rgb(213,210,233);
-    padding-top: 4rem;
-    padding-bottom: 10rem;
+    padding-top: 1rem;
+    padding-bottom: 8rem;
     /* text-align: center; */
 }
 
@@ -72,8 +93,7 @@ section p {
         Need to change margins for team information
         separetely
     */
-    margin-right: 10rem;
-    margin-left: 10rem;
+
 }
 
 #site-footer {
@@ -104,7 +124,7 @@ section p {
 
 .column h3 {
     margin-top: 2rem;
-    font-size: 1.25rem;
+    font-size: 1.55rem;
 }
 
 .column p {
@@ -179,7 +199,14 @@ button:hover {
     margin-bottom: 6rem;
     background-color: rgb(255,255,255);
     text-align: center;
+    background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
+	background-blend-mode: soft-light;
+	background-size: cover;
+	background-position: center center;
+	padding: 2rem;
 }
+
+
 
 #title h1 {
     font-size: 1rem;
@@ -244,13 +271,13 @@ button:hover {
     #title div {
         margin-left: 5rem;
     }
+
     #title h1 {
         font-size: 3rem;
     }
 
     #title p {
         font-size: 1.5rem;
-
     }
 
     .feature {
@@ -305,5 +332,9 @@ button:hover {
         margin-right: 16rem;
         margin-left: 16rem;
 
+    }
+
+    .p intro {
+        text-align: center;
     }
 }
