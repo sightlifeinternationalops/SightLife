@@ -1,0 +1,389 @@
+* {
+    box-sizing: border-box;
+    /* font-family: 'Helvetica Narrow', sans-serif; */
+}
+
+body {
+    background-color: rgb(255,255,255);
+    /* text-align: center; */
+}
+
+h2 {
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h1, h2, h3 {
+    color: rgb(100, 93, 155);
+}
+
+h2 {
+    color: rgb(100, 93, 155)
+}
+
+p {
+    color:rgb(109, 110, 113);
+    /* font-size: 1rem; */
+}
+
+.wave {
+    padding-bottom: 0;
+    padding: 0;
+}
+
+nav {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+nav h1 {
+    margin-left: rem;
+}
+
+nav div {
+    margin-right: 1rem;
+}
+
+/* 
+#problem {
+    -ms-transform: skew(2deg);
+    -webkit-transform: skewY(2deg);
+    transform: skewY(2deg);
+} */
+
+/* 
+.problem {
+    -ms-transform: skew(-2deg);
+    -webkit-transform: skewY(-2deg);
+    transform: skewY(-2deg);
+    padding-bottom: 1.5rem;
+} */
+
+div .card-deck {
+    flex-direction: row; 
+    display: flex;
+}
+
+div .card {
+    text-align: center;
+}
+
+.sightlife {
+    padding-top: 20px;
+    margin-left: 10px;
+}
+
+.footer {
+    padding-top: 100px;
+}
+
+section {
+    display: block;
+    background-color:  rgb(213,210,233);
+    padding-top: 0.5rem;
+    padding-bottom: 4rem;
+    /* text-align: center; */
+}
+
+section:nth-child(odd) {
+    background-color: rgb(255,255,255);
+}
+
+section h2 {
+    line-height: 2rem;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+section p {
+    line-height: 2rem;
+    font-size: 1.2rem;
+
+    /* 
+        Need to change margins for team information
+        separetely
+    */
+
+}
+
+.learnMore a {
+    font-size: 15px;
+}
+
+.section-content {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    border-radius: 50%;
+}
+
+.column {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.column h3 {
+    margin-top: 2rem;
+    font-size: 1.55rem;
+}
+
+.column p {
+    max-width: 100rem;
+    font-size: 1rem;
+    line-height: 2rem;
+    
+}
+
+
+
+/* .column img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: white;
+    border-width: 0.5rem;
+} */
+
+#contact img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: white;
+    border-width: 0.5rem;
+}
+
+.feature {
+    margin-top: 1rem;
+}
+
+.feature h3 {
+    font-size: 1.5rem;
+}
+ /*
+.button {
+    background-color: white;
+    padding: 10px 16px;
+    border: none;
+    color: rgb(56, 56, 56);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+} */
+
+.logo {
+    padding-left: 1em;
+    padding-right: 0.25em;
+    padding-bottom: 2em;
+    /*background-image: url('./img/logo.png');*/
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 4rem;
+}
+
+button:hover {
+    background-color: rgb(213,210,233); 
+}
+
+#title {
+    /* padding-top: 10rem;
+    padding-bottom: 6rem; */
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    background-color: rgb(255,255,255);
+    text-align: center;
+    background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
+	background-blend-mode: soft-light;
+	background-size: cover;
+	background-position: center center;
+	padding: 2rem;
+}
+
+#title h1 {
+    font-size: 2rem;
+    display: inline-block;
+    margin-right: 15rem;
+}
+
+#title p {
+    /* font-size: 2rem; */
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-right: 15rem;
+    /* margin-left: 20rem; */
+}
+
+#title #me {
+    display: inline;
+    color: rgb(93, 45, 153);
+}
+
+.screen {
+    height: 30rem;
+}
+
+.feature-screen {
+    height: 400px;
+}
+
+#contact {
+    text-align: none;
+}
+
+#contact p {
+    margin: 0;
+}
+
+#our-team, #documentation {
+    text-align: center;
+}
+
+#departments {
+    margin: 0;
+}
+
+@media (min-width: 300px) {
+    #title h1 {
+        margin-right: 0;
+    }
+    
+
+    #title p {
+        margin-right: 0px;
+    }
+}
+
+@media (min-width: 550px) {
+    section h2 {
+        line-height: 4rem;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .section-content {
+        margin-right: 5rem;
+        margin-left: 5rem;
+
+    }
+    #title div {
+        margin-left: 5rem;
+    }
+
+    /* #title h1 {
+        margin-right: 0;
+    }
+    
+
+    #title p {
+        margin-right: 10px;
+    } */
+
+    .feature {
+        margin-bottom: 3rem;
+    }
+
+    .feature h3 {
+        font-size: 2rem;
+        padding-top: 5rem;
+    }
+
+    .feature p, .feature h3 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #title h1 {
+        margin-right:  60px;
+    }
+
+    #title p {
+        /* font-size: 2rem; */
+        /* font-size: 1.25rem;
+        font-weight: 400; */
+        margin-right: 60px;
+        /* margin-left: 20rem; */
+    }
+
+}
+
+@media (min-width: 950px) {
+    .flex-container {
+        flex-wrap: nowrap;
+    }
+
+    /* 
+    .button {
+        font-size: 1.5rem;
+        padding: 16px 24px;
+    } */
+
+    #title h1 {
+        margin-right: 5rem;
+    }
+    
+
+    #title p {
+        /* font-size: 2rem; */
+        /* font-size: 1.25rem;
+        font-weight: 400; */
+        margin-right: 5rem;
+        /* margin-left: 20rem; */
+    }
+
+}
+
+@media (min-width: 1200px) {
+    .feature p, .feature h3 {
+        padding-left: 12.5rem;
+        padding-right: 12.5rem;
+    }
+
+    .section-content {
+        margin-right: 8rem;
+        margin-left: 8rem;
+    }
+
+    #title div {
+        margin-left: 5rem;
+    }
+}
+
+@media (min-width: 1500px) {
+    .feature p, .feature h3 {
+        padding-left: 10rem;
+        padding-right: 10rem;
+    }
+
+    .section-content {
+        margin-right: 16rem;
+        margin-left: 16rem;
+
+    }
+
+    .p intro {
+        text-align: center;
+    }
+}
