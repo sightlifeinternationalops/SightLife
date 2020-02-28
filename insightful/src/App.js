@@ -6,6 +6,7 @@ import { HistoricalData} from './HistoricalData';
 import { Metrics } from './Metrics'; 
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
+import { SignIn } from './SignIn';
 import './App.css';
 
 import SightLife from './img/sightlife.png';
@@ -14,7 +15,6 @@ export default class App extends Component {
   render() {
     return (
       <Router>
-        
         <div>
           <nav className="wrapper navbar navbar-default">
            <img className = "logo" src={SightLife} style={{width:100, flex: 1, flexDirection: 'row', paddingRight: 890, paddingTop:10}} />
@@ -29,6 +29,8 @@ export default class App extends Component {
             {' '}
             <Link to="/FAQ" className="link"><strong> FAQ </strong></Link>
             {' '}
+            <Link to="/SignIn" className='link'> <strong> Sign In </strong> </Link> 
+            {' '}
           </nav>
 
           <Route exact path="/" component={About} />
@@ -36,6 +38,7 @@ export default class App extends Component {
           <Route path="/Metrics" component={Metrics} />
           <Route exact path="/DataEntry" component={DataEntry} />
           <Route path="/FAQ" component={FAQ} />
+          <Route path='/SignIn' component={SignIn} />
 
           <footer>
             <div className="footer-container">

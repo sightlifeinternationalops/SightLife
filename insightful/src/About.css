@@ -67,10 +67,15 @@ nav div {
 div .card-deck {
     flex-direction: row; 
     display: flex;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 div .card {
+    margin: 0 auto;
     text-align: center;
+    align-content: center;
+    float: none;
 }
 
 .sightlife {
@@ -148,8 +153,6 @@ section p {
     
 }
 
-
-
 /* .column img {
     width: 15rem;
     height: 15rem;
@@ -160,8 +163,8 @@ section p {
 } */
 
 #contact img {
-    width: 15rem;
-    height: 15rem;
+    width: 13rem;
+    height: 13rem;
     border-radius: 50%;
     border-style: solid;
     border-color: white;
@@ -258,16 +261,28 @@ button:hover {
 
 #departments {
     margin: 0;
+    align-content: center;
 }
 
 @media (min-width: 300px) {
     #title h1 {
         margin-right: 0;
     }
-    
 
     #title p {
         margin-right: 0px;
+    }
+
+    div .card-deck {
+        flex-direction: row; 
+        display: flex;
+        align-content: center;
+    }
+
+    .section-content {
+        margin-right: 5rem;
+        margin-left: 5rem;
+        align-content: center;
     }
 }
 
@@ -286,9 +301,21 @@ button:hover {
     .section-content {
         margin-right: 5rem;
         margin-left: 5rem;
-
+        align-content: center;
     }
+
+    nav {
+        font-size: 1.0rem;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+    }
+
     #title div {
+        margin-left: 5rem;
+    }
+
+    #contact {
         margin-left: 5rem;
     }
 
@@ -362,8 +389,8 @@ button:hover {
     }
 
     .section-content {
-        margin-right: 8rem;
-        margin-left: 8rem;
+        margin-right: 5rem;
+        margin-left: 5rem;
     }
 
     #title div {
@@ -378,9 +405,9 @@ button:hover {
     }
 
     .section-content {
-        margin-right: 16rem;
-        margin-left: 16rem;
-
+        margin-right: 13rem;
+        margin-left: 13rem;
+        align-content: center;
     }
 
     .p intro {

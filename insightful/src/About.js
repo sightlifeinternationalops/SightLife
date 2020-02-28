@@ -120,16 +120,16 @@ export class About extends Component {
                 </div>
         </section>
 
-
         <section id="contact">
             <div class="section-content">
                 <h2>
                     Team Members & Contact Info
                 </h2>
+                
                 <CardDeck> 
 
                 <Card style={{ width: '18rem' }}>
-                    <CardImg src={ Nathan } alt='Nathan' />
+                    <CardImg class="card-img-top img-fluid" src={ Nathan } alt='Nathan' />
                         <CardBody>
                         <CardTitle> <h3> Nathan Magdalera <SocialIcon url="https://www.linkedin.com/in/nathanmagdalera/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                             <CardText>
@@ -141,7 +141,7 @@ export class About extends Component {
                     </Card>
 
                     <Card style={{ width: '18rem' }}>
-                    <CardImg src={ Shruti } alt='Shruti' />
+                    <CardImg class="card-img-top img-fluid" src={ Shruti } alt='Shruti' />
                         <CardBody>
                             <CardTitle body className="text-center"> <h3> Shruti Rajagopalan <SocialIcon url="https://www.linkedin.com/in/shrutira/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                             <CardText>
@@ -153,7 +153,7 @@ export class About extends Component {
                     </Card>
 
                     <Card style={{ width: '18rem' }}>
-                    <CardImg src={ Alex } alt='Alex' />
+                    <CardImg class="card-img-top img-fluid" src={ Alex } alt='Alex' />
                         <CardBody>
                             <CardTitle body className="text-center"> <h3>  Alexander Escalera  <SocialIcon url="https://www.linkedin.com/in/alexander-escalera-503360176/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                             <CardText>
@@ -165,7 +165,7 @@ export class About extends Component {
                     </Card>
 
                     <Card style={{ width: '18rem' }}>
-                    <CardImg src={ Rani } alt='Rani' />
+                    <CardImg class="card-img-top img-fluid" src={ Rani } alt='Rani' />
                         <CardBody>
                             <CardTitle body className="text-center"> <h3> Rani Chang <SocialIcon url="https://www.linkedin.com/in/yungtc/" style={{ height: 30, width: 30 }} /> </h3> </CardTitle>
                             <CardText>
