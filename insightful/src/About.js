@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } from 'reactstrap';
 import { SocialIcon } from 'react-social-icons';
 import { Button, ButtonToolbar} from 'reactstrap';
-import './About.css';
+import './css/About.css';
 import './index.js';
 
 import Shruti from './img/shruti.png';

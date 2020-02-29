@@ -7,7 +7,7 @@ import { Metrics } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
-import './App.css';
+import './css/App.css';
 
 import SightLife from './img/sightlife.png';
 

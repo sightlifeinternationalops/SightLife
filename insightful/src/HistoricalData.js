@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './HistoricalData.css';
+import './css/HistoricalData.css';
 import './index.js';
 
 export class  HistoricalData extends Component {

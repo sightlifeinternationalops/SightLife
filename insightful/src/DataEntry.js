@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './DataEntry.css';
+import './css/DataEntry.css';
 import './index.js';
 
 import { Button, ButtonGroup, ButtonToolbar} from 'reactstrap';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Metrics.css';
+import './css/Metrics.css';
 import './index.js';
 
 import { Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
