@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
 import './index.js';
 import './css/About.css';
+import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } from 'reactstrap';
 import { SocialIcon } from 'react-social-icons';
 import { Button, ButtonToolbar} from 'reactstrap';

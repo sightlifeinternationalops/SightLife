@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import './css/App.css';
+import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import {
   Collapse,

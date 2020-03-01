@@ -133,6 +133,9 @@ section p {
 
 .card {
     border-radius: 50%;
+    position: relative;
+    background-color: transparent;
+    border: none;
 }
 
 .column {
