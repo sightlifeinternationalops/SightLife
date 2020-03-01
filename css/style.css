@@ -29,11 +29,6 @@ p {
     /* font-size: 1rem; */
 }
 
-.wave {
-    padding-bottom: 0;
-    padding: 0;
-}
-
 nav {
     font-size: 1.5rem;
     margin: 0;
@@ -49,33 +44,17 @@ nav div {
     margin-right: 1rem;
 }
 
-/* 
 #problem {
     -ms-transform: skew(2deg);
     -webkit-transform: skewY(2deg);
     transform: skewY(2deg);
-} */
+}
 
-/* 
 .problem {
     -ms-transform: skew(-2deg);
     -webkit-transform: skewY(-2deg);
     transform: skewY(-2deg);
     padding-bottom: 1.5rem;
-} */
-
-div .card-deck {
-    flex-direction: row; 
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-}
-
-div .card {
-    margin: 0 auto;
-    text-align: center;
-    align-content: center;
-    float: none;
 }
 
 .sightlife {
@@ -90,8 +69,8 @@ div .card {
 section {
     display: block;
     background-color:  rgb(213,210,233);
-    padding-top: 0.5rem;
-    padding-bottom: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 8rem;
     /* text-align: center; */
 }
 
@@ -117,8 +96,10 @@ section p {
 
 }
 
-.learnMore a {
-    font-size: 15px;
+#site-footer {
+    margin: 0 auto;
+    text-align: center;
+    background-color: darkgrey;
 }
 
 .section-content {
@@ -133,11 +114,6 @@ section p {
 
 .card {
     border-radius: 50%;
-    position: relative;
-    background-color: transparent;
-    border: none;
-    display: inline;
-    min-width: 200px;
 }
 
 .column {
@@ -152,10 +128,9 @@ section p {
 }
 
 .column p {
-    max-width: 100rem;
+    max-width: 20rem;
     font-size: 1rem;
     line-height: 2rem;
-    
 }
 
 /* .column img {
@@ -167,9 +142,15 @@ section p {
     border-width: 0.5rem;
 } */
 
+.column img {
+    width: 10rem;
+    height: 10rem;
+    margin: 0 auto;
+}
+
 #contact img {
-    width: 13rem;
-    height: 13rem;
+    width: 15rem;
+    height: 15rem;
     border-radius: 50%;
     border-style: solid;
     border-color: white;
@@ -183,7 +164,7 @@ section p {
 .feature h3 {
     font-size: 1.5rem;
 }
- /*
+
 .button {
     background-color: white;
     padding: 10px 16px;
@@ -195,36 +176,30 @@ section p {
     border-radius: 10px;
     border-style: solid;
     border-width: 1px;
-} */
-
-.button {
-    width: 50px;
 }
-
-
 
 .logo {
     padding-left: 1em;
     padding-right: 0.25em;
     padding-bottom: 2em;
-    /*background-image: url('./img/logo.png');*/
+    background-image: url('../logo.png');
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 4rem;
 }
 
 button:hover {
-    background-color: rgb(213,210,233); 
+    background-color: blue; 
 }
 
 #title {
     /* padding-top: 10rem;
     padding-bottom: 6rem; */
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-top: 10rem;
+    margin-bottom: 6rem;
     background-color: rgb(255,255,255);
     text-align: center;
-    /* background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f'); */
+    background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
 	background-blend-mode: soft-light;
 	background-size: cover;
 	background-position: center center;
@@ -272,32 +247,16 @@ button:hover {
 
 #departments {
     margin: 0;
-    align-content: center;
-}
-
-#departments .cards img {
-    max-width: 100px;
 }
 
 @media (min-width: 300px) {
     #title h1 {
         margin-right: 0;
     }
+    
 
     #title p {
         margin-right: 0px;
-    }
-
-    div .card-deck {
-        flex-direction: row; 
-        display: flex;
-        align-content: center;
-    }
-
-    .section-content {
-        margin-right: 5rem;
-        margin-left: 5rem;
-        align-content: center;
     }
 }
 
@@ -316,21 +275,9 @@ button:hover {
     .section-content {
         margin-right: 5rem;
         margin-left: 5rem;
-        align-content: center;
-    }
 
-    nav {
-        font-size: 1.0rem;
-        margin: 0;
-        padding: 0;
-        background-color: white;
     }
-
     #title div {
-        margin-left: 5rem;
-    }
-
-    #contact {
         margin-left: 5rem;
     }
 
@@ -376,11 +323,10 @@ button:hover {
         flex-wrap: nowrap;
     }
 
-    /* 
     .button {
         font-size: 1.5rem;
         padding: 16px 24px;
-    } */
+    }
 
     #title h1 {
         margin-right: 5rem;
@@ -404,8 +350,8 @@ button:hover {
     }
 
     .section-content {
-        margin-right: 5rem;
-        margin-left: 5rem;
+        margin-right: 8rem;
+        margin-left: 8rem;
     }
 
     #title div {
@@ -420,9 +366,9 @@ button:hover {
     }
 
     .section-content {
-        margin-right: 13rem;
-        margin-left: 13rem;
-        align-content: center;
+        margin-right: 16rem;
+        margin-left: 16rem;
+
     }
 
     .p intro {
