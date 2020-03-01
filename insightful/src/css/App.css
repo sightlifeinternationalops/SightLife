@@ -6,6 +6,22 @@
   color: black;
 }
 
+.navbar-brand img {
+  width: 100px;
+}
+
+#nav-bar {
+  background-color: white;
+}
+
+.navbar {
+  background-color: white;
+}
+
+button, p, input, address {
+  font-size: 1.5rem;
+}
+
 a { 
   padding-top:10px;
   padding-right: 15px;
@@ -50,9 +66,9 @@ strong:hover {
       font-size: 19px;
   }
 
-  img .logo {
+  /* img .logo {
     padding-right: 890;
-  }
+  } */
 
   a { 
     padding-top:10px;
