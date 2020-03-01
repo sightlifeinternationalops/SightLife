@@ -1,20 +1,6 @@
 import './css/App.css';
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
-} from 'reactstrap';
+import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { About } from './About';
 import { HistoricalData } from './HistoricalData';
 import { Metrics } from './Metrics';
@@ -23,11 +9,43 @@ import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
 
 import User from './img/user.png';
+import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
 
 class App extends Component {
-  render() {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+        email: '',
+        password: '',
+        loading: true
+    };
+}
+
+  // Get component to listen to authorization changes
+  componentDidMount() {
+    this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        this.setState({
+          user: firebaseUser,
+          loading: false 
+        })
+      } else {
+        this.setState({
+          user: null,
+          loading: false
+        })
+      }
+    })
+  }
+
+  // Stop listening for auth cnanges once component is unmounted
+  componentWillUnmount() {
+    this.authUnSubFunction();
+  }
+
+  render() {
     let content = (
       <div>
         <header>
@@ -44,6 +62,7 @@ class App extends Component {
             <Route exact path="/DataEntry" component={DataEntry} />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />
+            <Redirect to="/About"/>
           </Switch>
         </main>
 
@@ -69,7 +88,7 @@ class NavBar extends Component {
     return (
       <div className="navbar navbar-expand-lg navbar-light">
 
-        <a className="navbar-brand">
+        <a className="navbar-brand" href="/">
           <img src={SightLife} alt="SightLife logo"/>
         </a>
 

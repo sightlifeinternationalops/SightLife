@@ -9,17 +9,10 @@ import './css/DashBoard.css';
 
 export class DashBoard extends Component {
     render() {
-        return(
-            <div className = "body">
-                <h1> LALA</h1>
-                <h1> LALA</h1>
-                <h1> LALA</h1>
-                <h1> LALA</h1>
-                <h1> LALA</h1>
-                
-
+        return(        
+            <div>
+                test
             </div>
-        
         )
     }
 }

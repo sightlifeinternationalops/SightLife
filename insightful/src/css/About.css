@@ -136,6 +136,8 @@ section p {
     position: relative;
     background-color: transparent;
     border: none;
+    display: inline;
+    min-width: 200px;
 }
 
 .column {
@@ -195,6 +197,12 @@ section p {
     border-width: 1px;
 } */
 
+.button {
+    width: 50px;
+}
+
+
+
 .logo {
     padding-left: 1em;
     padding-right: 0.25em;
@@ -216,7 +224,7 @@ button:hover {
     margin-bottom: 5rem;
     background-color: rgb(255,255,255);
     text-align: center;
-    background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
+    /* background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f'); */
 	background-blend-mode: soft-light;
 	background-size: cover;
 	background-position: center center;
@@ -265,6 +273,10 @@ button:hover {
 #departments {
     margin: 0;
     align-content: center;
+}
+
+#departments .cards img {
+    max-width: 100px;
 }
 
 @media (min-width: 300px) {

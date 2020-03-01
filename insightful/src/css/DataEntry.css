@@ -54,10 +54,11 @@ input #form{
     margin-bottom: 20px;
 }
 
+/* Need to specify button length for data entry */
 button {
     text-align: center;
     line-height: 65px;
-    width: 433px;
+    /* width: 433px; */
     background-color: #E6E7E8;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
