@@ -16,6 +16,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
+          
           <nav className="wrapper navbar navbar-default">
            <img className = "logo" src={SightLife} style={{width:100, flex: 1, flexDirection: 'row', paddingRight: 890, paddingTop:10}} />
 
@@ -33,11 +34,11 @@ export default class App extends Component {
             {' '}
           </nav>
 
-          <Route exact path="/" component={About} />
-          <Route path="/HistoricalData" component={HistoricalData} />
-          <Route path="/Metrics" component={Metrics} />
-          <Route exact path="/DataEntry" component={DataEntry} />
-          <Route path="/FAQ" component={FAQ} />
+          <Route exact path="/" component= {About} />
+          <Route path="/HistoricalData" component= {HistoricalData} />
+          <Route path="/Metrics" component= {Metrics} />
+          <Route path="/DataEntry" component= {DataEntry} />
+          <Route path="/FAQ" component= {FAQ} />
           <Route path='/SignIn' component={SignIn} />
 
           <footer>
