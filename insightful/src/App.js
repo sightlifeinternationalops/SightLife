@@ -9,6 +9,7 @@ import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
 import './css/App.css';
 
+import User from './img/user.png';
 import SightLife from './img/sightlife.png';
 
 export default class App extends Component {
@@ -29,7 +30,7 @@ export default class App extends Component {
             {' '}
             <Link to="/FAQ" className="link"><strong> FAQ </strong></Link>
             {' '}
-            <Link to="/SignIn" className='link'> <strong> Sign In </strong> </Link> 
+            <Link to="/SignIn" className='link'> <strong><img class='icon' src={ User } ></img></strong> </Link> 
             {' '}
           </nav>
 
