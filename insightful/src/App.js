@@ -27,34 +27,12 @@ import SightLife from './img/sightlife.png';
 
 class App extends Component {
   render() {
-<<<<<<< HEAD
-    return (
-      <Router>
-        <div>
-          
-          <nav className="wrapper navbar navbar-default">
-           <img className = "logo" src={SightLife} style={{width:100, flex: 1, flexDirection: 'row', paddingRight: 890, paddingTop:10}} />
-
-            <Link to="/" className="link"><strong>About</strong></Link>
-            {' '}
-            <Link to="/Metrics" className="link"><strong> Metrics </strong></Link>
-            {' '}
-            <Link to="/HistoricalData" className="link"><strong>Historical Data</strong></Link>
-            {' '}
-            <Link to="/DataEntry" className="link"><strong> Data Entry </strong></Link>
-            {' '}
-            <Link to="/FAQ" className="link"><strong> FAQ </strong></Link>
-            {' '}
-            <Link to="/SignIn" className='link'> <strong> Sign In </strong> </Link> 
-            {' '}
-=======
 
     let content = (
       <div>
         <header>
           <nav id="nav-bar">
             <NavBar />
->>>>>>> 150ef9c1e0712eea843960dfd5f3cdcb7a6d5d9b
           </nav>
         </header>
 
@@ -86,19 +64,10 @@ class App extends Component {
   }
 }
 
-<<<<<<< HEAD
-          <Route exact path="/" component= {About} />
-          <Route path="/HistoricalData" component= {HistoricalData} />
-          <Route path="/Metrics" component= {Metrics} />
-          <Route path="/DataEntry" component= {DataEntry} />
-          <Route path="/FAQ" component= {FAQ} />
-          <Route path='/SignIn' component={SignIn} />
-=======
 class NavBar extends Component {
   render() {
     return (
       <div className="navbar navbar-expand-lg navbar-light">
->>>>>>> 150ef9c1e0712eea843960dfd5f3cdcb7a6d5d9b
 
         <a className="navbar-brand">
           <img src={SightLife} alt="SightLife logo"/>
