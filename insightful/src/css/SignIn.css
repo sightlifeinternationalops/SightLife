@@ -1,0 +1,27 @@
+.form {
+margin: auto;
+width: 30%;
+background-color: #E6E7E8;
+padding: 10px;
+}
+
+input, label {
+    display: block;
+}
+
+input {
+    width: 30em;
+    height: 30px;
+}
+
+p {
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.account {
+    font-size: 12px;
+    text-decoration: underline;
+    text-decoration-color: #645D9B;
+    color: #645D9B;
+}
