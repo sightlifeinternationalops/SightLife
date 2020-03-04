@@ -8,44 +8,55 @@ import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
 
-import User from './img/user.png';
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        email: '',
-        password: '',
-        loading: true
-    };
-}
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//         email: '',
+//         password: '',
+//         loading: true
+//     };
+// }
 
-  // Get component to listen to authorization changes
-  componentDidMount() {
-    this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) {
-        this.setState({
-          user: firebaseUser,
-          loading: false 
-        })
-      } else {
-        this.setState({
-          user: null,
-          loading: false
+  // // Get component to listen to authorization changes
+  // componentDidMount() {
+  //   this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
+  //     if (firebaseUser) {
+  //       this.setState({
+  //         user: firebaseUser,
+  //         loading: false 
+  //       })
+  //     } else {
+  //       this.setState({
+  //         user: null,
+  //         loading: false
+  //       })
+  //     }
+  //   })
+  // }
+
+  // // Stop listening for auth cnanges once component is unmounted
+  // componentWillUnmount() {
+  //   this.authUnSubFunction();
+  // }
+
+  render() {
+    let mRef = firebase.database().ref('metricAreas');
+    mRef.once('value', (snapshot) => {
+      // console.log(snapshot.val())
+      let databaseInfo = snapshot.val();
+      if (databaseInfo != null) {
+        let databaseKeys = Object.keys(databaseInfo);
+        let array = databaseKeys.map((key) => {
+          let item = databaseInfo[key];
+          return item;
         })
       }
     })
-  }
-
-  // Stop listening for auth cnanges once component is unmounted
-  componentWillUnmount() {
-    this.authUnSubFunction();
-  }
-
-  render() {
     let content = (
       <div>
         <header>
@@ -68,8 +79,7 @@ class App extends Component {
 
         <footer>
           <div className="footer-container">
-            <p className="inSightful Footer"> This project is a part of the : </p>
-            <a className="Data" href="https://ischool.uw.edu/capstone"> Capstone Project course at the University of Washington Information School </a>
+            <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
           </div>
         </footer>
       </div>

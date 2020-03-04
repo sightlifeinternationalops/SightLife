@@ -10,6 +10,7 @@ import App from './App';
 
 import * as serviceWorker from './serviceWorker';
 
+// Initialize Firebase
 let config = {
     apiKey: "AIzaSyDmV9_fzcn5hFruZR07yXQPkqAhrD3QQmI",
     authDomain: "insightful-56980.firebaseapp.com",
@@ -19,7 +20,7 @@ let config = {
     messagingSenderId: "994214318340",
     appId: "1:994214318340:web:2e97e261c74398788a4051",
     measurementId: "G-KE865KZT87"
-};
+  };
 firebase.initializeApp(config);
 
 ReactDOM.render(<HashRouter><App /></HashRouter>, document.getElementById('root'));

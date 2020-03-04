@@ -11,8 +11,20 @@ export class Metrics extends Component {
     render() {
         return(
             <div>
-                test
+                <MetricAreaCard></MetricAreaCard>
             </div>
+        )
+    }
+}
+
+// Represents a single metric button to render. A single metric card will contain the name of the metric
+// and acts as a link to the dashboard of the respective metric. 
+class MetricAreaCard extends Component {
+    render() {
+        return (
+            <Button>
+                <Route path='/Metrics/:metricName' component={DashBoard}></Route> 
+            </Button>
         )
     }
 }
