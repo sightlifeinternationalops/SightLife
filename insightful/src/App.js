@@ -7,6 +7,7 @@ import { Metrics } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
+import { DashBoard } from './DashBoard';
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
@@ -44,8 +45,18 @@ class App extends Component {
   //   this.authUnSubFunction();
   // }
 
+  // Callback for rendering the metrics page. Takes in component parameter for all existing metrics
+  renderMetricsPage = (routerProps) => {
+    return <Metrics
+          {...routerProps}/
+          >
+  }
+
   render() {
-    let mRef = firebase.database().ref('metricAreas');
+
+    // Firebase stuff for later
+
+    /*let mRef = firebase.database().ref('metricAreas');
     mRef.once('value', (snapshot) => {
       // console.log(snapshot.val())
       let databaseInfo = snapshot.val();
@@ -56,7 +67,7 @@ class App extends Component {
           return item;
         })
       }
-    })
+    })*/
     let content = (
       <div>
         <header>
@@ -70,6 +81,7 @@ class App extends Component {
             <Route exact path="/About" component={About} />
             <Route path="/HistoricalData" component={HistoricalData} />
             <Route path="/Metrics" component={Metrics} />
+            {/* <Route path="/Metrics/:metricID" component={DashBoard} /> */}
             <Route exact path="/DataEntry" component={DataEntry} />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />
