@@ -14,14 +14,14 @@ import SightLife from './img/sightlife.png';
 
 class App extends Component {
 
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//         email: '',
-//         password: '',
-//         loading: true
-//     };
-// }
+  constructor(props) {
+    super(props);
+    this.state = {
+        email: '',
+        password: '',
+        metrics: []
+    };
+  }
 
   // // Get component to listen to authorization changes
   // componentDidMount() {
@@ -45,29 +45,49 @@ class App extends Component {
   //   this.authUnSubFunction();
   // }
 
-  // Callback for rendering the metrics page. Takes in component parameter for all existing metrics
-  renderMetricsPage = (routerProps) => {
+
+  // Callback for rendering metrics page. 
+  renderMetricsList = (routerProps) => {
+    let rootPath = firebase.database().ref('metricAreas')
+
+    // Put all the metric areas in the this.state.metrics
+    rootPath.once('value', (snapshot) => {
+      let metricNameInfo = snapshot.val();
+      let databaseKeys = Object.keys(metricNameInfo);
+      let metricArray = databaseKeys.map((key) => {
+          let metricItem = metricNameInfo[key];
+          return metricItem;
+      });
+      this.setState((state) => {
+        state.metrics = metricArray;
+        return state;
+      })
+    });
+
     return <Metrics
-          {...routerProps}/
-          >
+          {...routerProps}
+          metrics={this.state.metrics}
+          />
+
+  }
+
+  // Callback for rendering metric calculations in the dashboard page.
+  getMetricCalculations = (routerProps) => {
+  }
+
+  // Callback for rendering the dash page. Takes in component parameter for all existing metrics
+  renderDashBoardPage = (routerProps) => {
+    // Need to iterate through each metric goal and see 
+    let rootPath = firebase.database().ref('metricGoals');
+
+
+    return <DashBoard
+          {...routerProps}
+
+          />
   }
 
   render() {
-
-    // Firebase stuff for later
-
-    /*let mRef = firebase.database().ref('metricAreas');
-    mRef.once('value', (snapshot) => {
-      // console.log(snapshot.val())
-      let databaseInfo = snapshot.val();
-      if (databaseInfo != null) {
-        let databaseKeys = Object.keys(databaseInfo);
-        let array = databaseKeys.map((key) => {
-          let item = databaseInfo[key];
-          return item;
-        })
-      }
-    })*/
     let content = (
       <div>
         <header>
@@ -80,8 +100,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/About" component={About} />
             <Route path="/HistoricalData" component={HistoricalData} />
-            <Route path="/Metrics" component={Metrics} />
-            {/* <Route path="/Metrics/:metricID" component={DashBoard} /> */}
+            <Route path="/Metrics" render={this.renderMetricsList} />
             <Route exact path="/DataEntry" component={DataEntry} />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />

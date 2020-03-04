@@ -8,23 +8,24 @@ import './index.js';
 import { DashBoard } from './DashBoard';
 
 export class Metrics extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            metrics: this.props.metrics
+        }
+    }
+
     render() {
 
-        // let props = {
-        //     "test" : "test"
-        // }
-
-        // constructor(props) {
-
-        // }
-
+        console.log(this.props.metrics)
         return(
             
             // Eventually need to pass in metric values as props from app.js...
             <Switch>
                 <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props} /> } />
                 <div>
-                    <MetricAreaCard metricName="CDS" metricID="CDS"/>
+                    {/* <MetricAreaCard metricName="CDS" metricID="CDS"/>
                     <MetricAreaCard metricName="Clinical Training" metricID="Clinical Training"/>
                     <MetricAreaCard metricName="EB Training" metricID="EB Training"/>
                     <MetricAreaCard metricName="Eye Bank Partners" metricID="Eye Bank Partners"/>
@@ -36,16 +37,37 @@ export class Metrics extends Component {
                     <MetricAreaCard metricName="Prevention" metricID="Prevention"/>
                     <MetricAreaCard metricName="Quality" metricID="Quality"/>
                     <MetricAreaCard metricName="Training" metricID="Training"/>
-                    <MetricAreaCard metricName="Interventions" metricID="Interventions"/>
+                    <MetricAreaCard metricName="Interventions" metricID="Interventions"/> */}
+                    {
+                        this.props.metrics.map((item) => {
+                            let key = 
+                        })
+                    }
                 </div>
             </Switch>
         )
     }
 }
 
+// export class MetricCardList extends Component {
+//     render() {
+//         let i = 0;
+//         return (
+//             <div className="card-columns">
+
+//             </div>
+//         );
+//     }
+// }
+
 // Represents a single metric button to render. A single metric card will contain the name of the metric
 // and acts as a link to the dashboard of the respective metric. 
 class MetricAreaCard extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div>
