@@ -5,6 +5,9 @@ import { Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } fro
 import './css/Metrics.css';
 import './index.js';
 
+
+import firebase from 'firebase/app';
+
 import { DashBoard } from './DashBoard';
 
 export class Metrics extends Component {
@@ -12,35 +15,44 @@ export class Metrics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            metrics: this.props.metrics
+            metrics: this.props.metrics,
+            // Represents all relevant information of a metric area
+            metricAreaInfo: "test"
         }
     }
 
-    render() {
+  // Callback for rendering metric calculations in the dashboard page.
+  getMetricCalculations = (routerProps) => {
+    let rootPath = firebase.database().ref('metricCalculations')
 
-        console.log(this.props.metrics)
+    rootPath.once('value', (snapshot) => {
+        let metricCalculationInfo = snapshot.val();
+        // check the metricAreaID of every metric calculation, if that metricAreaID is the same as the one we want
+        // then add it to the list. 
+        let databaseKeys = Object.keys(metricCalculationInfo);
+        databaseKeys.map((key) => {
+            let metricCalcPath = firebase.database().ref('metricCalculations' + key).child("id")
+            metricCalcPath.once('value', (snapshot) => {
+                let info = snapshot.val();
+                // if info is equal to target metricAreaID, then 
+            })
+        })
+    })
+}
+
+    render() {
         return(
-            
             // Eventually need to pass in metric values as props from app.js...
             <Switch>
-                <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props} /> } />
+                <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props} 
+                                                                    metricAreaInfo={this.state.metricAreaInfo}/> } />
                 <div>
-                    {/* <MetricAreaCard metricName="CDS" metricID="CDS"/>
-                    <MetricAreaCard metricName="Clinical Training" metricID="Clinical Training"/>
-                    <MetricAreaCard metricName="EB Training" metricID="EB Training"/>
-                    <MetricAreaCard metricName="Eye Bank Partners" metricID="Eye Bank Partners"/>
-                    <MetricAreaCard metricName="Finance" metricID="Finance"/>
-                    <MetricAreaCard metricName="Global Donor Operations" metricID="Global Donor Operations"/>
-                    <MetricAreaCard metricName="Human Resources" metricID="Human Resources"/>
-                    <MetricAreaCard metricName="MA" metricID="MA"/>
-                    <MetricAreaCard metricName="Policy & Advocacy" metricID="Policy & Advocacy"/>
-                    <MetricAreaCard metricName="Prevention" metricID="Prevention"/>
-                    <MetricAreaCard metricName="Quality" metricID="Quality"/>
-                    <MetricAreaCard metricName="Training" metricID="Training"/>
-                    <MetricAreaCard metricName="Interventions" metricID="Interventions"/> */}
                     {
                         this.props.metrics.map((item) => {
-                            let key = 
+                            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+                            return <MetricAreaCard 
+                                    metricName={item}
+                                    />
                         })
                     }
                 </div>
@@ -48,17 +60,6 @@ export class Metrics extends Component {
         )
     }
 }
-
-// export class MetricCardList extends Component {
-//     render() {
-//         let i = 0;
-//         return (
-//             <div className="card-columns">
-
-//             </div>
-//         );
-//     }
-// }
 
 // Represents a single metric button to render. A single metric card will contain the name of the metric
 // and acts as a link to the dashboard of the respective metric. 
@@ -70,8 +71,9 @@ class MetricAreaCard extends Component {
 
     render() {
         return (
+            // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
             <div>
-                <Link to={'/Metrics/' + this.props.metricID}>{this.props.metricName}</Link>
+                <Link to={'/Metrics/' + this.props.metricName}>{this.props.metricName}</Link>
             </div>
         )
     }

@@ -11,12 +11,15 @@ export class DashBoard extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            metricAreaInfo : this.props.metricAreaInfo
+        }
     }
 
     render() {
         return(        
             <div className = "body">
-            <h1> METRIC AREA NAME INSERT HERE </h1>
+            <h1> {this.state.metricAreaInfo} </h1>
             <h2> Metric Area Summary </h2>
             <h3> Owner: INSERT HERE </h3>
 

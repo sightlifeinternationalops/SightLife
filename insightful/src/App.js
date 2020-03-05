@@ -14,8 +14,12 @@ import SightLife from './img/sightlife.png';
 
 class App extends Component {
 
+
   constructor(props) {
     super(props);
+
+    // let metricMap = new Map()
+
     this.state = {
         email: '',
         password: '',
@@ -55,9 +59,9 @@ class App extends Component {
       let metricNameInfo = snapshot.val();
       let databaseKeys = Object.keys(metricNameInfo);
       let metricArray = databaseKeys.map((key) => {
-          let metricItem = metricNameInfo[key];
-          return metricItem;
+          return key
       });
+      // Update the state of state.metrics
       this.setState((state) => {
         state.metrics = metricArray;
         return state;
@@ -69,10 +73,6 @@ class App extends Component {
           metrics={this.state.metrics}
           />
 
-  }
-
-  // Callback for rendering metric calculations in the dashboard page.
-  getMetricCalculations = (routerProps) => {
   }
 
   // Callback for rendering the dash page. Takes in component parameter for all existing metrics
