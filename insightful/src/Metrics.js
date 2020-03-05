@@ -35,6 +35,10 @@ export class Metrics extends Component {
             metricCalcPath.once('value', (snapshot) => {
                 let info = snapshot.val();
                 // if info is equal to target metricAreaID, then 
+                // information needed for dashboard...
+                // 1. Metric Calculations
+                // 2. Owner of Metric Area
+                // 3. Metric Calculations on a month by month, quarter by quarter, and year by year basis.1
             })
         })
     })
