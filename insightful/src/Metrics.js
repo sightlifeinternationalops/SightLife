@@ -11,6 +11,8 @@ export class Metrics extends Component {
 
     constructor(props) {
         super(props);
+        // // This will allow setMetricID to use state in this component
+        // this.setMetricID = this.setMetricID.bind(this)
         this.state = {
             metrics: this.props.metrics,
             // Represents all relevant information of a metric area
@@ -20,6 +22,7 @@ export class Metrics extends Component {
     }
 
     // Callback for rendering metric calculations in the dashboard page.
+    // Will be passed intoDashboard
     getMetricCalculations = (routerProps) => {
         let rootPath = firebase.database().ref('metricCalculations')
         rootPath.once('value', (snapshot) => {
@@ -38,25 +41,47 @@ export class Metrics extends Component {
                     // 3. Metric Calculations on a month by month, quarter by quarter, and year by year basis.
                     console.log(info);
                     if (info = this.props.metricAreaID) {
-
+                        
                     }
                 })
             })
         })
     }
 
+    setMetricID() {
+        let test = null
+        let rootPath = firebase.database().ref('metricAreas')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val();
+            let databaseKeys = Object.keys(info)
+            databaseKeys.map((key) => {
+                let item = info[key]
+                if (key = this.state.metricName) {
+                    console.log(key)
+                    console.log(this.state.metricName)
+                }
+            })
+        })
+        // need to do a promise to wait for test
+        console.log(test)
+        return <DashBoard
+                metricAreaInfo={test} />
+    }
+
     render() {
         return (
             // Eventually need to pass in metric values as props
             <Switch>
-                <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props}
-                    metricAreaInfo={this.state.metricAreaInfo} />} />
+                {/* <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props}
+                    metricAreaInfo={this.state.metricAreaInfo} />} /> */}
+                {/* <Route path="/Metrics/:metricID" render={this.setMetricID}/> */}
                 <div>
                     {
                         this.props.metrics.map((item) => {
                             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
                             return <MetricAreaCard
                                 metricName={item}
+                                metricFunc={this.setMetricID}
                             />
                         })
                     }
@@ -69,21 +94,20 @@ export class Metrics extends Component {
 // Represents a single metric button to render. A single metric card will contain the name of the metric
 // and acts as a link to the dashboard of the respective metric. 
 class MetricAreaCard extends Component {
-
     constructor(props) {
         super(props);
+        this.state = {
+            metricName: this.props.metricName,
+            metricAreaID: "test"
+        }
     }
-
     // To do. What does a spread operator look like?
-    setMetricID() {
-        console.log("Button was clicked!");
-    }
 
     render() {
         return (
             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
             <div>
-                <Link to={'/Metrics/' + this.props.metricName} onClick={this.setMetricID}>{this.props.metricName}</Link>
+                <Link to={'/Metrics/' + this.props.metricName} onClick={this.props.metricFunc.bind(this)}>{this.props.metricName}</Link>
             </div>
         )
     }
