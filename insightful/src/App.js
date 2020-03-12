@@ -18,37 +18,14 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // let metricMap = new Map()
+    let metricAreas = new Map()
 
     this.state = {
-        email: '',
-        password: '',
-        metrics: []
+      email: '',
+      password: '',
+      metrics: metricAreas
     };
   }
-
-  // // Get component to listen to authorization changes
-  // componentDidMount() {
-  //   this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
-  //     if (firebaseUser) {
-  //       this.setState({
-  //         user: firebaseUser,
-  //         loading: false 
-  //       })
-  //     } else {
-  //       this.setState({
-  //         user: null,
-  //         loading: false
-  //       })
-  //     }
-  //   })
-  // }
-
-  // // Stop listening for auth cnanges once component is unmounted
-  // componentWillUnmount() {
-  //   this.authUnSubFunction();
-  // }
-
 
   // Callback for rendering metrics page. 
   renderMetricsList = (routerProps) => {
@@ -58,35 +35,24 @@ class App extends Component {
     rootPath.once('value', (snapshot) => {
       let metricNameInfo = snapshot.val();
       let databaseKeys = Object.keys(metricNameInfo);
-      let metricArray = databaseKeys.map((key) => {
-          return key
-      });
-      // Update the state of state.metrics
+      let metricMap = new Map()
+
+      databaseKeys.map((key) => {
+          metricMap.set(key, metricNameInfo[key])
+      })
+
       this.setState((state) => {
-        state.metrics = metricArray;
+        state.metrics = metricMap;
         return state;
       })
     });
 
     return <Metrics
-          {...routerProps}
-          metrics={this.state.metrics}
-          />
-
+      {...routerProps}
+      metrics={this.state.metrics}
+    />
   }
-
-  // Callback for rendering the dash page. Takes in component parameter for all existing metrics
-  renderDashBoardPage = (routerProps) => {
-    // Need to iterate through each metric goal and see 
-    let rootPath = firebase.database().ref('metricGoals');
-
-
-    return <DashBoard
-          {...routerProps}
-
-          />
-  }
-
+  
   render() {
     let content = (
       <div>
@@ -104,7 +70,7 @@ class App extends Component {
             <Route exact path="/DataEntry" component={DataEntry} />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />
-            <Redirect to="/About"/>
+            <Redirect to="/About" />
           </Switch>
         </main>
 
@@ -130,7 +96,7 @@ class NavBar extends Component {
       <div className="navbar navbar-expand-lg navbar-light">
 
         <a className="navbar-brand" href="/">
-          <img src={SightLife} alt="SightLife logo"/>
+          <img src={SightLife} alt="SightLife logo" />
         </a>
 
         <button className="navbar-toggler" value="Show and Hide Navigation Bar" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"

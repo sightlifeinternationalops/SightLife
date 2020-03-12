@@ -11,82 +11,126 @@ export class Metrics extends Component {
 
     constructor(props) {
         super(props);
-        // // This will allow setMetricID to use state in this component
-        // this.setMetricID = this.setMetricID.bind(this)
+
+        this.setMetricName = this.setMetricName.bind(this);
+        // let metricMonths = new Map()
+        // let metricQuarters =  new Map()
+        // let metricYears = new Map()
+
         this.state = {
-            metrics: this.props.metrics,
-            // Represents all relevant information of a metric area
-            metricAreaInfo: "test",
-            metricAreaID: null
+            // metrics: this.props.metrics,
+
+            // Data to be passed into metric calculations
+            // Represents metricAreaName
+            metricAreaInfo: null,   // Contains metric area name
+            metricAreaID: null,     // Contains metric area ID
+            metricAreaOwner: null,  // Contains metric area owner name
+            metricAreaCalculations: new Map(), // Represents all calculations for a metric area
+            metricAreaCalculationIDs: [],
+            metricAreaCalculationsMonth: new Map(), // Represents calculations for a month
+            metricAreaCalculationsQuarters: null, // Represents calculations for quarters
+            metricAreaCalculationsYears: null, // Represents calculations for a year
         }
     }
 
-    // Callback for rendering metric calculations in the dashboard page.
-    // Will be passed intoDashboard
-    getMetricCalculations = (routerProps) => {
-        let rootPath = firebase.database().ref('metricCalculations')
-        rootPath.once('value', (snapshot) => {
-            let metricCalculationInfo = snapshot.val();
-            // check the metricAreaID of every metric calculation, if that metricAreaID is the same as the one we want
-            // then add it to the list. 
-            let databaseKeys = Object.keys(metricCalculationInfo);
-            databaseKeys.map((key) => {
-                let metricCalcPath = firebase.database().ref('metricCalculations/' + key).child("metricAreaID")
-                metricCalcPath.once('value', (snapshot) => {
-                    let info = snapshot.val();
-                    // if info is equal to target metricAreaID, then 
-                    // information needed for dashboard...
-                    // 1. Metric Calculations
-                    // 2. Owner of Metric Area
-                    // 3. Metric Calculations on a month by month, quarter by quarter, and year by year basis.
-                    console.log(info);
-                    if (info = this.props.metricAreaID) {
-                        
-                    }
-                })
-            })
+    // Callback to render new information
+    setCalculations(owner, mapCalculations, metricAreaCalculationIDs) {
+        this.setState((state) => {
+            state.metricAreaOwner = owner
+            state.metricAreaCalculations = mapCalculations
+            state.metricAreaCalculationIDs = metricAreaCalculationIDs
+            return state
         })
     }
 
-    setMetricID() {
-        let test = null
-        let rootPath = firebase.database().ref('metricAreas')
+    setMonthlyInfo(mapmap) {
+        this.setState((state) => {
+            state.metricAreaCalculationsMonth = mapmap
+            return state
+        })
+    }
+
+    // Render dashboard page and send it the necessary props
+    renderMetricCalculations = (routerProps) => {
+
+        // Retrieve all relevant information for a metric area 
+        let rootPath = firebase.database().ref('metricCalculations')
+
         rootPath.once('value', (snapshot) => {
-            let info = snapshot.val();
-            let databaseKeys = Object.keys(info)
-            databaseKeys.map((key) => {
-                let item = info[key]
-                if (key = this.state.metricName) {
-                    console.log(key)
-                    console.log(this.state.metricName)
+            let metricCalcInfo = snapshot.val();
+            let databaseKeys = Object.keys(metricCalcInfo);
+            let owner = null
+            let mapCalculations = new Map()
+            
+            let metricAreaCalculationIDs = databaseKeys.map((key) => {
+                let id = metricCalcInfo[key].metricAreaID
+                if (id == this.state.metricAreaID) {
+                    owner = metricCalcInfo[key].owner
+                    mapCalculations.set(key, metricCalcInfo[key])
+                    return metricCalcInfo[key].metricCalculationID
                 }
             })
+            this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
+            // this.setMonthlyActualsAndTargets()
+        });
+
+        // Retrieve
+        let metricATMonthlyPath = firebase.database().ref('metricGoalsMonths')
+        let mapmap = new Map()
+
+        metricATMonthlyPath.once('value', (snapshot) => {
+            let monthlyInfo = snapshot.val();
+            let monthlyKeys = Object.keys(monthlyInfo);
+            // console.log(monthlyInfo)
+
+            monthlyKeys.map((key) => {
+                if (this.state.metricAreaCalculationIDs.includes(key)) {
+                    mapmap.set(key, monthlyInfo[key])
+                }
+            })
+            this.setMonthlyInfo(mapmap)
         })
-        // need to do a promise to wait for test
-        console.log(test)
+
+
+
+
         return <DashBoard
-                metricAreaInfo={test} />
+                {...routerProps}
+                metricAreaInfo={this.state.metricAreaInfo}
+                metricAreaID={this.state.metricAreaID}
+                metricAreaOwner={this.state.metricAreaOwner}
+                metricAreaCalculations={this.state.metricAreaCalculations}
+                metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+                metricAreaCalculationsMonth={this.state.metricAreaCalculationsMonth}
+                metricAreaCalculationsQuarters={this.state.metricAreaCalculationsQuarters}
+                metricAreaCalculationsYears={this.state.metricAreaCalculationsYears}
+                />
+    }
+
+    setMetricName(name, id) {
+        this.setState({ 
+            metricAreaInfo: name,
+            metricAreaID: id
+        })
     }
 
     render() {
         return (
-            // Eventually need to pass in metric values as props
             <Switch>
-                {/* <Route path="/Metrics/:metricID" render={(props) => <DashBoard {...props}
-                    metricAreaInfo={this.state.metricAreaInfo} />} /> */}
-                {/* <Route path="/Metrics/:metricID" render={this.setMetricID}/> */}
+                <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
                 <div>
                     {
-                        this.props.metrics.map((item) => {
+                        Array.from(this.props.metrics.entries()).map((key) => {
                             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
                             return <MetricAreaCard
-                                metricName={item}
-                                metricFunc={this.setMetricID}
+                                metricName={key[0]}
+                                metricID={key[1]}
+                                metricNameFunc={this.setMetricName}
                             />
                         })
                     }
                 </div>
-            </Switch>
+             </Switch> 
         )
     }
 }
@@ -96,18 +140,13 @@ export class Metrics extends Component {
 class MetricAreaCard extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            metricName: this.props.metricName,
-            metricAreaID: "test"
-        }
     }
-    // To do. What does a spread operator look like?
 
     render() {
         return (
             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
             <div>
-                <Link to={'/Metrics/' + this.props.metricName} onClick={this.props.metricFunc.bind(this)}>{this.props.metricName}</Link>
+                <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
             </div>
         )
     }
