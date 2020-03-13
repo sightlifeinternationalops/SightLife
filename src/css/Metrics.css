@@ -1,37 +1,46 @@
+div .metricsDeck{
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    padding-right: 15rem;
+    padding-left: 15rem;
+    
+}
+
+div.metricsDeck.card-deck {
+    align-items: center;
+    margin-right: 20rem;
+    margin-left: 20rem;
+}
+
 .metrics {
-    width:50%;
-    border:1px solid rgb(153, 145, 198);
+    border:10px solid rgb(153, 145, 198);
     background: rgb(153, 145, 198);
-    border-radius: 5px;
-    padding:20px;
+    border-radius: 20px;
     text-align: center;
 }
 
 div .metrics {
-    padding: 20px;
+    padding: 10px;
     margin-bottom:5rem;
+    width: 100px;
+    height: 125px;
 }
 
-div .metricsDeck{
-    padding-top: 3rem;
-    padding-bottom: 5rem;
-    margin-right: 13rem;
-    margin-left: 13rem;
+div.metrics.card {
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
 }
 
-div .metricsBody {
-    padding: 20px;
-}
-
-
-button.metricButton {
-    background-color: rgb(153, 145, 198);
+div.metricsBody.card-body a  {
+    font-weight: 700;
     color: white;
-    font-size: 18px;
-    font-weight: 500;
-
-    display: inline-block;  
-    z-index: 1;     
-    padding: 3em;     
-    margin: -2em; 
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 }
+
+
