@@ -12,24 +12,15 @@ export class Metrics extends Component {
     constructor(props) {
         super(props);
 
-        this.setMetricName = this.setMetricName.bind(this);
-        // let metricMonths = new Map()
-        // let metricQuarters =  new Map()
-        // let metricYears = new Map()
-
+        this.setMetricName = this.setMetricName.bind(this)
         this.state = {
-            // metrics: this.props.metrics,
-
             // Data to be passed into metric calculations
             // Represents metricAreaName
             metricAreaInfo: null,   // Contains metric area name
             metricAreaID: null,     // Contains metric area ID
             metricAreaOwner: null,  // Contains metric area owner name
             metricAreaCalculations: new Map(), // Represents all calculations for a metric area
-            metricAreaCalculationIDs: [],
-            metricAreaCalculationsMonth: new Map(), // Represents calculations for a month
-            metricAreaCalculationsQuarters: null, // Represents calculations for quarters
-            metricAreaCalculationsYears: null, // Represents calculations for a year
+            metricAreaCalculationIDs: []
         }
     }
 
@@ -39,13 +30,6 @@ export class Metrics extends Component {
             state.metricAreaOwner = owner
             state.metricAreaCalculations = mapCalculations
             state.metricAreaCalculationIDs = metricAreaCalculationIDs
-            return state
-        })
-    }
-
-    setMonthlyInfo(mapmap) {
-        this.setState((state) => {
-            state.metricAreaCalculationsMonth = mapmap
             return state
         })
     }
@@ -70,29 +54,10 @@ export class Metrics extends Component {
                     return metricCalcInfo[key].metricCalculationID
                 }
             })
+
+            // Set the state to the new values that were obtained
             this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
-            // this.setMonthlyActualsAndTargets()
         });
-
-        // Retrieve
-        let metricATMonthlyPath = firebase.database().ref('metricGoalsMonths')
-        let mapmap = new Map()
-
-        metricATMonthlyPath.once('value', (snapshot) => {
-            let monthlyInfo = snapshot.val();
-            let monthlyKeys = Object.keys(monthlyInfo);
-            // console.log(monthlyInfo)
-
-            monthlyKeys.map((key) => {
-                if (this.state.metricAreaCalculationIDs.includes(key)) {
-                    mapmap.set(key, monthlyInfo[key])
-                }
-            })
-            this.setMonthlyInfo(mapmap)
-        })
-
-
-
 
         return <DashBoard
                 {...routerProps}
@@ -101,9 +66,6 @@ export class Metrics extends Component {
                 metricAreaOwner={this.state.metricAreaOwner}
                 metricAreaCalculations={this.state.metricAreaCalculations}
                 metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-                metricAreaCalculationsMonth={this.state.metricAreaCalculationsMonth}
-                metricAreaCalculationsQuarters={this.state.metricAreaCalculationsQuarters}
-                metricAreaCalculationsYears={this.state.metricAreaCalculationsYears}
                 />
     }
 
@@ -115,20 +77,19 @@ export class Metrics extends Component {
     }
 
     render() {
+        let metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
+            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+            return <MetricAreaCard
+                metricName={key[0]}
+                metricID={key[1]}
+                metricNameFunc={this.setMetricName}
+            />
+        })
         return (
             <Switch>
                 <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
                 <div>
-                    {
-                        Array.from(this.props.metrics.entries()).map((key) => {
-                            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
-                            return <MetricAreaCard
-                                metricName={key[0]}
-                                metricID={key[1]}
-                                metricNameFunc={this.setMetricName}
-                            />
-                        })
-                    }
+                    { metricAreaElements}
                 </div>
              </Switch> 
         )
