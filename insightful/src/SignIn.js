@@ -8,23 +8,21 @@ import './index.js';
 export class SignIn extends Component {
     render() {
         return(
-            <div> 
                 <div class='form'>
+                    <h1>Sign Into Your Account </h1>
                     <p>
-                        <label for='Email'>Email:</label>
+                        <label for='Email'>Email</label>
                         <input type='text' name='Email' required/>
                     </p>
                     <p>
-                        <label for='Password'>Password:</label>
+                        <label for='Password'>Password</label>
                         <input type='text' name='Password' required/>
                     </p>
                     <p>
                         <button class='sign-in'>Sign In</button>
                     </p>
-                    <p class='account'>Forgot your password?</p>
-                    <p class='account'>Create an account with your SightLife email</p>
+                    <p class='account'>Don't have an account? <a class='create'>Create Account</a></p>
                 </div>
-            </div>
         )
     }
 }

@@ -76,8 +76,8 @@ export class Metrics extends Component {
         })
     }
 
-    render() {
-        let metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
+    metricAreaElements() {
+        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricAreaCard
                 metricName={key[0]}
@@ -85,13 +85,24 @@ export class Metrics extends Component {
                 metricNameFunc={this.setMetricName}
             />
         })
+        return metricAreaElements
+    }
+
+    render() {
+        const metricAreaElements = this.metricAreaElements()
+
         return (
-            <Switch>
-                <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
-                <div>
-                    { metricAreaElements}
-                </div>
-             </Switch> 
+            <div>
+                <h1> Metric Dashboard </h1>
+                <Switch>
+                    <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
+                    <div>
+                        <CardDeck className = 'metricsDeck'>
+                        { metricAreaElements}
+                        </CardDeck>
+                    </div>
+                </Switch> 
+            </div>
         )
     }
 }
@@ -106,9 +117,14 @@ class MetricAreaCard extends Component {
     render() {
         return (
             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
-            <div>
+            // <div>
+            //     <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
+            // </div>
+            <Card className = 'metrics' border="primary">
+                <CardBody className='metricsBody'>
                 <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
-            </div>
+                </CardBody>
+            </Card>
         )
     }
 }
