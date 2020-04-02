@@ -275,9 +275,9 @@ export class DashBoard extends Component {
 // Represents a single row in the metric/metric calculations table
 // Contains all metric name and metric calculation names for a metric area
 class MetricCalculationRow extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
         return (
@@ -294,9 +294,9 @@ class MetricCalculationRow extends Component {
 }
 
 class MetricMonthly extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     componentDidMount() {
     }
@@ -361,9 +361,9 @@ class MetricMonthly extends Component {
 }
 
 class MetricQuarterly extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
 
@@ -397,9 +397,9 @@ class MetricQuarterly extends Component {
 }
 
 class MetricAnnuals extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
         return (
