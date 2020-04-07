@@ -13,8 +13,6 @@ import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
 
 class App extends Component {
-
-
   constructor(props) {
     super(props);
 
@@ -27,8 +25,24 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    this.retrieveMetricsList()
+  }
+
   // Callback for rendering metrics page. 
   renderMetricsList = (routerProps) => {
+    return <Metrics
+      {...routerProps}
+      metrics={this.state.metrics}
+    />
+  }
+
+  // Function for retrieving existing metrics
+  // Note: Separated this from renderMetricsList so that we can just
+  // pass in metricArea information to our components rather
+  // than retrieving everytime we need it.
+  // i.e - Retrieve once as opposed to retrieve multiple times.  
+  retrieveMetricsList = () => {
     let rootPath = firebase.database().ref('metricAreas')
 
     // Put all the metric areas in the this.state.metrics
@@ -46,11 +60,10 @@ class App extends Component {
         return state;
       })
     });
+  }
 
-    return <Metrics
-      {...routerProps}
-      metrics={this.state.metrics}
-    />
+  retrieveMetricCalculations = () => {
+    let rootPath = firebase.database().ref('metricCalculations')
   }
   
   render() {
@@ -112,9 +125,9 @@ class NavBar extends Component {
             <li className="nav-item">
               <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Metrics</NavLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink to='/HistoricalData' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Historical Data</NavLink>
-            </li>
+            </li> */}
             <li className="nav-item">
               <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Data Entry</NavLink>
             </li>
