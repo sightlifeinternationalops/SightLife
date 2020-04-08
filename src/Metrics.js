@@ -35,6 +35,7 @@ export class Metrics extends Component {
     }
 
     // Render dashboard page and send it the necessary props
+    // Note: Possibily redistribute later through App.js to metrics + data entry
     renderMetricCalculations = (routerProps) => {
 
         // Retrieve all relevant information for a metric area 
@@ -45,7 +46,7 @@ export class Metrics extends Component {
             let databaseKeys = Object.keys(metricCalcInfo);
             let owner = null
             let mapCalculations = new Map()
-            
+
             let metricAreaCalculationIDs = databaseKeys.map((key) => {
                 let id = metricCalcInfo[key].metricAreaID
                 if (id == this.state.metricAreaID) {
@@ -54,28 +55,39 @@ export class Metrics extends Component {
                     return metricCalcInfo[key].metricCalculationID
                 }
             })
-
             // Set the state to the new values that were obtained
             this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
         });
 
         return <DashBoard
-                {...routerProps}
-                metricAreaInfo={this.state.metricAreaInfo}
-                metricAreaID={this.state.metricAreaID}
-                metricAreaOwner={this.state.metricAreaOwner}
-                metricAreaCalculations={this.state.metricAreaCalculations}
-                metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-                />
+            {...routerProps}
+            metricAreaInfo={this.state.metricAreaInfo}
+            metricAreaID={this.state.metricAreaID}
+            metricAreaOwner={this.state.metricAreaOwner}
+            metricAreaCalculations={this.state.metricAreaCalculations}
+            metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+        />
     }
 
+    // renderMetricCalculations = (routerProps) => {
+    //     return <DashBoard
+    //             {...routerProps}
+    //             metricAreaInfo={this.state.metricAreaInfo}
+    //             metricAreaID={this.state.metricAreaID}
+    //             metricAreaOwner={this.state.metricAreaOwner}
+    //             metricAreaCalculations={this.state.metricAreaCalculations}
+    //             metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+    //             />
+    // }
+
     setMetricName(name, id) {
-        this.setState({ 
+        this.setState({
             metricAreaInfo: name,
             metricAreaID: id
         })
     }
 
+    // Renders metric area cards 
     metricAreaElements() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
@@ -96,12 +108,23 @@ export class Metrics extends Component {
                 <h1> Metric Dashboard </h1>
                 <Switch>
                     <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
+                    {/* <Route 
+                        path="/Metrics/:metricID"
+                        render={(props) => <DashBoard
+                            {...props}
+                            metricAreaInfo={this.state.metricAreaInfo}
+                            metricAreaID={this.state.metricAreaID}
+                            metricAreaOwner={this.state.metricAreaOwner}
+                            metricAreaCalculations={this.state.metricAreaCalculations}
+                            metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+                        />}
+                    /> */}
                     <div>
-                        <CardDeck className = 'metricsDeck'>
-                        { metricAreaElements}
+                        <CardDeck className='metricsDeck'>
+                            {metricAreaElements}
                         </CardDeck>
                     </div>
-                </Switch> 
+                </Switch>
             </div>
         )
     }
@@ -109,7 +132,7 @@ export class Metrics extends Component {
 
 // Represents a single metric button to render. A single metric card will contain the name of the metric
 // and acts as a link to the dashboard of the respective metric. 
-class MetricAreaCard extends Component {
+export class MetricAreaCard extends Component {
     constructor(props) {
         super(props);
     }
@@ -120,9 +143,12 @@ class MetricAreaCard extends Component {
             // <div>
             //     <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
             // </div>
-            <Card className = 'metrics' border="primary">
+            <Card className='metrics' border="primary">
                 <CardBody className='metricsBody'>
-                <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
+                    <Link
+                        to={'/Metrics/' + this.props.metricName}
+                        onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}
+                    </Link>
                 </CardBody>
             </Card>
         )

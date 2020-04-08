@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { About } from './About';
 import { HistoricalData } from './HistoricalData';
-import { Metrics } from './Metrics';
+import { Metrics, MetricAreaCard } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
@@ -27,14 +27,6 @@ class App extends Component {
 
   componentDidMount() {
     this.retrieveMetricsList()
-  }
-
-  // Callback for rendering metrics page. 
-  renderMetricsList = (routerProps) => {
-    return <Metrics
-      {...routerProps}
-      metrics={this.state.metrics}
-    />
   }
 
   // Function for retrieving existing metrics
@@ -62,8 +54,29 @@ class App extends Component {
     });
   }
 
+  // Function for retrieving metric calculations
+  // for a specific metric area.
   retrieveMetricCalculations = () => {
     let rootPath = firebase.database().ref('metricCalculations')
+
+    rootPath.once('value', (snapshot) => {
+      let metricCalcInfo = snapshot.val();
+      let databaseKeys = Object.keys(metricCalcInfo);
+      let owner = null
+      let mapCalculations = new Map()
+      
+      let metricAreaCalculationIDs = databaseKeys.map((key) => {
+          let id = metricCalcInfo[key].metricAreaID
+          if (id == this.state.metricAreaID) {
+              owner = metricCalcInfo[key].owner
+              mapCalculations.set(key, metricCalcInfo[key])
+              return metricCalcInfo[key].metricCalculationID
+          }
+      })
+
+      // // Set the state to the new values that were obtained
+      // this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
+    });
   }
   
   render() {
@@ -79,8 +92,23 @@ class App extends Component {
           <Switch>
             <Route exact path="/About" component={About} />
             <Route path="/HistoricalData" component={HistoricalData} />
-            <Route path="/Metrics" render={this.renderMetricsList} />
-            <Route exact path="/DataEntry" component={DataEntry} />
+            <Route
+              path="/Metrics" 
+              render={(props) => <Metrics 
+                {...props}
+                metrics={this.state.metrics}
+                metricAreaElements={this.metricAreaElements}
+                // retrieveMetricCalculations={this.retrieveMetriCalculations}
+                />} 
+            />
+            {/* <Route exact path="/DataEntry" component={DataEntry} /> */}
+            <Route 
+              exact path="/DataEntry" 
+              render={(props) => <DataEntry 
+                metrics={this.state.metrics}
+                retMetricCalculations={this.retrieveMetricCalculations} 
+                />} 
+              />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />
             <Redirect to="/About" />
