@@ -10,8 +10,12 @@ export class DataEntry extends Component {
     constructor(props) {
         super(props);
 
+        this.setMetric = this.setMetric.bind(this)
         this.state = {
-            currentMetricAreaCalculations: new Map() // Represents all calculations
+            currentMetricAreaCalculations: new Map(), // Represents all calculations
+            selectedMetricAreaCalculations: null, // Represents the chosen metric area calculation to populate
+            metricAreaID: null, // Holds metric area ID
+            metricAreaName: null // Holds metric area name
         }
     }
 
@@ -19,18 +23,25 @@ export class DataEntry extends Component {
         console.log(this.props)
     }
 
-    metricAreaElements() {
-        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
-            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
-            return <MetricAreaButton
-                metricName={key[0]}
-                metricID={key[1]}
-            />
+    // Sets current state of metric area ID to button that was clicked
+    setMetric(name, id) {
+        console.log('Button was clicked!')
+        this.setState((state) => {
+            state.metricAreaID = id
+            state.metricAreaName = name
+            return state
         })
-        return metricAreaElements
+        this.retrieveMetricAreaCalculations()
     }
 
-    renderMetricAreaCalculations() {
+    setCalculations(mapCalculations) {
+        this.setState((state) => {
+            state.currentMetricAreaCalculations = mapCalculations
+            return state
+        })
+    }
+
+    retrieveMetricAreaCalculations() {
         let rootPath = firebase.database().ref('metricCalculations')
         rootPath.once('value', (snapshot) => {
             let metricCalcInfo = snapshot.val();
@@ -43,11 +54,36 @@ export class DataEntry extends Component {
                     mapCalculations.set(key, metricCalcInfo[key]) 
                 }
             })
+            this.setCalculations(mapCalculations)
         })
     }
 
+    metricAreaElements() {
+        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
+            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+            return <MetricAreaButton
+                metricName={key[0]}
+                metricID={key[1]}
+                metricFunc={this.setMetric}
+            />
+        })
+        return metricAreaElements
+    }
+
+    metricAreaCalculations() {
+        const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.entries()).map((key) => {
+            console.log(key);
+            return <MetricAreaCalcButton
+                metricCalcName={key[1].metric}
+            />
+        })
+        return metricCalcElements
+    }
+
     render() {
+        // let currentCalculations = this.state.currentMetricAreaCalculations
         const metricAreaElements = this.metricAreaElements()
+        const metricAreaCalculationsElements = this.metricAreaCalculations()
         return (
             <div className="body">
                 <main>
@@ -63,13 +99,7 @@ export class DataEntry extends Component {
                         {/* Populate based on metric chosen */}
                         <h2 class='MetricTitles'> Metric Calculation </h2>
                         <CardDeck className="datadeck">
-                            {/* <button class='selection' type="AdoptionCourse" value="AdoptionCourse">Direct Skills Adoption Post Course </button>
-                        
-                        <button class='selection' type="Total number of surgeons and ophthalmologists trained" value="Total number of surgeons and ophthalmologists  trained (all levels)">
-                            Number of Surgeons & Ophthalmologists Trained
-                        </button>
-
-                        <button class='selection' type="Surgeon/ophthalmologist" value="Surgeon/ophthalmologist"> Surgeon / Ophthalmologist Satisfaction Rating</button> */}
+                            {metricAreaCalculationsElements}
                         </CardDeck>
                     </section>
 
@@ -84,6 +114,8 @@ export class DataEntry extends Component {
     }
 }
 
+// Represents a single metric area to render. Clicking a button
+// will render that metric area's calculations
 class MetricAreaButton extends Component {
     constructor(props) {
         super(props);
@@ -91,6 +123,24 @@ class MetricAreaButton extends Component {
 
     render() {
         let typeString = this.props.metricName
+        return (
+            <button 
+                class='selection' 
+                type={typeString} 
+                value={typeString}
+                onClick={() => this.props.metricFunc(this.props.metricName, this.props.metricID)}
+                >
+                        {typeString}
+            </button>
+        )
+    }
+}
+
+// Represesnts a single metric area calculation to render. Will render
+// depending on the metric area that was selected.
+class MetricAreaCalcButton extends Component {
+    render() {
+        let typeString = this.props.metricCalcName
         return (
             <button class='selection' type={typeString} value={typeString}>{typeString}</button>
         )

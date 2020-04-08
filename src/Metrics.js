@@ -69,17 +69,6 @@ export class Metrics extends Component {
         />
     }
 
-    // renderMetricCalculations = (routerProps) => {
-    //     return <DashBoard
-    //             {...routerProps}
-    //             metricAreaInfo={this.state.metricAreaInfo}
-    //             metricAreaID={this.state.metricAreaID}
-    //             metricAreaOwner={this.state.metricAreaOwner}
-    //             metricAreaCalculations={this.state.metricAreaCalculations}
-    //             metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-    //             />
-    // }
-
     setMetricName(name, id) {
         this.setState({
             metricAreaInfo: name,
@@ -140,14 +129,12 @@ export class MetricAreaCard extends Component {
     render() {
         return (
             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
-            // <div>
-            //     <Link to={'/Metrics/' + this.props.metricName} onClick={()=>this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}</Link>
-            // </div>
             <Card className='metrics' border="primary">
                 <CardBody className='metricsBody'>
                     <Link
                         to={'/Metrics/' + this.props.metricName}
-                        onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>{this.props.metricName}
+                        onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
+                        {this.props.metricName}
                     </Link>
                 </CardBody>
             </Card>
