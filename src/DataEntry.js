@@ -15,12 +15,97 @@ export class DataEntry extends Component {
             currentMetricAreaCalculations: new Map(), // Represents all calculations
             selectedMetricAreaCalculations: null, // Represents the chosen metric area calculation to populate
             metricAreaID: null, // Holds metric area ID
-            metricAreaName: null // Holds metric area name
+            metricAreaName: null, // Holds metric area name
+            canEditActuals: false , // Determines users ability to enter data for actuals
+            canEditTargets: false // Determines users ability to enter data for targets
         }
     }
 
     componentDidMount() {
-        console.log(this.props)
+        this.checkCurrentDateActuals()
+        this.checkCurrentDateTargets()
+    }
+
+    // Checks the current date of the month. If it is the first 3 months of the year
+    // the user can enter target data for the year.
+    // Note: To allow admin panel compatability to enable users to alter
+    // targets/actuals, check the following conditions:
+    // 1. If admin enables ability to alter targets/actuals
+    //      allow users to edit/submit information pass.
+    // Note: Check firebase to see if it is enabled.
+    // 2. For actuals:
+    //      a. Check if within first two weeks of the month.
+    // 3. For targets:
+    //      b. Check if within first two months of the year. 
+    checkCurrentDateActuals() {
+        console.log("Checking current date...")
+        
+        let currentDate = new Date()
+        let currentDay = currentDate.getDate()
+
+        console.log("Current date is " + currentDate)
+        console.log("Current day is " + currentDay)
+
+        let checkActuals = this.checkActualEnabled()
+
+        // Check firebase to see if editing actuals is enabled
+        // Allow user to submit entry for actuals if 
+        if (checkActuals || (currentDate <= 14)) {
+           this.enableActuals()
+        } else {
+            console.log("Current date is within latter half of the month!")
+            console.log("Data cannot be submitted without admin permissions") 
+        }
+    }
+
+    // Compares current data to determine is user should be allowed to
+    // submit/edit data for targets. 
+    checkCurrentDateTargets() {
+        let currentDate = new Date()
+        let currentMonth = currentDate.getMonth()
+
+        let checkTargets = this.checkTargetEnabled()
+
+        // Check firebase to see if editing targets is enabled
+        // Perhaps allow ability to change which months users can change data from admin panel...
+        if (checkTargets || currentMonth <= 3) {
+            this.enableTargets()
+        } else {
+            console.log("Current month is nothing the timeframe to enter targets")
+            console.log("Data cannot be submitted without admin persmissions")
+        }
+    }
+
+    // Checks to see if actual editing is enabled
+    checkActualEnabled() {
+        let rootPath = firebase.database().ref('dataEntrySettings/actualEnabled').once('value', (snapshot) => {
+            let info = snapshot.val()
+            return info
+        })
+    }
+
+    // Checks to see if target editing is enabled
+    checkTargetEnabled() {
+        let rootPath = firebase.database().ref('dataEntrySettings/targetEnabled').once('value', (snapshot) => {
+            let info = snapshot.val()
+            return info
+        })
+    }
+
+    // Allows user to submit data entry for actuals.
+    enableActuals() {
+        this.setState((state) => {
+            state.canEditActuals = true
+            return state
+        })
+    }
+
+    // Allows user to submit data entry for targets.
+    enableTargets() {
+        this.setState((state) => {
+            state.canEditTargets = true
+            return state
+        })
     }
 
     // Sets current state of metric area ID to button that was clicked
@@ -34,6 +119,8 @@ export class DataEntry extends Component {
         this.retrieveMetricAreaCalculations()
     }
 
+    // Sets state to have current metric area calculations for
+    // the selected metric area. 
     setCalculations(mapCalculations) {
         this.setState((state) => {
             state.currentMetricAreaCalculations = mapCalculations
@@ -41,6 +128,8 @@ export class DataEntry extends Component {
         })
     }
 
+    // Retrieves relevant metric calculations for a metric
+    // area from the firebase database. 
     retrieveMetricAreaCalculations() {
         let rootPath = firebase.database().ref('metricCalculations')
         rootPath.once('value', (snapshot) => {
@@ -58,6 +147,7 @@ export class DataEntry extends Component {
         })
     }
 
+    // Represents metric area elements to render on page.
     metricAreaElements() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
@@ -70,6 +160,8 @@ export class DataEntry extends Component {
         return metricAreaElements
     }
 
+    // Represents metric area calculation elements to render after
+    // a metric area is chosen. 
     metricAreaCalculations() {
         const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.entries()).map((key) => {
             console.log(key);
@@ -81,7 +173,6 @@ export class DataEntry extends Component {
     }
 
     render() {
-        // let currentCalculations = this.state.currentMetricAreaCalculations
         const metricAreaElements = this.metricAreaElements()
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         return (
@@ -216,6 +307,8 @@ export class DataEntryForm extends Component {
                         <label for="lname">Mitigation Plan</label>
                         <textarea type="text" id="form" name="Mitigation" />
                     </p>
+                    {/* Pass a function to preview button that lets users oversee
+                    // the information they've entered and to confirm. */}
                     <button class='preview'>Preview</button>
                 </form>
             </div>
