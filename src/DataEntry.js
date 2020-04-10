@@ -3,7 +3,7 @@ import './css/DataEntry.css';
 import './index.js';
 
 import Chevron from './img/down-arrow.png'
-import { CardDeck } from 'reactstrap';
+import { CardDeck, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import firebase from 'firebase/app';
 
 export class DataEntry extends Component {
@@ -11,13 +11,34 @@ export class DataEntry extends Component {
         super(props);
 
         this.setMetric = this.setMetric.bind(this)
+        this.updateSelectForm = this.updateSelectForm.bind(this)
+        this.updateRadioForm = this.updateRadioForm.bind(this)
+        this.updateValueForm = this.updateValueForm.bind(this)
+        this.updateHLForm = this.updateHLForm.bind(this)
+        this.updateLForm = this.updateLForm.bind(this)
+        this.updatePlanForm = this.updatePlanForm.bind(this)
+        this.previewForm = this.previewForm.bind(this)
+        this.editForm = this.editForm.bind(this)
+        this.submitForm = this.submitForm.bind(this)
+        this.updateSelectedMetricAreaCalculation = this.updateSelectedMetricAreaCalculation.bind(this)
+
         this.state = {
             currentMetricAreaCalculations: new Map(), // Represents all calculations
             selectedMetricAreaCalculations: null, // Represents the chosen metric area calculation to populate
             metricAreaID: null, // Holds metric area ID
             metricAreaName: null, // Holds metric area name
-            canEditActuals: false , // Determines users ability to enter data for actuals
-            canEditTargets: false // Determines users ability to enter data for targets
+            canEditActuals: false, // Determines users ability to enter data for actuals
+            canEditTargets: false, // Determines users ability to enter data for targets
+            currentYear: new Date(), // Used for entering data for the current year
+            highlight: "",
+            lowlight: "",
+            data: null,
+            month: "January", // Will always default to January
+            radio: "",
+            actualEn: false,
+            targetEn: false,
+            mitigation: "",
+            preview: false
         }
     }
 
@@ -39,7 +60,7 @@ export class DataEntry extends Component {
     //      b. Check if within first two months of the year. 
     checkCurrentDateActuals() {
         console.log("Checking current date...")
-        
+
         let currentDate = new Date()
         let currentDay = currentDate.getDate()
 
@@ -50,11 +71,11 @@ export class DataEntry extends Component {
 
         // Check firebase to see if editing actuals is enabled
         // Allow user to submit entry for actuals if 
-        if (checkActuals || (currentDate <= 14)) {
-           this.enableActuals()
+        if (checkActuals || (currentDay <= 14)) {
+            this.enableActuals()
         } else {
             console.log("Current date is within latter half of the month!")
-            console.log("Data cannot be submitted without admin permissions") 
+            console.log("Data cannot be submitted without admin permissions")
         }
     }
 
@@ -140,10 +161,76 @@ export class DataEntry extends Component {
             databaseKeys.map((key) => {
                 let id = metricCalcInfo[key].metricAreaID
                 if (id == this.state.metricAreaID) {
-                    mapCalculations.set(key, metricCalcInfo[key]) 
+                    mapCalculations.set(key, metricCalcInfo[key])
                 }
             })
             this.setCalculations(mapCalculations)
+        })
+    }
+
+    updateSelectedMetricAreaCalculation(calc) {
+        this.setState((state) => {
+            state.selectedMetricAreaCalculations = calc
+            return state
+        })
+    }
+
+    // Updates state for month value when a drop-down option is selected
+    updateSelectForm(event) {
+        let monthVal = (event.target.value)
+        this.setState((state) => {
+            state.month = monthVal
+            return state
+        })
+    }
+
+    // Updates state for entry value when a radio is selected
+    updateRadioForm(event) {
+        let atVal = (event.target.value)
+        console.log(atVal)
+        this.setState((state) => {
+            state.radio = atVal
+            return state
+        })
+    }
+
+    // Updates state for num value when data is inputted
+    updateValueForm(event) {
+        let numVal = (event.target.value)
+        console.log(numVal)
+        this.setState((state) => {
+            state.data = numVal
+            return state
+        })
+    }
+
+    // Updates state for highlight text field when text is inputted
+    updateHLForm(event) {
+        let hlVal = (event.target.value)
+        console.log(hlVal)
+        this.setState((state) => {
+            state.highlight = hlVal
+            return state
+        })
+    }
+
+    // Updates state for lowlight text field when text is inputted
+    updateLForm(event) {
+        let lVal = (event.target.value)
+        console.log(lVal)
+        this.setState((state) => {
+            state.lowlight = lVal
+            return state
+        })
+    }
+
+    // Updates state for mitigation plan text field when text is inputted
+    updatePlanForm(event) {
+        let pVal = (event.target.value)
+        console.log(pVal)
+        this.setState((state) => {
+            state.mitigation = pVal
+            return state
         })
     }
 
@@ -164,12 +251,92 @@ export class DataEntry extends Component {
     // a metric area is chosen. 
     metricAreaCalculations() {
         const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.entries()).map((key) => {
-            console.log(key);
+            console.log(key)
             return <MetricAreaCalcButton
+                metricCalc={key[1]}
                 metricCalcName={key[1].metric}
+                metricCalcID={key[1].metricCalculationID}
+                metricCalcFunc={this.updateSelectedMetricAreaCalculation}
             />
         })
         return metricCalcElements
+    }
+
+    // Creates a pop-up with all information from state asking if the
+    // user would like to confirm
+    // Notes: Check for any null values, if there are null values
+    // warn user and let them know they need to update those values.
+    // IMPORTANT! If target/actual being submitted is not an annual,
+    // allow user to submit null values for highlights, lowlights,
+    // and mitigation plans. 
+    previewForm() {
+        console.log("button was clicked")
+        this.setState((state) => {
+            state.preview = true
+            return state
+        })
+        console.log(this.state)
+    }
+
+    editForm() {
+        this.setState((state) => {
+            state.preview = false
+            return state
+        })
+    }
+
+    // Push information to database
+    // as a JSON readable format.
+    // Check database if enty already exists, if it does, replace values in database
+    // otherwise, simply add the new data
+    submitForm(month) {
+        console.log("Submitting form...")
+        console.log(month)
+        let year = new Date()
+        year = year.getFullYear()
+        console.log(year)
+        var x = 1
+        switch ((month)) {
+            case "January":
+                console.log("January!")
+                x = 1;
+                break;
+            case "February":
+                x = 2;
+                break;
+            case "March":
+                x = 3;
+                break;
+            case "April":
+                x = 4;
+                break;
+            case "May":
+                x = 5;
+                break;
+            case "June":
+                x = 6
+                break;
+            case "July":
+                x = 7
+                break;
+            case "August":
+                x = 8
+                break;
+            case "September":
+                x = 9
+                break;
+            case "October":
+                x = 10
+                break;
+            case "November":
+                x = 11
+                break;
+            case "December":
+                x = 12
+                break;
+            default:
+                x = 1;
+        }
     }
 
     render() {
@@ -195,11 +362,26 @@ export class DataEntry extends Component {
                     </section>
 
                     <section id="forms">
-                        <DataEntryForm />
+                        <DataEntryForm
+                            updateSelectForm={this.updateSelectForm}
+                            updateRadioForm={this.updateRadioForm}
+                            updateValueForm={this.updateValueForm}
+                            updateHLForm={this.updateHLForm}
+                            updateLForm={this.updateLForm}
+                            updatePlanForm={this.updatePlanForm}
+                            month={this.state.month}
+                            highlight={this.state.highlight}
+                            lowlight={this.state.lowlight}
+                            data={this.state.data}
+                            mitigation={this.state.mitigation}
+                            previewForm={this.previewForm}
+                            submitForm={this.submitForm}
+                            editForm={this.editForm}
+                            preview={this.state.preview}
+                            radio={this.state.radio}
+                        />
                     </section>
                 </main>
-
-
             </div>
         )
     }
@@ -215,13 +397,13 @@ class MetricAreaButton extends Component {
     render() {
         let typeString = this.props.metricName
         return (
-            <button 
-                class='selection' 
-                type={typeString} 
+            <button
+                class='selection'
+                type={typeString}
                 value={typeString}
                 onClick={() => this.props.metricFunc(this.props.metricName, this.props.metricID)}
-                >
-                        {typeString}
+            >
+                {typeString}
             </button>
         )
     }
@@ -233,84 +415,113 @@ class MetricAreaCalcButton extends Component {
     render() {
         let typeString = this.props.metricCalcName
         return (
-            <button class='selection' type={typeString} value={typeString}>{typeString}</button>
+            <button 
+                onClick={() => this.props.metricCalcFunc(this.props.metricCalc)}
+                class='selection' type={typeString} value={typeString}>{typeString}</button>
         )
     }
 }
 
+// Represents entry form component. 
+// This component will take in input from the user
+// for data entry. 
 export class DataEntryForm extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            highlight: "",
-            lowlight: "",
-            data: null,
-            month: "",
-            actual: false,
-            target: false,
-            mitigation: ""
-        }
-    }
-
     render() {
+        let content = null
+        if (this.props.preview) {
+            content = (
+                <div>
+                    <div>
+                        <h2> Summary of Entered Data </h2>
+                        <p>Metric Aera: </p>
+                        <p>Metric Calculation: </p>
+                        <p>Month: {this.props.month}</p>
+                        <p>Data Type (Actual/Target): {this.props.radio}</p>
+                        <p>Data: {this.props.data}</p>
+                        <p>Highlight: {this.props.highlight}</p>
+                        <p>Lowlight: {this.props.lowlight}</p>
+                        <p>MitigationPlan: {this.props.mitigation}</p>
+                    </div>
+                    <button class="preview"
+                        onClick={(e) => this.props.editForm(e)}>Edit Data</button>
+                    <button class="preview"
+                        onClick={() => this.props.submitForm(this.props.month)}>Submit</button>
+                </div>
+            )
+        } else {
+            content = (
+                <div>
+                    <form>
+                        <h2 id='month'> Month </h2>
+                        <select
+                            value={this.props.month}
+                            onChange={(e) => this.props.updateSelectForm(e)}>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                        <h2 class='InputOption'> Input Data For: </h2>
+                        <div>
+                            <label for="actual"> <input
+                                onChange={(e) => this.props.updateRadioForm(e)}
+                                type="radio" id="actual" value="Actual" name="dataAT" />Actual</label>
+                        </div>
+                        <div>
+                            <label for="target"><input
+                                onChange={(e) => this.props.updateRadioForm(e)}
+                                type="radio" id="Target" value="Target" name="dataAT" />Target</label>
+                        </div>
+
+                        <p class='textInput'>
+                            <label for="fname">Enter a value </label>
+                            <input
+                                onChange={(e) => this.props.updateValueForm(e)}
+                                type="number" value={this.props.data} id="form" name="Data" />
+                        </p>
+
+                        <p class='textInput'>
+                            <label for="lname">Highlights</label>
+                            <textarea
+                                onChange={(e) => this.props.updateHLForm(e)}
+                                value={this.props.highlight} type="text" id="form" name="Higlights" />
+                        </p>
+
+                        <p class='textInput'>
+                            <label for="lname">Lowlights </label>
+                            <textarea
+                                onChange={(e) => this.props.updateLForm(e)}
+                                value={this.props.lowlight} type="text" id="form" name="Lowlights" />
+                        </p>
+
+                        <p class='textInput'>
+                            <label for="lname">Mitigation Plan</label>
+                            <textarea
+                                onChange={(e) => this.props.updatePlanForm(e)}
+                                value={this.props.mitigation} type="text" id="form" name="Mitigation" />
+                        </p>
+
+                    </form>
+                    <button
+                        onClick={() => this.props.previewForm(this.props.highlight, this.props.lowlight,
+                            this.props.data, this.props.month, this.props.mitigation,
+                            this.props.radio)}
+                        class="preview">Preview</button>
+                </div>
+            )
+        }
+
         return (
             <div>
-                <form>
-                    <h2 id='month'> Month </h2>
-                    <div class="dropdown">
-                        <button class="dropbtn"> Select A Month <img src={Chevron} /></button>
-                        <div class="dropdown-content">
-                            <p>January</p>
-                            <p>February</p>
-                            <p>March</p>
-                            <p>April</p>
-                            <p>May</p>
-                            <p>June</p>
-                            <p>July</p>
-                            <p>August</p>
-                            <p>September</p>
-                            <p>October</p>
-                            <p>November</p>
-                            <p>December</p>
-                        </div>
-                    </div>
-
-                    <h2 class='InputOption'> Input Data For: </h2>
-                    <div class='CheckBoxes'>
-                        <div class='check-one'>
-                            <input class='box' type="checkbox" id="Target" name="Target" value="Target" />
-                            <label class='check' for="Target">Target </label>
-                        </div>
-
-                        <div class='check-one'>
-                            <input class='box' type="checkbox" id="Actual" name="Actual" value="Actual" />
-                            <label class='check' for="Actual">Actual</label>
-                        </div>
-                    </div>
-
-                    <p class='textInput'>
-                        <label for="fname">Data For XXX </label>
-                        <input type="input" id="form" name="Data" />
-                    </p>
-
-                    <p class='textInput'>
-                        <label for="lname">Highlights</label>
-                        <textarea type="text" id="form" name="Higlights" />
-                    </p>
-
-                    <p class='textInput'>
-                        <label for="lname">Lowlights </label>
-                        <textarea type="text" id="form" name="Lowlights" />
-                    </p>
-
-                    <p class='textInput'>
-                        <label for="lname">Mitigation Plan</label>
-                        <textarea type="text" id="form" name="Mitigation" />
-                    </p>
-                    {/* Pass a function to preview button that lets users oversee
-                    // the information they've entered and to confirm. */}
-                    <button class='preview'>Preview</button>
-                </form>
+                {content}
             </div>
         )
     }

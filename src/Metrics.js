@@ -122,10 +122,6 @@ export class Metrics extends Component {
 // Represents a single metric button to render. A single metric card will contain the name of the metric
 // and acts as a link to the dashboard of the respective metric. 
 export class MetricAreaCard extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
