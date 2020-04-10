@@ -169,6 +169,7 @@ export class DataEntry extends Component {
     }
 
     updateSelectedMetricAreaCalculation(calc) {
+        console.log(calc)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             return state
@@ -251,7 +252,6 @@ export class DataEntry extends Component {
     // a metric area is chosen. 
     metricAreaCalculations() {
         const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.entries()).map((key) => {
-            console.log(key)
             return <MetricAreaCalcButton
                 metricCalc={key[1]}
                 metricCalcName={key[1].metric}
@@ -289,12 +289,14 @@ export class DataEntry extends Component {
     // as a JSON readable format.
     // Check database if enty already exists, if it does, replace values in database
     // otherwise, simply add the new data
-    submitForm(month) {
+    submitForm(month, calcID, radio, data) {
         console.log("Submitting form...")
-        console.log(month)
+        // Get necessary values for inputting into database...
+        // Need: Month, metricCalculationID, and Year
+        console.log(radio)
+
         let year = new Date()
         year = year.getFullYear()
-        console.log(year)
         var x = 1
         switch ((month)) {
             case "January":
@@ -337,6 +339,44 @@ export class DataEntry extends Component {
             default:
                 x = 1;
         }
+
+        // Find metricareacalculation
+        let rootPath = firebase.database().ref('metricGoalsMonths')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+            let keys = Object.keys(info)
+
+            keys.map((key) => {
+                if (key == calcID.metricCalculationID) {
+                    let monthString = x.toString()
+                    if (x.toString().length == 1) {
+                        monthString = "0" + monthString
+                    }
+                    let keyString = year + monthString + calcID.metricCalculationID.toString()
+
+                    // Check if the data already exists 
+                    let childPath = firebase.database().ref('metricGoalsMonths/' + calcID.metricCalculationID.toString() + "/" + keyString)
+                        childPath.once('value', (snapshot) => {
+                            let cInfo = snapshot.val();
+
+                            // If data exists, overwrite it.
+                            if (cInfo) {
+                                if (radio == "Actual") {
+                                    childPath.update({
+                                        actual: data
+                                    })
+                                } else {
+
+                                }
+
+                            // If data doesn't exist, create new entry.
+                            } else {
+                                
+                            }
+                        })
+                }
+            })
+        })
     }
 
     render() {
@@ -379,6 +419,7 @@ export class DataEntry extends Component {
                             editForm={this.editForm}
                             preview={this.state.preview}
                             radio={this.state.radio}
+                            calc={this.state.selectedMetricAreaCalculations}
                         />
                     </section>
                 </main>
@@ -415,7 +456,7 @@ class MetricAreaCalcButton extends Component {
     render() {
         let typeString = this.props.metricCalcName
         return (
-            <button 
+            <button
                 onClick={() => this.props.metricCalcFunc(this.props.metricCalc)}
                 class='selection' type={typeString} value={typeString}>{typeString}</button>
         )
@@ -427,13 +468,14 @@ class MetricAreaCalcButton extends Component {
 // for data entry. 
 export class DataEntryForm extends Component {
     render() {
+        // console.log(this.props.calc.metricCalculationID)
         let content = null
         if (this.props.preview) {
             content = (
                 <div>
                     <div>
                         <h2> Summary of Entered Data </h2>
-                        <p>Metric Aera: </p>
+                        <p>Metric Area: </p>
                         <p>Metric Calculation: </p>
                         <p>Month: {this.props.month}</p>
                         <p>Data Type (Actual/Target): {this.props.radio}</p>
@@ -445,7 +487,7 @@ export class DataEntryForm extends Component {
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
                     <button class="preview"
-                        onClick={() => this.props.submitForm(this.props.month)}>Submit</button>
+                        onClick={() => this.props.submitForm(this.props.month, this.props.calc, this.props.radio, this.props.data)}>Submit</button>
                 </div>
             )
         } else {
