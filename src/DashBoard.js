@@ -330,6 +330,23 @@ class MetricMonthly extends Component {
         }
     }
 
+    // Determines the color of the actual field.
+    // If the actual is greater or equal to the target
+    // change color to green.
+    // If the actual is within 5% of the target, 
+    // change color to orange.
+    // If the actual is neither of the above,
+    // change color to red. 
+    actualColor(actual, target) {
+        if (actual >= target ) {
+            console.log("Green to go!")
+        } else {
+            console.log("Actuals not met and not within 5%")
+        }
+    }
+
+    
+
     render() {
 
         let actualValue = this.props.actual
@@ -346,12 +363,18 @@ class MetricMonthly extends Component {
                 <Table responsive>
                     <tbody>
                         <tr>
-                            <th>Actual</th>
+                        <th>Actual</th>
                             <th>Target</th>
+                            <th>Highlights</th>
+                            <th>Lowlights</th>
+                            <th>Correction of Error</th>
                         </tr>
                         <tr>
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </tbody>
                 </Table>
@@ -383,11 +406,15 @@ class MetricQuarterly extends Component {
                         <tr>
                             <th>Actual</th>
                             <th>Target</th>
+                            <th>Highlights</th> 
+                            <th>Lowlights</th>
                         </tr>
                         <tr>
                             {/* This should be auto-calculated based upon month values */}
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </tbody>
                 </Table>
