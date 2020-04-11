@@ -362,12 +362,13 @@ export class DataEntry extends Component {
                             if (cInfo) {
                                 if (radio == "Actual") {
                                     childPath.update({
-                                        actual: data,
-                                        lowlight: lowlight,
-                                        highlight: highlight
+                                        actual: data
+                                        // actual: data,
+                                        // lowlight: lowlight,
+                                        // highlight: highlight
                                     })
                                 } else {
-                                    childPath
+                                    // childPath
                                 }
 
                             // If data doesn't exist, create new entry.
