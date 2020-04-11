@@ -293,7 +293,6 @@ export class DataEntry extends Component {
         console.log("Submitting form...")
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
-        console.log(radio)
 
         let year = new Date()
         year = year.getFullYear()
@@ -363,10 +362,12 @@ export class DataEntry extends Component {
                             if (cInfo) {
                                 if (radio == "Actual") {
                                     childPath.update({
-                                        actual: data
+                                        actual: data,
+                                        lowlight: lowlight,
+                                        highlight: highlight
                                     })
                                 } else {
-
+                                    childPath
                                 }
 
                             // If data doesn't exist, create new entry.
