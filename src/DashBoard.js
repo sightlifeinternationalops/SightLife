@@ -408,11 +408,13 @@ class MetricQuarterly extends Component {
                             <th>Target</th>
                             <th>Highlights</th> 
                             <th>Lowlights</th>
+                            <th>Correction of Error</th>
                         </tr>
                         <tr>
                             {/* This should be auto-calculated based upon month values */}
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
