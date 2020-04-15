@@ -8,6 +8,7 @@ import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
 import { DashBoard } from './DashBoard';
+import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
@@ -20,13 +21,63 @@ class App extends Component {
 
     this.state = {
       email: '',
+      user: false,
       password: '',
       metrics: metricAreas
     };
   }
 
   componentDidMount() {
+    // this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
+    //   if (firebaseUser) {
+    //     this.setState({
+    //       user: firebaseUser
+    //     })
+    //   } else {
+    //     this.setState({
+    //       user: null
+    //     })
+    //   }
+    // })
     this.retrieveMetricsList()
+  }
+
+  componentWillUnmount() {
+    this.authUnSubFunction();       // Stops listening for auth changes
+  }
+
+  handleSignUp = (email, password) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+        var user = firebase.auth().currentUser
+
+        user.sendEmailVerification().then(function() {
+          // Email sent
+        }).catch(function(error) {
+          // An error happened.
+        })
+      })
+        .catch(function(error) {
+        // Handle errors here
+        var errorCode = error.errorCode
+        var errorMessage = error.errorMessage
+        window.alert("Error : " + errorMessage)
+      })
+  }
+
+  sendVerification() {
+    var user = firebase.auth().currentUser
+    user.sendEmailVerification().then(function() {
+      // Email sent
+    }).catch(function(error) {
+      // An error happened.
+    })
+  }
+
+  handleSignIn = (email, password) => {
+    firebase.auth.signInWithEmailAndPassword(email, password)
+      .catch((err) => {
+        this.setState({ errorMessage: err.message})
+      })
   }
 
   // Function for retrieving existing metrics
@@ -80,49 +131,67 @@ class App extends Component {
   }
   
   render() {
-    let content = (
-      <div>
-        <header>
-          <nav id="nav-bar">
-            <NavBar />
-          </nav>
-        </header>
-
-        <main>
-          <Switch>
-            <Route exact path="/About" component={About} />
-            <Route path="/HistoricalData" component={HistoricalData} />
-            <Route
-              path="/Metrics" 
-              render={(props) => <Metrics 
-                {...props}
-                metrics={this.state.metrics}
-                metricAreaElements={this.metricAreaElements}
-                // retrieveMetricCalculations={this.retrieveMetriCalculations}
-                />} 
-            />
-            {/* <Route exact path="/DataEntry" component={DataEntry} /> */}
-            <Route 
-              exact path="/DataEntry" 
-              render={(props) => <DataEntry 
-                metrics={this.state.metrics}
-                retMetricCalculations={this.retrieveMetricCalculations} 
-                />} 
+    let content = null 
+    if (!this.state.user) {
+      content = (
+        <div>
+          <main>
+            <Switch>
+              <Route exact path="/" component={SignIn}></Route>
+              {/* <Route path="/Createaccount" component={CreateAccount}/> */}
+              <Route path="/Createaccount" render={(props) => <CreateAccount
+                handleSignUp={this.handleSignUp}
+                />}
               />
-            <Route path="/FAQ" component={FAQ} />
-            <Route path='/SignIn' component={SignIn} />
-            <Redirect to="/About" />
-          </Switch>
-        </main>
-
-        <footer>
-          <div className="footer-container">
-            <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
-          </div>
-        </footer>
-      </div>
-    )
-
+            </Switch>
+          </main>
+        </div>
+      )
+    } else {
+      content = (
+        <div>
+          <header>
+            <nav id="nav-bar">
+              <NavBar />
+            </nav>
+          </header>
+  
+          <main>
+            <Switch>
+              <Route exact path="/About" component={About} />
+              <Route path="/HistoricalData" component={HistoricalData} />
+              <Route
+                path="/Metrics" 
+                render={(props) => <Metrics 
+                  {...props}
+                  metrics={this.state.metrics}
+                  metricAreaElements={this.metricAreaElements}
+                  // retrieveMetricCalculations={this.retrieveMetriCalculations}
+                  />} 
+              />
+              {/* <Route exact path="/DataEntry" component={DataEntry} /> */}
+              <Route 
+                exact path="/DataEntry" 
+                render={(props) => <DataEntry 
+                  metrics={this.state.metrics}
+                  retMetricCalculations={this.retrieveMetricCalculations} 
+                  />} 
+                />
+              <Route path="/FAQ" component={FAQ} />
+              {/* <Route path='/SignIn' component={SignIn} /> */}
+              <Redirect to="/About" />
+            </Switch>
+          </main>
+  
+          <footer>
+            <div className="footer-container">
+              <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
+            </div>
+          </footer>
+        </div>
+      )
+    }
+  
     return (
       <div>
         {content}
@@ -135,7 +204,6 @@ class NavBar extends Component {
   render() {
     return (
       <div className="navbar navbar-expand-lg navbar-light">
-
         <a className="navbar-brand" href="/">
           <img src={SightLife} alt="SightLife logo" />
         </a>
@@ -148,16 +216,13 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>About</NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Metrics</NavLink>
             </li>
-            {/* <li className="nav-item">
-              <NavLink to='/HistoricalData' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Historical Data</NavLink>
-            </li> */}
             <li className="nav-item">
               <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Data Entry</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>About</NavLink>
             </li>
             <li className="nav-item">
               <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>FAQ</NavLink>

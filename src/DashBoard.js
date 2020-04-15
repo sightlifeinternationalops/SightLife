@@ -13,6 +13,9 @@ export class DashBoard extends Component {
 
     constructor(props) {
         super(props)
+        let year = new Date()
+        year = year.getFullYear().toString()
+
         this.state = {
             // Calculations should have the same array lengths...
             // Work on centralizing the data so we aren't hoping
@@ -20,7 +23,8 @@ export class DashBoard extends Component {
             metricAreaCalculationsMonth: [],
             metricAreaCalculationsQuarter: [],
             metricAreaCalculationsAnnual: [],
-            currentCalculation: 0 // Will always default to the first value in an array
+            currentCalculation: 0, // Will always default to the first value in an array
+            currentYear: year
         }
     }
 
@@ -111,8 +115,10 @@ export class DashBoard extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             keys.map((key) => {
+                console.log(key)
                 let intKey = parseInt(key, 10)
                 if (this.props.metricAreaCalculationIDs.includes(intKey)) {
+                    console.log(info[key])
                     annualMap.set(key, info[key])
                 }
             })
@@ -158,11 +164,16 @@ export class DashBoard extends Component {
             let keys = Object.keys(calculationKeys)
             monthArrayInfo = keys.map((key) => {
                 let monthInfo = calculationKeys[key]
-                return <MetricMonthly
-                            actual={monthInfo.actual}
-                            target={monthInfo.target}
-                            month={monthInfo.month}
-                        />
+                if (monthInfo.year = this.state.currentYear) {
+                    return <MetricMonthly
+                    actual={monthInfo.actual}
+                    target={monthInfo.target}
+                    month={monthInfo.month}
+                    highlight={monthInfo.highlights}
+                    lowlight={monthInfo.lowlights}
+                    coe={monthInfo.coe}
+                />
+                }
             })
         }
         return monthArrayInfo
@@ -180,11 +191,16 @@ export class DashBoard extends Component {
             let keys = Object.keys(calculationKeys)
             quarterArrayInfo = keys.map((key) => {
                 let quarterInfo = calculationKeys[key]
-                return <MetricQuarterly
-                            actual={quarterInfo.actual}
-                            target={quarterInfo.target}
-                            quarter={quarterInfo.quarter}
-                        />
+                if (quarterInfo.year = this.state.currentYear) {
+                    return <MetricQuarterly
+                    actual={quarterInfo.actual}
+                    target={quarterInfo.target}
+                    quarter={quarterInfo.quarter}
+                    highlight={quarterInfo.highlights}
+                    lowlight={quarterInfo.lowlights}
+                    coe={quarterInfo.coe}
+                />
+                }
             })
         }
         return quarterArrayInfo
@@ -201,13 +217,16 @@ export class DashBoard extends Component {
             let keys = Object.keys(calculationKeys)
             annualArrayInfo = keys.map((key) => {
                 let annualInfo = calculationKeys[key]
-                return <MetricAnnuals
-                            actual={annualInfo.actual}
-                            target={annualInfo.target}
-                            annual={annualInfo.quarter}
-                            highlight={annualInfo.highlights}
-                            lowlight={annualInfo.lowlights}
-                        />
+                if (annualInfo.year = this.state.currentYear) {
+                    return <MetricAnnuals
+                    actual={annualInfo.actual}
+                    target={annualInfo.target}
+                    annual={annualInfo.quarter}
+                    highlight={annualInfo.highlights}
+                    lowlight={annualInfo.lowlights}
+                    coe={annualInfo.coe}
+                />
+                }
             })
         }
         return annualArrayInfo
@@ -227,7 +246,6 @@ export class DashBoard extends Component {
         return(        
             <div className = "body">
             <h1> {this.props.metricAreaInfo} </h1>
-            <h1> {this.props.metricAreaID} </h1>
             <h2> Metric Area Summary </h2>
             <h3> Owner: {this.props.metricAreaOwner} </h3>
 

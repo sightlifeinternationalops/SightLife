@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './css/DataEntry.css';
 import './index.js';
 
-import Chevron from './img/down-arrow.png'
 import { CardDeck, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import firebase from 'firebase/app';
 
@@ -21,6 +20,7 @@ export class DataEntry extends Component {
         this.editForm = this.editForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
         this.updateSelectedMetricAreaCalculation = this.updateSelectedMetricAreaCalculation.bind(this)
+        // this.enablePreviewButton = this.enablePreviewButton.bind(this)
 
         this.state = {
             currentMetricAreaCalculations: new Map(), // Represents all calculations
@@ -30,21 +30,44 @@ export class DataEntry extends Component {
             canEditActuals: false, // Determines users ability to enter data for actuals
             canEditTargets: false, // Determines users ability to enter data for targets
             currentYear: new Date(), // Used for entering data for the current year
-            highlight: "",
-            lowlight: "",
+            highlight: null,
+            lowlight: null,
             data: null,
             month: "January", // Will always default to January
-            radio: "",
+            radio: null,
             actualEn: false,
             targetEn: false,
-            mitigation: "",
-            preview: false
+            mitigation: null,
+            preview: false,
+            previewButton: false
         }
     }
 
     componentDidMount() {
         this.checkCurrentDateActuals()
         this.checkCurrentDateTargets()
+    }
+
+    componentDidUpdate() {
+        console.log(this.state)
+    }
+
+    // Enable preview button
+    // when all the following conditions are met:
+    // 1. Valid Information is entered
+    // 2. All the necessary fields are filled out
+    //      Necessary fields are:
+    //          Data
+    //          Radio
+    //          Month (Enabled by default)
+    enablePreviewButton() {
+        if (this.state.data != null &&
+            this.state.radio != null && this.data != "") {
+            this.setState((state) => {
+                state.previewButton = true
+                return state
+            })
+        }
     }
 
     // Checks the current date of the month. If it is the first 3 months of the year
@@ -59,13 +82,8 @@ export class DataEntry extends Component {
     // 3. For targets:
     //      b. Check if within first two months of the year. 
     checkCurrentDateActuals() {
-        console.log("Checking current date...")
-
         let currentDate = new Date()
         let currentDay = currentDate.getDate()
-
-        console.log("Current date is " + currentDate)
-        console.log("Current day is " + currentDay)
 
         let checkActuals = this.checkActualEnabled()
 
@@ -73,6 +91,7 @@ export class DataEntry extends Component {
         // Allow user to submit entry for actuals if 
         if (checkActuals || (currentDay <= 14)) {
             this.enableActuals()
+        // Display error messaging
         } else {
             console.log("Current date is within latter half of the month!")
             console.log("Data cannot be submitted without admin permissions")
@@ -169,7 +188,6 @@ export class DataEntry extends Component {
     }
 
     updateSelectedMetricAreaCalculation(calc) {
-        console.log(calc)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             return state
@@ -188,27 +206,26 @@ export class DataEntry extends Component {
     // Updates state for entry value when a radio is selected
     updateRadioForm(event) {
         let atVal = (event.target.value)
-        console.log(atVal)
         this.setState((state) => {
             state.radio = atVal
             return state
         })
+        this.enablePreviewButton()
     }
 
     // Updates state for num value when data is inputted
     updateValueForm(event) {
         let numVal = (event.target.value)
-        console.log(numVal)
         this.setState((state) => {
             state.data = numVal
             return state
         })
+        this.enablePreviewButton()
     }
 
     // Updates state for highlight text field when text is inputted
     updateHLForm(event) {
         let hlVal = (event.target.value)
-        console.log(hlVal)
         this.setState((state) => {
             state.highlight = hlVal
             return state
@@ -218,7 +235,6 @@ export class DataEntry extends Component {
     // Updates state for lowlight text field when text is inputted
     updateLForm(event) {
         let lVal = (event.target.value)
-        console.log(lVal)
         this.setState((state) => {
             state.lowlight = lVal
             return state
@@ -270,14 +286,15 @@ export class DataEntry extends Component {
     // allow user to submit null values for highlights, lowlights,
     // and mitigation plans. 
     previewForm() {
-        console.log("button was clicked")
         this.setState((state) => {
             state.preview = true
             return state
         })
-        console.log(this.state)
     }
 
+    // Will switch to preview view when
+    // the button is clicked, showing a summary of entered
+    // information
     editForm() {
         this.setState((state) => {
             state.preview = false
@@ -289,13 +306,14 @@ export class DataEntry extends Component {
     // as a JSON readable format.
     // Check database if enty already exists, if it does, replace values in database
     // otherwise, simply add the new data
-    submitForm(month, calcID, radio, data) {
+    submitForm(month, calcID, radio, data, highlight, lowlight, coe) {
         console.log("Submitting form...")
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
 
         let year = new Date()
         year = year.getFullYear()
+        // year = 2011
         var x = 1
         switch ((month)) {
             case "January":
@@ -355,27 +373,45 @@ export class DataEntry extends Component {
 
                     // Check if the data already exists 
                     let childPath = firebase.database().ref('metricGoalsMonths/' + calcID.metricCalculationID.toString() + "/" + keyString)
-                        childPath.once('value', (snapshot) => {
-                            let cInfo = snapshot.val();
+                    childPath.once('value', (snapshot) => {
+                        let cInfo = snapshot.val();
 
-                            // If data exists, overwrite it.
-                            if (cInfo) {
-                                if (radio == "Actual") {
-                                    childPath.update({
-                                        actual: data
-                                        // actual: data,
-                                        // lowlight: lowlight,
-                                        // highlight: highlight
-                                    })
-                                } else {
-                                    // childPath
-                                }
-
-                            // If data doesn't exist, create new entry.
+                        // If data exists, overwrite it.
+                        if (cInfo) {
+                            // If user wants to edit an actual
+                            if (radio == "Actual") {
+                                childPath.update({
+                                    actual: data,
+                                    lowlights: lowlight,
+                                    highlights: highlight,
+                                    coe: coe
+                                })
+                            // If user wants to edit a target
                             } else {
-                                
+                                childPath.update({
+                                    target: data,
+                                    lowlights: lowlight,
+                                    highlights: highlight,
+                                    coe: coe
+                                })
                             }
-                        })
+
+                        // If data doesn't exist, create new entry.
+                        } else {
+                            if (radio == "Actual") {
+                                console.log("Data does not exist yet!")
+                                console.log("Create a target before inserting an actual!")
+                            } else {
+                                firebase.database().ref('metricGoalsMonths/' + calcID.metricCalculationID.toString()).child(keyString).update({
+                                    target: data,
+                                    lowlights: lowlight,
+                                    highlights: highlight,
+                                    coe: coe
+                                }
+                                )
+                            }
+                        }
+                    })
                 }
             })
         })
@@ -405,6 +441,8 @@ export class DataEntry extends Component {
 
                     <section id="forms">
                         <DataEntryForm
+                            metricAreaName={this.state.metricAreaName}
+                            selectedMetricAreaCalculations={this.state.selectedMetricAreaCalculations}
                             updateSelectForm={this.updateSelectForm}
                             updateRadioForm={this.updateRadioForm}
                             updateValueForm={this.updateValueForm}
@@ -422,6 +460,7 @@ export class DataEntry extends Component {
                             preview={this.state.preview}
                             radio={this.state.radio}
                             calc={this.state.selectedMetricAreaCalculations}
+                            previewButton={this.state.previewButton}
                         />
                     </section>
                 </main>
@@ -469,27 +508,38 @@ class MetricAreaCalcButton extends Component {
 // This component will take in input from the user
 // for data entry. 
 export class DataEntryForm extends Component {
+    check() {
+        if (this.props.data != null && this.props.radio != null && this.props.data != "") {
+            return true
+        }
+        return false
+    }
+
     render() {
-        // console.log(this.props.calc.metricCalculationID)
         let content = null
+        // Will switch content to be the preview
         if (this.props.preview) {
             content = (
                 <div>
                     <div>
                         <h2> Summary of Entered Data </h2>
-                        <p>Metric Area: </p>
-                        <p>Metric Calculation: </p>
-                        <p>Month: {this.props.month}</p>
-                        <p>Data Type (Actual/Target): {this.props.radio}</p>
-                        <p>Data: {this.props.data}</p>
-                        <p>Highlight: {this.props.highlight}</p>
-                        <p>Lowlight: {this.props.lowlight}</p>
-                        <p>MitigationPlan: {this.props.mitigation}</p>
+                        <p>Metric Area: <b>{this.props.metricAreaName}</b></p>
+                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculations.metric}</b></p>
+                        <p>Month: <b>{this.props.month}</b></p>
+                        <p>Data Type (Actual/Target): <b>{this.props.radio}</b></p>
+                        <p>Data: <b>{this.props.data}</b></p>
+                        <p>Highlight: <b>{this.props.highlight}</b></p>
+                        <p>Lowlight: <b>{this.props.lowlight}</b></p>
+                        <p>MitigationPlan: <b>{this.props.mitigation}</b></p>
                     </div>
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
                     <button class="preview"
-                        onClick={() => this.props.submitForm(this.props.month, this.props.calc, this.props.radio, this.props.data)}>Submit</button>
+                        onClick={() => this.props.submitForm(this.props.month, this.props.calc,
+                            this.props.radio, this.props.data, this.props.highlight,
+                            this.props.lowlight, this.props.mitigation)}>
+                        Submit
+                    </button>
                 </div>
             )
         } else {
@@ -528,8 +578,9 @@ export class DataEntryForm extends Component {
                         <p class='textInput'>
                             <label for="fname">Enter a value </label>
                             <input
+                                value={this.props.data}
                                 onChange={(e) => this.props.updateValueForm(e)}
-                                type="number" value={this.props.data} id="form" name="Data" />
+                                type="number" id="form" name="Data" />
                         </p>
 
                         <p class='textInput'>
@@ -552,9 +603,9 @@ export class DataEntryForm extends Component {
                                 onChange={(e) => this.props.updatePlanForm(e)}
                                 value={this.props.mitigation} type="text" id="form" name="Mitigation" />
                         </p>
-
                     </form>
                     <button
+                        disabled={!this.check()}
                         onClick={() => this.props.previewForm(this.props.highlight, this.props.lowlight,
                             this.props.data, this.props.month, this.props.mitigation,
                             this.props.radio)}

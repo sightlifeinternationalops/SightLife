@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup, Label } from 'reactstrap';
+import { Switch, Route, Link } from 'react-router-dom';
 import { SocialIcon } from 'react-social-icons';
 import { Button, ButtonToolbar} from 'reactstrap';
 import './css/SignIn.css';
@@ -21,7 +21,10 @@ export class SignIn extends Component {
                     <p>
                         <button class='sign-in'>Sign In</button>
                     </p>
-                    <p class='account'>Don't have an account? <a class='create'>Create Account</a></p>
+                    <p class='account'>Don't have an account? <a class='create'>
+                        <Link
+                            to={'/Createaccount'}>
+                        Create Account</Link></a></p>
                 </div>
         )
     }
