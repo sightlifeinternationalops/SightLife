@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/index.css';
 import { HashRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
