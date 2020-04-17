@@ -27,6 +27,7 @@ export class DataEntry extends Component {
                         <button class='selection' type="Prevention" value="Prevention"> Prevention </button>
                         <button class='selection' type="Quality" value="Quality"> Quality </button>
                         <button class='selection' type="Training" value="Training"> Training </button>
+                        <button class='selection' type="Training" value="Training"> Training </button>
                     </CardDeck>
 
                     <h2 class='MetricTitles'> Metric Calculation </h2>

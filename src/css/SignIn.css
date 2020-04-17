@@ -1,7 +1,7 @@
 .form {
-margin: auto;
-width: 40%;
-padding: 16px;
+    margin: auto;
+    width: 40%;
+    padding: 16px;
 }
 
 input, label {
@@ -12,6 +12,7 @@ label {
     color: black;
     font-weight: bold;
 }
+
 input {
     width: 100%;
     border-style: solid;
@@ -24,13 +25,15 @@ p {
 }
 
 p.account {
-    font-size: 12px;
+    font-size: 16px;
     color: black;
     font-weight: bold;
+    place-items: center;
+    text-align: center;
 }
 
 a.create {
-    font-size: 12px;
+    font-size: 16px;
     color: rgb(153, 145, 198);
 }
 
@@ -39,9 +42,9 @@ a.create {
     margin: 0 auto;
     display: block;
     border-style: none;
-    color: white; 
+    color: white;
     border-radius: 10px;
-    background-color:rgb(153, 145, 198);
+    background-color: rgb(153, 145, 198);
     line-height: 65px;
     margin-top: 4rem;
 }

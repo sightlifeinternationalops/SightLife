@@ -8,12 +8,18 @@ import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
 import { DashBoard } from './DashBoard';
+import {AdminSettings} from './AdminSettings'
+import {AdminPanelMetrics} from './AdminPanelMetrics'
+import { AdminPanelUserPermissions } from './AdminPanelUserPermissions'
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
+import HomeDashBoard from './img/home-run.svg';
+import Manager from './img/manager.svg';
+import SignOut from './img/logout.svg';
+import Profile from './img/profile2.png'
 
 class App extends Component {
-
 
   constructor(props) {
     super(props);
@@ -70,15 +76,12 @@ class App extends Component {
             <Route exact path="/DataEntry" component={DataEntry} />
             <Route path="/FAQ" component={FAQ} />
             <Route path='/SignIn' component={SignIn} />
+            <Route path='/AdminPanel' component={AdminPanelUserPermissions} />
+            <Route path='/AdminSettings' component={AdminSettings} />
+            <Route path='/AdminPanelMetrics' component={AdminPanelMetrics} />
             <Redirect to="/About" />
           </Switch>
         </main>
-
-        <footer>
-          <div className="footer-container">
-            <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
-          </div>
-        </footer>
       </div>
     )
 
@@ -107,22 +110,37 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>About</NavLink>
+              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>About</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Metrics</NavLink>
+              <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/HistoricalData' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Historical Data</NavLink>
+              <NavLink to='/HistoricalData' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold",color: "#9991C6" }}>Historical Data</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Data Entry</NavLink>
+              <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>FAQ</NavLink>
+              <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/SignIn' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>SignIn</NavLink>
+              <div class="dropdown" id="myForm">
+              <img class="profile" src={ Profile } />
+                <div class="dropdown-content" id="sign">
+                  <image class='prof-pic'>User's Profile Picture</image>
+                  <p class='user-name'>User's Name</p>
+                  <button type="submit" class="btn">
+                    <NavLink to='/Metrics' className="nav-link"> DashBoard </NavLink>
+                  </button>
+                  <button type="submit" class="btn">
+                    <NavLink to='/AdminPanel' className="nav-link"> Admin Panel </NavLink>
+                  </button>
+                  <button type="submit" class="btn">
+                    <NavLink to='/SignIn' className="nav-link"> Sign Out </NavLink>
+                  </button>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
