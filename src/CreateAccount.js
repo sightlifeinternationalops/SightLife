@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import { Table, Column, Cell } from 'reactstrap';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/SignIn.css';
 import './index.js';
 
 export class CreateAccount extends Component {
     constructor(props) {
-        var actionCodeSettings = {
-            url: 'http://localhost:3000/#/',
-            handleCodeInApp: true
-        }
-
         super(props);
         this.state = {
-
+            complete: false
         }
     }
 
 
-    //
+    // Check if fields are filled with appropriate content
     checkSubmissions() {
         let valid = true
         if (!this.renderFnameIssues()) {
@@ -44,19 +38,24 @@ export class CreateAccount extends Component {
         return valid
     }
 
-    // Do firebase stuff here
+    // Submit entered information
+    // Render account confirmed
     submitAccount() {
         if (this.checkSubmissions()) {
             console.log("Valid information has been inputted")
             console.log("Verifying user information by sending to email...")
-            this.props.handleSignUp()
+            this.props.handleSignUp(this.state.email, this.state.password)
+            this.setState((state) => {
+                state.complete = true
+                return state
+            })
         } else {
             console.log("Invalid information!")
         }
     }
 
     renderFnameIssues() {
-        if (this.state.fName == null || this.state.fName == undefined) {
+        if (this.state.fName === null || this.state.fName === undefined) {
             console.log("Field is undefined")
             return false
         } else {
@@ -78,8 +77,11 @@ export class CreateAccount extends Component {
     // If email doesn't end with @sightlife.org,
     // do not allow submission
     renderEmailIssues() {
-        if (this.state.email == null || this.state.email.slice(-14) != "@sightlife.org") {
-            console.log("Email is not a valid sightlife email")
+        // if (this.state.email == null || this.state.email.slice(-14) != "@sightlife.org") {
+        //     console.log("Email is not a valid sightlife email")
+        //     return false
+        // }
+        if (this.state.email == null || this.state.email == undefined) {
             return false
         }
         return true
@@ -158,8 +160,24 @@ export class CreateAccount extends Component {
     }
 
     render() {
-        return (
-            <div className="body">
+        let content = null
+        if (this.state.complete) {
+            content = (
+                <div>
+                    <p>
+                        A verification email has been sent to: {this.state.email}
+                    </p>
+                    <p>
+                        Verify your email to login to the application!
+                    </p>
+                    <p>
+                        <Link to="/">Return to Sign-In</Link>
+                    </p>
+                </div>
+            )
+        } else {
+            content = (
+                <div className="body">
                 <h1> Create Account </h1>
                 <div class="form">
                     <p>
@@ -198,13 +216,19 @@ export class CreateAccount extends Component {
 
                     <p>
                         <button
-                            onClick={() => this.checkSubmissions()}
+                            onClick={() => this.submitAccount()}
                             class='preview'> Create Account</button>
                         {/* <input type="submit" value="Submit"></input> */}
                     </p>
                     <p class='account1'> Already have an account? <p class='account'>
                         <Link to="/">Sign-In</Link></p> </p>
                 </div>
+            </div>
+            ) 
+        }
+        return (
+            <div>
+                {content}
             </div>
         )
     }
