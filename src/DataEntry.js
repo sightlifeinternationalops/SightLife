@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './css/DataEntry.css';
 import './index.js';
 
-import { CardDeck, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { CardDeck } from 'reactstrap';
 import firebase from 'firebase/app';
 
 export class DataEntry extends Component {
@@ -118,7 +118,7 @@ export class DataEntry extends Component {
 
     // Checks to see if actual editing is enabled
     checkActualEnabled() {
-        let rootPath = firebase.database().ref('dataEntrySettings/actualEnabled').once('value', (snapshot) => {
+        firebase.database().ref('dataEntrySettings/actualEnabled').once('value', (snapshot) => {
             let info = snapshot.val()
             return info
         })
@@ -126,7 +126,7 @@ export class DataEntry extends Component {
 
     // Checks to see if target editing is enabled
     checkTargetEnabled() {
-        let rootPath = firebase.database().ref('dataEntrySettings/targetEnabled').once('value', (snapshot) => {
+        firebase.database().ref('dataEntrySettings/targetEnabled').once('value', (snapshot) => {
             let info = snapshot.val()
             return info
         })
@@ -364,9 +364,9 @@ export class DataEntry extends Component {
             let keys = Object.keys(info)
 
             keys.map((key) => {
-                if (key == calcID.metricCalculationID) {
+                if (key === calcID.metricCalculationID) {
                     let monthString = x.toString()
-                    if (x.toString().length == 1) {
+                    if (x.toString().length === 1) {
                         monthString = "0" + monthString
                     }
                     let keyString = year + monthString + calcID.metricCalculationID.toString()
@@ -379,7 +379,7 @@ export class DataEntry extends Component {
                         // If data exists, overwrite it.
                         if (cInfo) {
                             // If user wants to edit an actual
-                            if (radio == "Actual") {
+                            if (radio === "Actual") {
                                 childPath.update({
                                     actual: data,
                                     lowlights: lowlight,
@@ -398,7 +398,7 @@ export class DataEntry extends Component {
 
                         // If data doesn't exist, create new entry.
                         } else {
-                            if (radio == "Actual") {
+                            if (radio === "Actual") {
                                 console.log("Data does not exist yet!")
                                 console.log("Create a target before inserting an actual!")
                             } else {
@@ -472,10 +472,6 @@ export class DataEntry extends Component {
 // Represents a single metric area to render. Clicking a button
 // will render that metric area's calculations
 class MetricAreaButton extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let typeString = this.props.metricName
         return (
@@ -509,7 +505,7 @@ class MetricAreaCalcButton extends Component {
 // for data entry. 
 export class DataEntryForm extends Component {
     check() {
-        if (this.props.data != null && this.props.radio != null && this.props.data != "") {
+        if (this.props.data !== null && this.props.radio !== null && this.props.data !== "") {
             return true
         }
         return false
