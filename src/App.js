@@ -29,9 +29,12 @@ class App extends Component {
   componentDidMount() {
     this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
+        console.log(firebaseUser.emailVerified)
         this.setState({
-          user: firebaseUser
+          user: firebaseUser,
+          verified: firebaseUser.emailVerified
         })
+        console.log(this.state)
       } else {
         this.setState({
           user: null
@@ -53,7 +56,7 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
-  console.log(this.state)
+    window.location="/"
   }
 
   // Create a user account
@@ -137,7 +140,9 @@ class App extends Component {
 
   render() {
     let content = null
-    if (!this.state.user) {
+    
+    // If user is not logged in and user is not verified
+    if (!this.state.user && !this.state.verified) {
       content = (
         <div>
           <main>
