@@ -163,14 +163,15 @@ class App extends Component {
       </div>
     )
 
-    let content = null 
+    /* let content = null 
     if (!this.state.user) {
       content = (
         <div>
           <main>
             <Switch>
               <Route exact path="/" component={SignIn}></Route>
-              {/* <Route path="/Createaccount" component={CreateAccount}/> */}
+              {/* <Route path="/Createaccount" component={CreateAccount}/> */
+              /*
               <Route path="/Createaccount" render={(props) => <CreateAccount
                 handleSignUp={this.handleSignUp}
                 />}
@@ -201,7 +202,8 @@ class App extends Component {
                   // retrieveMetricCalculations={this.retrieveMetriCalculations}
                   />} 
               />
-              {/* <Route exact path="/DataEntry" component={DataEntry} /> */}
+              {/* <Route exact path="/DataEntry" component={DataEntry} /> */
+              /*
               <Route 
                 exact path="/DataEntry" 
                 render={(props) => <DataEntry 
@@ -210,7 +212,8 @@ class App extends Component {
                   />} 
                 />
               <Route path="/FAQ" component={FAQ} />
-              {/* <Route path='/SignIn' component={SignIn} /> */}
+              {/* <Route path='/SignIn' component={SignIn} /> */
+              /*
               <Redirect to="/About" />
             </Switch>
           </main>
@@ -222,7 +225,7 @@ class App extends Component {
           </footer>
         </div>
       )
-    }
+    } */
   
     return (
       <div>
