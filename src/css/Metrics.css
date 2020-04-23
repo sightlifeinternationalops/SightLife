@@ -6,10 +6,17 @@ div .metricsDeck{
     
 }
 
+
+
 div.metricsDeck.card-deck {
     align-items: center;
-    margin-right: 20rem;
-    margin-left: 20rem;
+    margin-right: 15rem;
+    margin-left: 15rem;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
 }
 
 .metrics {
@@ -19,17 +26,28 @@ div.metricsDeck.card-deck {
     text-align: center;
 }
 
+.card-deck .card {
+    flex: 0;
+    align-self: center;
+}
+
 div .metrics {
-    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
     margin-bottom:5rem;
-    width: 100px;
     height: 125px;
+    width: 125px;
+    align-self: center;    
+}
+
+a {
+    padding: 0;
 }
 
 div.metrics.card {
     margin: 0 auto;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+    margin-bottom: 3rem;
+    /* margin-right: 2rem; */
 }
 
 div.metricsBody.card-body a  {
@@ -43,4 +61,6 @@ div.metricsBody.card-body a  {
     transform: translate(-50%, -50%);
 }
 
-
+div.table-responsive {
+    margin-left: 20px;
+}

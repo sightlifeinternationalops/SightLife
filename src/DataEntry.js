@@ -150,7 +150,6 @@ export class DataEntry extends Component {
 
     // Sets current state of metric area ID to button that was clicked
     setMetric(name, id) {
-        console.log('Button was clicked!')
         this.setState((state) => {
             state.metricAreaID = id
             state.metricAreaName = name

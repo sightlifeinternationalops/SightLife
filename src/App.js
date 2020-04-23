@@ -7,10 +7,17 @@ import { Metrics, MetricAreaCard } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { SignIn } from './SignIn';
+import { AdminSettings } from './AdminSettings'
+import { AdminPanelMetrics } from './AdminPanelMetrics'
+import { AdminPanelUserPermissions } from './AdminPanelUserPermissions'
 import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
+import HomeDashBoard from './img/home-run.svg';
+import Manager from './img/manager.svg';
+import SignOut from './img/logout.svg';
+import Profile from './img/profile2.png'
 
 class App extends Component {
   constructor(props) {
@@ -23,31 +30,31 @@ class App extends Component {
       password: '',
       metrics: metricAreas
     };
-    console.log(this.state)
   }
 
   componentDidMount() {
     this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) {
-        console.log(firebaseUser.emailVerified)
+      if (firebaseUser) { // If user is logged in
         this.setState({
           user: firebaseUser,
           verified: firebaseUser.emailVerified
         })
-        console.log(this.state)
-      } else {
+      } else { // Log user out
         this.setState({
           user: null
         })
       }
     })
+
+    // Retrieve current metric areas in database
     this.retrieveMetricsList()
-    console.log(this.state)
   }
 
   componentWillUnmount() {
     this.authUnSubFunction(); // Stops listening for auth changes
   }
+
+  // USER SIGN-IN/ACCOUNT CREATION // 
 
   // Signs user out of application
   handleSignOut = () => {
@@ -56,22 +63,26 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
-    window.location="/"
+    window.location = "/"
   }
 
   // Create a user account
+  // Make sure it does not keep the user logged in once they create their account
   handleSignUp = (email, password) => {
-    firebase.auth().createUserWithEmailAndPassword(email, password).then(function () {
-      var user = firebase.auth().currentUser
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(function () {
+        var user = firebase.auth().currentUser
+        console.log("User created: " + user)
 
-      user.sendEmailVerification().then(function () {
-        console.log("Verification should have happened")
-        // Email sent
-      }).catch(function (error) {
-        // An error happened.
-        console.log(error.errorMessage)
+        // let userID = 'users/' +
+
+        user.sendEmailVerification().then(function () {
+          // Email sent
+        }).catch(function (error) {
+          // An error happened.
+          console.log(error.errorMessage)
+        })
       })
-    })
       .catch(function (error) {
         // Handle errors here
         var errorCode = error.errorCode
@@ -86,6 +97,24 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
+  }
+
+  // ADMIN PANEL FUNCTIONS // 
+
+  // Adds a new metric area, for admin panel use.
+  addMetricArea() {
+
+  }
+
+  // Adds a new metric calculation for a selected metric area,
+  // for admin panel use. 
+  addMetricCalculation() {
+
+  }
+
+  // Gets current owners of metric area
+  getMetricOwnerInfo() {
+
   }
 
   // Function for retrieving existing metrics
@@ -140,36 +169,42 @@ class App extends Component {
 
   render() {
     let content = null
-    
+    let verify = null
     // If user is not logged in and user is not verified
-    if (!this.state.user && !this.state.verified) {
+    if (!this.state.user || (this.state.user && !this.state.verified)) {
       content = (
         <div>
           <main>
             <Switch>
               <Route exact path="/" render={() => <SignIn
                 handleSignIn={this.handleSignIn}
-                />} />
+              />} />
               <Route path="/Createaccount" render={() => <CreateAccount
                 handleSignUp={this.handleSignUp}
-                />}
+              />}
               />
             </Switch>
           </main>
         </div>
+      )
+    } else if (this.state.user && !this.state.verified) {
+      verify = (
+        <p>
+          Account is not verified!
+        </p>
       )
     } else {
       content = (
         <div>
           <header>
             <nav id="nav-bar">
-              <NavBar signOut={this.handleSignOut}/>
+              <NavBar signOut={this.handleSignOut} />
             </nav>
           </header>
 
           <main>
             <Switch>
-              <Route exact path="/About" component={About} />
+              <Route exact path="/" component={About} />
               <Route path="/HistoricalData" component={HistoricalData} />
               <Route
                 path="/Metrics"
@@ -188,6 +223,15 @@ class App extends Component {
                 />}
               />
               <Route path="/FAQ" component={FAQ} />
+              <Route path='/AdminPanel' component={AdminPanelUserPermissions} />
+              <Route path="/AdminSettings" component={AdminSettings} />
+              {/* <Route path="/AdminPanelMetrics" component={AdminPanelMetrics} /> */}
+              <Route
+                path="/AdminPanelMetrics"
+                render={() => <AdminPanelMetrics
+                  metrics={this.state.metrics}
+                />}
+              />
               <Redirect to="/" />
             </Switch>
           </main>
@@ -204,6 +248,7 @@ class App extends Component {
     return (
       <div>
         {content}
+        {verify}
       </div>
     );
   }
@@ -225,20 +270,35 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Metrics</NavLink>
+              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>About</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>Data Entry</NavLink>
+              <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>About</NavLink>
+              <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "red" }}>FAQ</NavLink>
+              <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
             </li>
-            <button onClick={() => this.props.signOut()}>
-              Sign Out
-            </button>
+            <li className="nav-item">
+              <div class="dropdown" id="myForm">
+                <img class="profile" src={Profile} />
+                <div class="dropdown-content" id="sign">
+                  <image class='prof-pic'>User's Profile Picture</image>
+                  <p class='user-name'>User's Name</p>
+                  <button type="submit" class="btn">
+                    <NavLink to='/Metrics' className="nav-link"> DashBoard </NavLink>
+                  </button>
+                  <button type="submit" class="btn">
+                    <NavLink to='/AdminPanel' className="nav-link"> Admin Panel </NavLink>
+                  </button>
+                  <button onClick={() => this.props.signOut()}>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

@@ -7,7 +7,11 @@
 }
 
 .navbar-brand img {
-  width: 100px;
+  width: 150px;
+}
+
+.nav-link {
+  font-size: 20px;
 }
 
 #nav-bar {
@@ -16,6 +20,8 @@
 
 .navbar {
   background-color: white;
+  margin-right: 0;
+  padding-right: 0;
 }
 
 button, p, input, address {
@@ -36,12 +42,70 @@ a {
   height: 52px;
 }
 
+.profile {
+  height: 50px;
+  width: 50px;
+}
+
 .wrapper {
   display: flex;
   justify-content: flex-end;
   align-content: flex-end;
 }
 
+.drop-icons {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.drop-icons-manager {
+  width: 37px;
+  height: 37px;
+}
+
+.drop-icons-exit {
+  width: 28px;
+  height: 28px;
+  margin-right: 11px;
+}
+
+p.user-name {
+  text-align: center;
+  color: black;
+}
+
+.prof-pic {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border-radius: 50%;
+  height: 50px;
+}
+
+a.nav-link {
+  position: relative;
+  display: inline;
+  text-align: center;
+  color: black;
+}
+
+#sign {
+    position: absolute;
+    align-items: center;
+    right: 0;
+    box-shadow: 2px 2px 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn {
+  display: block;
+  padding-right: 150px;
+  padding-left: 20px;
+  text-align: center;
+}
 
 strong:hover {
   display: inline;
@@ -80,3 +144,4 @@ strong:hover {
   }
 
 }
+

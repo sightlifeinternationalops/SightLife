@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import './css/SignIn.css';
 import './index.js';
-import firebase from 'firebase/app';
 
 export class SignIn extends Component {
     constructor(props) {
