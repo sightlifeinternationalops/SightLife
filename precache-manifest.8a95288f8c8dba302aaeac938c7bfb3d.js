@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8b47bfed558a470e0c6d66c15710fbb6",
+    "revision": "1831ae73b0fe34496b514caf5fabd533",
     "url": "/InSightful/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/InSightful/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "e348f2e34c698c99219f",
+    "revision": "a67292d90e9c7b8ea7e5",
     "url": "/InSightful/static/css/main.b80e2768.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/InSightful/static/js/2.56d18093.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e348f2e34c698c99219f",
-    "url": "/InSightful/static/js/main.150c8e6f.chunk.js"
+    "revision": "a67292d90e9c7b8ea7e5",
+    "url": "/InSightful/static/js/main.733038fa.chunk.js"
   },
   {
     "revision": "f4210cf0359f87fbc914",
