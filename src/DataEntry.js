@@ -31,7 +31,10 @@ export class DataEntry extends Component {
             month: "January", // Will always default to January
             actualEn: false,
             targetEn: false,
-            preview: false
+            preview: false,
+            lowlight: "",
+            highlight: "",
+            mitigation: ""
             // previewButton: false
         }
     }
@@ -266,7 +269,7 @@ export class DataEntry extends Component {
         if (this.state.data && this.state.radio && this.state.data !== ""
             && this.state.currentMetricAreaCalculations.size >= 1
             && this.state.selectedMetricAreaCalculations) {
-            
+
             return true
         }
         let errors = {} // Object to hold errors
@@ -344,23 +347,26 @@ export class DataEntry extends Component {
                 x = 1;
         }
 
+        console.log(data)
+
         // Find metricareacalculation
         let rootPath = firebase.database().ref('metricGoalsMonths')
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
             let keys = Object.keys(info)
-
             keys.map((key) => {
-                if (key === calcID.metricCalculationID) {
+                console.log(key)
+                console.log(calcID.metricCalculationID)
+                if (key === calcID.metricCalculationID.toString()) {
                     let monthString = x.toString()
                     if (x.toString().length === 1) {
                         monthString = "0" + monthString
                     }
                     let keyString = year + monthString + calcID.metricCalculationID.toString()
-
                     // Check if the data already exists 
                     let childPath = firebase.database().ref('metricGoalsMonths/' +
                         calcID.metricCalculationID.toString() + "/" + keyString)
+                    console.log(childPath)
                     childPath.once('value', (snapshot) => {
                         let cInfo = snapshot.val();
 
@@ -368,6 +374,7 @@ export class DataEntry extends Component {
                         if (cInfo) {
                             // If user wants to edit an actual
                             if (radio === "Actual") {
+                                console.log("Editing actual...")
                                 childPath.update({
                                     actual: data,
                                     lowlights: lowlight,
@@ -429,7 +436,7 @@ export class DataEntry extends Component {
                             {metricAreaCalculationsElements}
                         </CardDeck>
                         <div>
-                        <p>{this.state.invalidMetricCalc}</p>
+                            <p>{this.state.invalidMetricCalc}</p>
                         </div>
                     </section>
 
@@ -456,8 +463,8 @@ export class DataEntry extends Component {
                             invalidData={this.state.invalidData}
                             invalidRadio={this.state.invalidRadio}
                             errorMsg={this.state.errorMsg}
-                            // invalidMetricArea={this.state.invalidMetricArea}
-                            // invalidMetricCalc={this.state.invalidMetricCalc}
+                        // invalidMetricArea={this.state.invalidMetricArea}
+                        // invalidMetricCalc={this.state.invalidMetricCalc}
                         />
                     </section>
                 </main>
@@ -561,7 +568,7 @@ export class DataEntryForm extends Component {
                                 type="radio" id="Target" value="Target" name="dataAT" />Target</label>
                         </div>
 
-                        
+
                         <div>
                             <p>
                                 {this.props.invalidRadio}
