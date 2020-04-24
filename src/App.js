@@ -28,23 +28,25 @@ class App extends Component {
     this.state = {
       email: '',
       password: '',
-      metrics: metricAreas
+      metrics: metricAreas,
+      user: true,
+      verified: true
     };
   }
 
   componentDidMount() {
-    this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) { // If user is logged in
-        this.setState({
-          user: firebaseUser,
-          verified: firebaseUser.emailVerified
-        })
-      } else { // Log user out
-        this.setState({
-          user: null
-        })
-      }
-    })
+    // this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
+    //   if (firebaseUser) { // If user is logged in
+    //     this.setState({
+    //       user: firebaseUser,
+    //       verified: firebaseUser.emailVerified
+    //     })
+    //   } else { // Log user out
+    //     this.setState({
+    //       user: null
+    //     })
+    //   }
+    // })
 
     // Retrieve current metric areas in database
     this.retrieveMetricsList()

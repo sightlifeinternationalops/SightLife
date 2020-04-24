@@ -32,9 +32,9 @@ export class DataEntry extends Component {
             actualEn: false,
             targetEn: false,
             preview: false,
-            lowlight: "",
-            highlight: "",
-            mitigation: ""
+            lowlight: "", // Needed for firebase interaction
+            highlight: "", // Needed for firebase interaction
+            mitigation: "" // Needed for firebase interaction
             // previewButton: false
         }
     }
