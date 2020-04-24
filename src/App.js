@@ -236,11 +236,11 @@ class App extends Component {
             </Switch>
           </main>
 
-          <footer>
+          {/* <footer>
             <div className="footer-container">
               <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
             </div>
-          </footer>
+          </footer> */}
         </div>
       )
     }

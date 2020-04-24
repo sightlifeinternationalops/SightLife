@@ -5,12 +5,12 @@ import Off from './img/toggle.svg';
 import On from './img/switch.svg'
 
 // Not sure if AdminPanelNav is redundant. It is in the Admin panel js file
-export class AdminSettings extends Component {  
+export class AdminSettings extends Component {
 
     render() {
-        return(
-            <div className = "body"> 
-                <main>  
+        return (
+            <div className="body">
+                <main>
                     <AdminPanelNav />
 
                     <h1 class="ASettingsTitle"> Admin Setting </h1>
@@ -24,7 +24,7 @@ export class AdminSettings extends Component {
                                 <div class="PermissionInfo">
                                     <p class="PermText2"> Owner: Shruti Rajagopalan </p>
                                     <p class="PermText2"> Email: ShrutiR@gmail.com </p>
-        
+
                                 </div>
                                 <div class="PermissionInfo">
                                     <button>
@@ -39,18 +39,29 @@ export class AdminSettings extends Component {
                                 <div class="PermissionBox">
                                     <h3 class='PermissionText'> Data Entry Form Settings </h3>
                                 </div>
-                                
+
                                 <div class="PermissionInfo">
-                                    <p class="PermText2"> Data Entry for Actuals: <img src={ Off } id='toggle-actuals' alt="Toggle actuals" onClick= {this.SwitchActuals()}/> </p>
-                                    <p class="PermText2"> Data Entry for Targets: <img src={ Off } id='toggle-targets' alt="Toggle targets" onClick= {this.SwitchTargets()}/> </p>
+                                    <p class="PermText2"> Data Entry for Actuals: <img src={Off} id='toggle-actuals' alt="Toggle actuals" onClick={this.SwitchActuals()} /> </p>
+                                    <p class="PermText2"> Data Entry for Targets: <img src={Off} id='toggle-targets' alt="Toggle targets" onClick={this.SwitchTargets()} /> </p>
                                 </div>
+
+                                {/* <div class="PermissionInfo">
+                                    <p>                         
+                                        Data Entry for Actuals:         
+                                        <label class="switch">
+                                        <input type="checkbox" />
+                                        <span class="slider round"></span>
+                                        </label>
+                                    </p>
+                                </div> */}
+
                             </section>
                         </div>
 
                         <div class='Save2Button'>
                             <button class='save2' type="Save" value="Save"> Save </button>
                         </div>
-                    
+
                     </div>
 
                 </main>
@@ -64,23 +75,23 @@ export class AdminSettings extends Component {
             let img = document.getElementById('toggle-actuals');
             console.log(img);
             if (img.src == Off) {
-                document.getElementById('toggle-actuals').src  = On ;
+                document.getElementById('toggle-actuals').src = On;
             }
             else {
-                document.getElementById('toggle-actuals').src = Off ;
+                document.getElementById('toggle-actuals').src = Off;
             }
         }
     }
-    
+
     SwitchTargets() {
         if (document.getElementById('toggle-targets') != null) {
-        let img = document.getElementById('toggle-targets');
-        if (img.src == Off) {
-            document.getElementById('toggle-targets').src  = On ;
+            let img = document.getElementById('toggle-targets');
+            if (img.src == Off) {
+                document.getElementById('toggle-targets').src = On;
+            }
+            else {
+                document.getElementById('toggle-targets').src = Off;
+            }
         }
-         else {
-           document.getElementById('toggle-targets').src = Off ;
-       }
     }
-}
 }

@@ -85,15 +85,20 @@ export class AdminPanelMetrics extends Component {
     }
 
     // Do not submit if 
+    // ask for a re-confirm
     submitForm(e) {
         e.preventDefault()
         console.log(this.state)
         let newMetricArea = {
-            metricName : this.state.MetricName
+            metricName : this.state.MetricName,
+            test : {
+                test: "Test"
+            }
         }
         if (e.target != null) {
             let rootPath = firebase.database().ref('metricAreas')
             rootPath.push(newMetricArea)
+            this.closeModal(e)
         } else {
             console.log(e.error)
         }
@@ -125,9 +130,16 @@ export class AdminPanelMetrics extends Component {
         return form
     }
 
+    editMetricArea() {
+        // let editForm = (
+
+        // )
+    }
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
+        let editForm = this.editMetricArea() 
 
         return (
             <div className="body">
@@ -150,6 +162,7 @@ export class AdminPanelMetrics extends Component {
                             </CardDeck>
                         </div>
                         {form}
+                        {editForm}
                     </div>
                 </main>
             </div>
