@@ -54,42 +54,12 @@ div.PermDatadeck {
   text-align: center;
 }
 
-#met-areas {
-  background-color: rgb(153, 145, 198);
-  color: white;
-  margin-left: auto;
-  margin-right: auto;
-  width: 75%;
-  font-size: 32px;
-  font-weight: bold;
-}
-
-#metricForm {
-  display: none;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4)
-}
-
-#metricBox {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 30%; /* Could be more or less, depending on screen size */
-}
 
 /* need to fix later */
 #calcForm {
-  display: inline-block;
-  margin: 0 auto;
-  margin-left: 40rem;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .more {

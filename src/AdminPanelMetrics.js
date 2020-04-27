@@ -89,15 +89,10 @@ export class AdminPanelMetrics extends Component {
     submitForm(e) {
         e.preventDefault()
         console.log(this.state)
-        let newMetricArea = {
-            metricName : this.state.MetricName,
-            test : {
-                test: "Test"
-            }
-        }
         if (e.target != null) {
-            let rootPath = firebase.database().ref('metricAreas')
-            rootPath.push(newMetricArea)
+            firebase.database().ref('metricAreas/'+ this.state.MetricName).update({
+                metricName: this.state.MetricName
+            })
             this.closeModal(e)
         } else {
             console.log(e.error)
@@ -110,7 +105,6 @@ export class AdminPanelMetrics extends Component {
              {display: this.state.display}
             }>
                 <form id="metricBox">
-                {/* <form> */}
                     <div>
                         <h2>Adding New Metric Area</h2>
                         <label>
@@ -130,16 +124,26 @@ export class AdminPanelMetrics extends Component {
         return form
     }
 
-    editMetricArea() {
-        // let editForm = (
-
-        // )
-    }
+    // editMetricArea() {
+    //     let editForm = (
+    //         <div style={{display: this.state.editDisplay}}>
+    //             <form id="metricBox">
+    //                 <div>
+    //                     <h3>Metric: </h3>
+    //                     <ul>
+                            
+    //                     </ul>
+    //                 </div>  
+    //             </form>
+    //         </div>
+    //     )
+    //     return editForm
+    // }
 
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
-        let editForm = this.editMetricArea() 
+        // let editForm = this.editMetricArea() 
 
         return (
             <div className="body">
@@ -158,11 +162,11 @@ export class AdminPanelMetrics extends Component {
                         <div>
                             {/* Archived Metric Areas */}
                             <CardDeck className="PermDatadeck">
-                                <h1> Archived Metric Areas </h1>
+                                <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             </CardDeck>
                         </div>
                         {form}
-                        {editForm}
+                        {/* {editForm} */}
                     </div>
                 </main>
             </div>

@@ -44,7 +44,7 @@ export class CreateAccount extends Component {
         if (this.checkSubmissions()) {
             console.log("Valid information has been inputted")
             console.log("Verifying user information by sending to email...")
-            this.props.handleSignUp(this.state.email, this.state.password)
+            this.props.handleSignUp(this.state.email, this.state.password, this.state.fName, this.state.lName)
             this.setState((state) => {
                 state.complete = true
                 return state
@@ -56,20 +56,16 @@ export class CreateAccount extends Component {
 
     renderFnameIssues() {
         if (this.state.fName === null || this.state.fName === undefined) {
-            console.log("Field is undefined")
             return false
         } else {
-            console.log("Field is valid!")
             return true
         }
     }
 
     renderLnameIssues() {
         if (this.state.lName == null || this.state.lName == undefined) {
-            console.log("Field is undefined")
             return false
         } else {
-            console.log("Field is valid!")
             return true
         }
     }

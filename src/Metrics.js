@@ -94,21 +94,10 @@ export class Metrics extends Component {
 
         return (
             <div>
-                <h1> Metric Dashboard </h1>
                 <Switch>
                     <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
-                    {/* <Route 
-                        path="/Metrics/:metricID"
-                        render={(props) => <DashBoard
-                            {...props}
-                            metricAreaInfo={this.state.metricAreaInfo}
-                            metricAreaID={this.state.metricAreaID}
-                            metricAreaOwner={this.state.metricAreaOwner}
-                            metricAreaCalculations={this.state.metricAreaCalculations}
-                            metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-                        />}
-                    /> */}
                     <div>
+                        <h1> Metric Areas </h1>
                         <CardDeck className='metricsDeck'>
                             {metricAreaElements}
                         </CardDeck>

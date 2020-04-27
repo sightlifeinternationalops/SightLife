@@ -10,6 +10,7 @@ import { SignIn } from './SignIn';
 import { AdminSettings } from './AdminSettings'
 import { AdminPanelMetrics } from './AdminPanelMetrics'
 import { AdminPanelUserPermissions } from './AdminPanelUserPermissions'
+import { AdminPanelMetricCalcs } from './AdminPanelMetricCalcs'
 import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
@@ -28,25 +29,25 @@ class App extends Component {
     this.state = {
       email: '',
       password: '',
-      metrics: metricAreas,
-      user: true,
-      verified: true
+      metrics: metricAreas
+      // user: true,
+      // verified: true
     };
   }
 
   componentDidMount() {
-    // this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
-    //   if (firebaseUser) { // If user is logged in
-    //     this.setState({
-    //       user: firebaseUser,
-    //       verified: firebaseUser.emailVerified
-    //     })
-    //   } else { // Log user out
-    //     this.setState({
-    //       user: null
-    //     })
-    //   }
-    // })
+    this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) { // If user is logged in
+        this.setState({
+          user: firebaseUser,
+          verified: firebaseUser.emailVerified
+        })
+      } else { // Log user out
+        this.setState({
+          user: null
+        })
+      }
+    })
 
     // Retrieve current metric areas in database
     this.retrieveMetricsList()
@@ -70,13 +71,19 @@ class App extends Component {
 
   // Create a user account
   // Make sure it does not keep the user logged in once they create their account
-  handleSignUp = (email, password) => {
+  handleSignUp = (email, password, fname, lname) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(function () {
         var user = firebase.auth().currentUser
         console.log("User created: " + user)
 
-        // let userID = 'users/' +
+        // Add user information to database
+        firebase.database().ref('users/' + user.uid.toString()).update({
+          email: user.email,
+          fName: fname,
+          lName: lname,
+          uid: user.uid.toString()
+        })
 
         user.sendEmailVerification().then(function () {
           // Email sent
@@ -225,9 +232,19 @@ class App extends Component {
                 />}
               />
               <Route path="/FAQ" component={FAQ} />
-              <Route path='/AdminPanel' component={AdminPanelUserPermissions} />
+              <Route 
+                path='/AdminPanel'
+                render={() => <AdminPanelUserPermissions
+                  metrics={this.state.metrics}/>
+                }
+              />
+              <Route
+                path="/AdminPanelMetricCalcs"
+                render={() => <AdminPanelMetricCalcs
+                  metrics={this.state.metrics}
+                />}
+              />
               <Route path="/AdminSettings" component={AdminSettings} />
-              {/* <Route path="/AdminPanelMetrics" component={AdminPanelMetrics} /> */}
               <Route
                 path="/AdminPanelMetrics"
                 render={() => <AdminPanelMetrics

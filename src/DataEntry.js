@@ -238,7 +238,6 @@ export class DataEntry extends Component {
     // allow user to submit null values for highlights, lowlights,
     // and mitigation plans. 
     previewForm(t) {
-        console.log(t)
         if (t) {
             this.setState((state) => {
                 state.preview = true
@@ -269,7 +268,6 @@ export class DataEntry extends Component {
         if (this.state.data && this.state.radio && this.state.data !== ""
             && this.state.currentMetricAreaCalculations.size >= 1
             && this.state.selectedMetricAreaCalculations) {
-
             return true
         }
         let errors = {} // Object to hold errors
@@ -297,7 +295,6 @@ export class DataEntry extends Component {
     // Check database if enty already exists, if it does, replace values in database
     // otherwise, simply add the new data
     submitForm(month, calcID, radio, data, highlight, lowlight, coe) {
-        console.log("Submitting form...")
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
 
@@ -355,8 +352,6 @@ export class DataEntry extends Component {
             let info = snapshot.val()
             let keys = Object.keys(info)
             keys.map((key) => {
-                console.log(key)
-                console.log(calcID.metricCalculationID)
                 if (key === calcID.metricCalculationID.toString()) {
                     let monthString = x.toString()
                     if (x.toString().length === 1) {
@@ -366,7 +361,6 @@ export class DataEntry extends Component {
                     // Check if the data already exists 
                     let childPath = firebase.database().ref('metricGoalsMonths/' +
                         calcID.metricCalculationID.toString() + "/" + keyString)
-                    console.log(childPath)
                     childPath.once('value', (snapshot) => {
                         let cInfo = snapshot.val();
 
