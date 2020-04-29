@@ -43,23 +43,60 @@ export class AdminPanelUserPermissions extends Component {
     // for a metric area such as who owns it,
     // current metric calculations?
     setMetricOwnerInfo(mName) {
-        console.log(mName)
         let userMap = new Map()
         let rootPath = firebase.database().ref('metricAreas/' + mName)
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val();
             let keys = Object.keys(info);
             keys.map((key) => {
-                // console.log(info[key])]
                 userMap.set(key, info[key])
             })
         })
+
+        let metricAreaOwners = Array.from(userMap.entries()).map((key) => {
+            return key
+        })
+
+        let userArray = null
+
+        if (metricAreaOwners.size > 0) {
+            let info = metricAreaOwners[1]
+            let userObject = info[1]
+            if (userObject) {
+                userArray = Object.values(userObject)
+            }
+        }
+
+
         this.setState((state) => {
             state.currentMetricAOwners = userMap
+            state.currentMetricAOwnersArray = userArray
             state.currentMetricA = mName
             state.enableEdit = false
             return state
         })
+    }
+
+    metricAreaOwners() {
+        if (this.state.currentMetricAOwners.size > 0) {
+            const metricAreaOwners = Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
+                return key
+            })
+            let info = metricAreaOwners[1]
+            let userObject = info[1]
+            console.log(userObject)
+            if (userObject) {
+                let userArray = Object.values(userObject)
+                // for (var object in userArray) {
+                //     console.log(userArray[object])
+                //     return 
+                // }
+                console.log("test")
+                this.setState((state) => {
+                    state.userArray = userArray
+                })
+            }
+        }
     }
 
     editMetricOwners() {
@@ -158,20 +195,25 @@ export class AdminPanelUserPermissions extends Component {
     }
 
     metricAreaOwners() {
-        const metricAreaOwners = Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
-            // console.log(key[1])
-            // let test = Object.values(key[1])
-            // console.log(test)
-            // for (var property in test) {
-            //     return <MetricAreaOwner
-            //         owner={test[property]}
-            //     />
-            // }
-            return key
-        })
-        console.log(metricAreaOwners)
-
-        // return metricAreaOwners
+        if (this.state.currentMetricAOwners.size > 0) {
+            const metricAreaOwners = Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
+                return key
+            })
+            let info = metricAreaOwners[1]
+            let userObject = info[1]
+            console.log(userObject)
+            if (userObject) {
+                let userArray = Object.values(userObject)
+                // for (var object in userArray) {
+                //     console.log(userArray[object])
+                //     return 
+                // }
+                console.log("test")
+                this.setState((state) => {
+                    state.userArray = userArray
+                })
+            }
+        }
     }
 
     render() {
@@ -197,8 +239,6 @@ export class AdminPanelUserPermissions extends Component {
                 <div>
                     <p class="PermText">Owner(s):</p>
                     <ul>
-                        {/* <li>Test1</li>
-                        <li>Test2</li> */}
                         {metricAreaOwners}
                     </ul>
                     <button 
@@ -236,7 +276,6 @@ export class AdminPanelUserPermissions extends Component {
                         </div>
                         {form}
                     </div>
-
                 </main>
             </div>
         )
