@@ -384,7 +384,8 @@ export class DataEntry extends Component {
                                         actual: data,
                                         lowlights: lowlight,
                                         highlights: highlight,
-                                        coe: coe
+                                        coe: coe,
+                                        month: x
                                     })
                                     // If user wants to edit a target
                                 } else {
@@ -392,26 +393,27 @@ export class DataEntry extends Component {
                                         target: data,
                                         lowlights: lowlight,
                                         highlights: highlight,
-                                        coe: coe
+                                        coe: coe,
+                                        month: x
                                     })
                                 }
 
                                 // If data doesn't exist, create new entry.
                             } else {
-                                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+                                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe, x)
                             }
                         })
                     } else {
-                        this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+                        this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe, x)
                     }
                 })
             } else {
-                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe, x)
             }
         })
     }
 
-    newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe) {
+    newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe, x) {
         if (radio === "Actual") {
             console.log("Data does not exist yet!")
             console.log("Create a target before inserting an actual!")
@@ -420,7 +422,8 @@ export class DataEntry extends Component {
                 target: data,
                 lowlights: lowlight,
                 highlights: highlight,
-                coe: coe
+                coe: coe,
+                month: x
             })
         }
     }

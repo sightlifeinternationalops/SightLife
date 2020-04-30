@@ -17,7 +17,7 @@ export class AdminPanelUserPermissions extends Component {
         this.setMetricOwner = this.setMetricOwner.bind(this)
 
         this.state = {
-            currentMetricA: "N/A",
+            currentMetricA: "Choose a metric area",
             currentMetricAOwners: new Map(),
             modalDisplay: "none"
         }
@@ -75,7 +75,7 @@ export class AdminPanelUserPermissions extends Component {
     }
 
     editMetricOwners() {
-        if (this.state.currentMetricA !== "N/A") {
+        if (this.state.currentMetricA !== "Choose a metric area") {
             this.setState((state) => {
                 state.enableEdit = true
                 return state
@@ -100,7 +100,7 @@ export class AdminPanelUserPermissions extends Component {
                 style={{ display: this.state.modalDisplay }}>
                 <form id="addUserBox">
                     <div>
-                        <h2>Adding Metric Owner</h2>
+                        <h2>Enter Metric Owner</h2>
                         <label>
                             <input
                                 onChange={(e) => this.handleChange(e)}

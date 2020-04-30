@@ -156,42 +156,6 @@ export class DashBoard extends Component {
         return test
     }
 
-    // monthArrayElements(numValue) {
-    //     // Metrics for monthly information
-    //     // let currentMonthCalc = this.state.metricAreaCalculationsMonth
-    //     // let calculationInfo = currentMonthCalc[numValue]
-    //     let monthArrayInfo = []
-    //     let currentMonthCalc = this.state.metricareaCalculationsMonth
-    //     console.log(this.state)
-
-    //     // console.log(currentMonthCalc)
-    //     // console.log(calculationInfo)
-
-    //     for (var testtest in currentMonthCalc) {
-    //         console.log(testtest)
-    //     }
-
-    //     // Render if not undefined/null for month information
-    //     // if (calculationInfo) {
-    //     //     let calculationKeys = calculationInfo[1]
-    //     //     let keys = Object.keys(calculationKeys)
-    //     //     monthArrayInfo = keys.map((key) => {
-    //     //         let monthInfo = calculationKeys[key]
-    //     //         if (monthInfo.year = this.state.currentYear) {
-    //     //             return <MetricMonthly
-    //     //             actual={monthInfo.actual}
-    //     //             target={monthInfo.target}
-    //     //             month={monthInfo.month}
-    //     //             highlight={monthInfo.highlights}
-    //     //             lowlight={monthInfo.lowlights}
-    //     //             coe={monthInfo.coe}
-    //     //         />
-    //     //         }
-    //     //     })
-    //     // }
-    //     return monthArrayInfo
-    // }
-
     monthArrayElements() {
         let currentMonth = this.state.metricAreaCalculationsMonth
         let monthArrayInfo = []
@@ -207,6 +171,7 @@ export class DashBoard extends Component {
             let keys = Object.keys(monthArray)
             monthArrayInfo = keys.map((key) => {
                 let monthInfo = monthArray[key]
+                console.log(monthInfo)
                 return <MetricMonthly
                     actual={monthInfo.actual}
                     target={monthInfo.target}
@@ -292,8 +257,8 @@ export class DashBoard extends Component {
 
         return(        
             <div className = "body">
-            <h1> {this.props.metricAreaInfo} </h1>
-            <h2> Metric Area Summary </h2>
+            <h1> Metric Area: {this.props.metricAreaInfo} </h1>
+            <h2> Select A Metric Calculation </h2>
             {/* <h3> Owner: {this.props.metricAreaOwner} </h3> */}
 
             <select id="select-dropdown"
@@ -405,10 +370,9 @@ class MetricMonthly extends Component {
     
 
     render() {
-
         let actualValue = this.props.actual
         let monthValue = this.month(this.props.month)
-
+        console.log(this.props.month)
         // If there is no value existing for the actual yet
         if (!actualValue) {
             actualValue = "N/A"
@@ -429,9 +393,9 @@ class MetricMonthly extends Component {
                         <tr>
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
+                            <th>{this.props.highlight}</th>
+                            <th>{this.props.lowlight}</th>
+                            <th>{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>

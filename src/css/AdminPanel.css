@@ -65,11 +65,29 @@ div.PermDatadeck {
 }
 
 #addUserBox {
-    background-color: #fefefe;
+    background-color: #4e4343;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 30%; /* Could be more or less, depending on screen size */
+}
+
+#addUserBox h2 {
+    color: white;
+}
+
+#addUserBox button {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-style: inherit;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    height: 50px;
+    width: 100px;
+    background-color: #9991C6;
 }
 
 .save {

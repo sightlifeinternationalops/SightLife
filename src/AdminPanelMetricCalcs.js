@@ -48,7 +48,7 @@ export class AdminPanelMetricCalcs extends Component {
         console.log(this.state)
         firebase.database().ref('metricCalculations/' + this.state.calcName).update({
             calcName: this.state.calcName,
-            calcMetric: this.state.calcMetric,
+            calcMetric: this.state.calcName,
             metricArea: this.state.current
         })
         // firebase.database().ref('metricGoalsMonths/' + this.state.calcName)
