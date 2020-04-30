@@ -51,6 +51,13 @@ export class AdminPanelMetricCalcs extends Component {
             calcMetric: this.state.calcMetric,
             metricArea: this.state.current
         })
+        // firebase.database().ref('metricGoalsMonths/' + this.state.calcName)
+        // firebase.database().ref('metricGoalsQuarters').update({
+        //     calcName: this.state.calcName
+        // })
+        // firebase.database().ref('metricGoalsAnnuals').update({
+        //     calcName: this.state.calcName
+        // })
     }
 
     render() {

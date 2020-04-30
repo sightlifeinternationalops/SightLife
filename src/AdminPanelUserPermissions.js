@@ -11,6 +11,10 @@ export class AdminPanelUserPermissions extends Component {
         super(props)
 
         this.setMetricOwnerInfo = this.setMetricOwnerInfo.bind(this)
+        this.editMetricOwners = this.editMetricOwners.bind(this)
+        this.addOwnerModal = this.addOwnerModal.bind(this)
+        this.cancelMetricOwners = this.cancelMetricOwners.bind(this)
+        this.setMetricOwner = this.setMetricOwner.bind(this)
 
         this.state = {
             currentMetricA: "N/A",
@@ -43,60 +47,31 @@ export class AdminPanelUserPermissions extends Component {
     // for a metric area such as who owns it,
     // current metric calculations?
     setMetricOwnerInfo(mName) {
-        let userMap = new Map()
+        // let userMap = new Map()
         let rootPath = firebase.database().ref('metricAreas/' + mName)
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val();
             let keys = Object.keys(info);
+            let userMap = new Map()
             keys.map((key) => {
-                userMap.set(key, info[key])
+                if (key === "owners") {
+                    let objectMap = info[key]
+                    for (var object in objectMap) {
+                        userMap.set(object, objectMap[object])
+                    }
+                }
             })
-        })
-
-        let metricAreaOwners = Array.from(userMap.entries()).map((key) => {
-            return key
-        })
-
-        let userArray = null
-
-        if (metricAreaOwners.size > 0) {
-            let info = metricAreaOwners[1]
-            let userObject = info[1]
-            if (userObject) {
-                userArray = Object.values(userObject)
-            }
-        }
-
-
-        this.setState((state) => {
-            state.currentMetricAOwners = userMap
-            state.currentMetricAOwnersArray = userArray
-            state.currentMetricA = mName
-            state.enableEdit = false
-            return state
+            this.setMetricOwner(userMap, mName)
         })
     }
 
-    metricAreaOwners() {
-        if (this.state.currentMetricAOwners.size > 0) {
-            const metricAreaOwners = Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
-                return key
-            })
-            let info = metricAreaOwners[1]
-            let userObject = info[1]
-            console.log(userObject)
-            if (userObject) {
-                let userArray = Object.values(userObject)
-                // for (var object in userArray) {
-                //     console.log(userArray[object])
-                //     return 
-                // }
-                console.log("test")
-                this.setState((state) => {
-                    state.userArray = userArray
-                })
-            }
-        }
+    setMetricOwner(userMap, name) {
+        this.setState((state) => {
+            state.currentMetricA = name
+            state.currentMetricAOwners = userMap
+            state.enableEdit = false
+            return state
+        })
     }
 
     editMetricOwners() {
@@ -118,21 +93,19 @@ export class AdminPanelUserPermissions extends Component {
         this.setState(changes)
     }
 
-
-
     addForm() {
         let form = (
             <div
-                id="addUserForm" 
-                style={{display: this.state.modalDisplay}}>
+                id="addUserForm"
+                style={{ display: this.state.modalDisplay }}>
                 <form id="addUserBox">
                     <div>
                         <h2>Adding Metric Owner</h2>
                         <label>
                             <input
-                            onChange={(e) => this.handleChange(e)}
-                            type="text" name="addMetricOwner"/>
-                        
+                                onChange={(e) => this.handleChange(e)}
+                                type="text" name="addMetricOwner" />
+
                         </label>
                     </div>
                     <button
@@ -147,17 +120,17 @@ export class AdminPanelUserPermissions extends Component {
 
     // Display modal for adding owners
     addOwnerModal() {
-            this.setState((state) => {
-                this.state.modalDisplay = "block";
-                return state
-            })
+        this.setState((state) => {
+            this.state.modalDisplay = "block";
+            return state
+        })
     }
 
     // Submit new owner for a metric area
     submitOwnerModal(e) {
         e.preventDefault()
         console.log(this.state)
-        let rootPath = firebase.database().ref('metricAreas/'+ this.state.currentMetricA + '/owners')
+        let rootPath = firebase.database().ref('metricAreas/' + this.state.currentMetricA + '/owners')
         rootPath.push(this.state.addMetricOwner)
         this.cancelOwnerModal(e)
     }
@@ -173,7 +146,6 @@ export class AdminPanelUserPermissions extends Component {
 
     // Cancels edit mode for metric areas
     cancelMetricOwners() {
-        console.log(this.state)
         this.setState((state) => {
             state.enableEdit = false
             return state
@@ -194,31 +166,8 @@ export class AdminPanelUserPermissions extends Component {
         return metricAreaElements
     }
 
-    metricAreaOwners() {
-        if (this.state.currentMetricAOwners.size > 0) {
-            const metricAreaOwners = Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
-                return key
-            })
-            let info = metricAreaOwners[1]
-            let userObject = info[1]
-            console.log(userObject)
-            if (userObject) {
-                let userArray = Object.values(userObject)
-                // for (var object in userArray) {
-                //     console.log(userArray[object])
-                //     return 
-                // }
-                console.log("test")
-                this.setState((state) => {
-                    state.userArray = userArray
-                })
-            }
-        }
-    }
-
     render() {
         const metricAreaElements = this.metricAreaElements()
-        const metricAreaOwners = this.metricAreaOwners()
         let form = this.addForm()
 
         let content = null
@@ -226,7 +175,6 @@ export class AdminPanelUserPermissions extends Component {
         if (!this.state.enableEdit) {
             content = (
                 <div>
-                    <p class="PermText"> Owner(s): No Current Owners </p>
                     <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p>
                     <button class='save'
                         type="Save"
@@ -237,15 +185,11 @@ export class AdminPanelUserPermissions extends Component {
         } else {
             content = (
                 <div>
-                    <p class="PermText">Owner(s):</p>
-                    <ul>
-                        {metricAreaOwners}
-                    </ul>
-                    <button 
-                        onClick={() => {this.addOwnerModal()}}
+                    <button
+                        onClick={() => { this.addOwnerModal() }}
                         class='save'>Add Owner</button>
-                    <button 
-                        onClick={() => { this.cancelMetricOwners()}}
+                    <button
+                        onClick={() => { this.cancelMetricOwners() }}
                         class='save'>Cancel</button>
                 </div>
             )
@@ -263,20 +207,75 @@ export class AdminPanelUserPermissions extends Component {
                                 {metricAreaElements}
                             </CardDeck>
                         </div>
-
-                        <div class="column">
-                            <div class="PermInfo">
-                                <div class="PermissionBox">
-                                    <h3 class='PermissionText'> {this.state.currentMetricA} </h3>
-                                </div>
-                                <div class="PermissionInfo">
-                                    {content}
-                                </div>
-                            </div>
-                        </div>
+                        <MetricAreaInfo
+                            editMetricOwners={this.editMetricOwners}
+                            addOwnerModal={this.addOwnerModal}
+                            cancelMetricOwners={this.cancelMetricOwners}
+                            enableEdit={this.state.enableEdit}
+                            currentMetricA={this.state.currentMetricA}
+                            currentMetricAOwners={this.state.currentMetricAOwners}
+                            setMetricOwner={this.setMetricOwner}/>
                         {form}
                     </div>
                 </main>
+            </div>
+        )
+    }
+}
+
+class MetricAreaInfo extends Component {
+    // Represents metric area owners to render.
+    metricAreaOwners() {
+        const metricAreaOwners = Array.from(this.props.currentMetricAOwners.entries()).map((key) => {
+            return <MetricAreaOwner
+                owner={key[1]}
+            />
+        })
+        return metricAreaOwners
+    }
+
+    render() {
+        const metricAreaOwners = this.metricAreaOwners()
+        let content = null
+
+        if (!this.props.enableEdit) {
+            content = (
+                <div>
+                    <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p>
+                    <button class='save'
+                        type="Save"
+                        value="Save"
+                        onClick={() => { this.props.editMetricOwners() }}> Edit </button>
+                </div>
+            )
+        } else {
+            content = (
+                <div>
+                    <button
+                        onClick={() => { this.props.addOwnerModal() }}
+                        class='save'>Add Owner</button>
+                    <button
+                        onClick={() => { this.props.cancelMetricOwners() }}
+                        class='save'>Cancel</button>
+                </div>
+            )
+        }
+
+        return (
+            <div class="column">
+                <div class="PermInfo">
+                    <div class="PermissionBox">
+                        <h3 class='PermissionText'> {this.props.currentMetricA} </h3>
+                        {/* <h3 class='PermissionText'> Test </h3> */}
+                    </div>
+                    <div class="PermissionInfo">
+                        <p class="PermText">Owner(s):</p>
+                        <ul>
+                            {metricAreaOwners}
+                        </ul>
+                        {content}
+                    </div>
+                </div>
             </div>
         )
     }
@@ -304,7 +303,7 @@ class MetricAreaButton extends Component {
 class MetricAreaOwner extends Component {
     render() {
         return (
-        <li>{this.props.owner}</li>
+            <li>{this.props.owner}</li>
         )
     }
 }

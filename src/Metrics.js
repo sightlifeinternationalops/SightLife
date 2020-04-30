@@ -17,7 +17,7 @@ export class Metrics extends Component {
             // Data to be passed into metric calculations
             // Represents metricAreaName
             metricAreaInfo: null,   // Contains metric area name
-            metricAreaID: null,     // Contains metric area ID
+            // metricAreaID: null,     // Contains metric area ID
             metricAreaOwner: null,  // Contains metric area owner name
             metricAreaCalculations: new Map(), // Represents all calculations for a metric area
             metricAreaCalculationIDs: []
@@ -27,9 +27,9 @@ export class Metrics extends Component {
     // Callback to render new information
     setCalculations(owner, mapCalculations, metricAreaCalculationIDs) {
         this.setState((state) => {
-            state.metricAreaOwner = owner
+            // state.metricAreaOwner = owner
             state.metricAreaCalculations = mapCalculations
-            state.metricAreaCalculationIDs = metricAreaCalculationIDs
+            // state.metricAreaCalculationIDs = metricAreaCalculationIDs
             return state
         })
     }
@@ -48,8 +48,9 @@ export class Metrics extends Component {
             let mapCalculations = new Map()
 
             let metricAreaCalculationIDs = databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricAreaID
-                if (id == this.state.metricAreaID) {
+                let id = metricCalcInfo[key].metricArea
+
+                if (this.state.metricAreaID && id == this.state.metricAreaID.metricName) {
                     owner = metricCalcInfo[key].owner
                     mapCalculations.set(key, metricCalcInfo[key])
                     return metricCalcInfo[key].metricCalculationID

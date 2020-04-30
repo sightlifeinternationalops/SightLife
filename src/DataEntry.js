@@ -130,8 +130,9 @@ export class DataEntry extends Component {
 
     // Sets current state of metric area ID to button that was clicked
     setMetric(name, id) {
+        console.log(id.metricName)
         this.setState((state) => {
-            state.metricAreaID = id
+            state.metricAreaID = id.metricName
             state.metricAreaName = name
             return state
         })
@@ -157,7 +158,11 @@ export class DataEntry extends Component {
             let mapCalculations = new Map()
 
             databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricAreaID
+                // let id = metricCalcInfo[key].metricAreaID
+                // if (id == this.state.metricAreaID) {
+                //     mapCalculations.set(key, metricCalcInfo[key])
+                // }
+                let id = metricCalcInfo[key].metricArea
                 if (id == this.state.metricAreaID) {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
@@ -167,6 +172,7 @@ export class DataEntry extends Component {
     }
 
     updateSelectedMetricAreaCalculation(calc) {
+        console.log(calc)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             return state
@@ -220,10 +226,9 @@ export class DataEntry extends Component {
     metricAreaCalculations() {
         const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
             entries()).map((key) => {
+                let calculation = key[1]
                 return <MetricAreaCalcButton
-                    metricCalc={key[1]}
-                    metricCalcName={key[1].metric}
-                    metricCalcID={key[1].metricCalculationID}
+                    metricCalcName={calculation.calcName}
                     metricCalcFunc={this.updateSelectedMetricAreaCalculation}
                 />
             })
@@ -297,7 +302,6 @@ export class DataEntry extends Component {
     submitForm(month, calcID, radio, data, highlight, lowlight, coe) {
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
-
         let year = new Date()
         year = year.getFullYear()
         // year = 2011
@@ -344,67 +348,81 @@ export class DataEntry extends Component {
                 x = 1;
         }
 
-        console.log(data)
-
         // Find metricareacalculation
         let rootPath = firebase.database().ref('metricGoalsMonths')
+        let monthString = x.toString()
+        if (x.toString().length === 1) {
+            monthString = "0" + monthString
+        }
+        let keyString = year + monthString + calcID
+
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
-            let keys = Object.keys(info)
-            keys.map((key) => {
-                if (key === calcID.metricCalculationID.toString()) {
-                    let monthString = x.toString()
-                    if (x.toString().length === 1) {
-                        monthString = "0" + monthString
-                    }
-                    let keyString = year + monthString + calcID.metricCalculationID.toString()
-                    // Check if the data already exists 
-                    let childPath = firebase.database().ref('metricGoalsMonths/' +
-                        calcID.metricCalculationID.toString() + "/" + keyString)
-                    childPath.once('value', (snapshot) => {
-                        let cInfo = snapshot.val();
 
-                        // If data exists, overwrite it.
-                        if (cInfo) {
-                            // If user wants to edit an actual
-                            if (radio === "Actual") {
-                                console.log("Editing actual...")
-                                childPath.update({
-                                    actual: data,
-                                    lowlights: lowlight,
-                                    highlights: highlight,
-                                    coe: coe
-                                })
-                                // If user wants to edit a target
-                            } else {
-                                childPath.update({
-                                    target: data,
-                                    lowlights: lowlight,
-                                    highlights: highlight,
-                                    coe: coe
-                                })
-                            }
+            // If metricgoalsMonths does not exist
+            // Log error here...
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    console.log(key)
+                    console.log(calcID)
 
-                            // If data doesn't exist, create new entry.
-                        } else {
-                            if (radio === "Actual") {
-                                console.log("Data does not exist yet!")
-                                console.log("Create a target before inserting an actual!")
-                            } else {
-                                firebase.database().ref('metricGoalsMonths/' +
-                                    calcID.metricCalculationID.toString()).child(keyString).update({
+                    // If data exists in database...
+                    if (key === calcID) {
+                        // Check if the data already exists 
+                        let childPath = firebase.database().ref('metricGoalsMonths/' +
+                            calcID + "/" + keyString)
+                        childPath.once('value', (snapshot) => {
+                            let cInfo = snapshot.val();
+    
+                            // If data exists, overwrite it.
+                            if (cInfo) {
+                                // If user wants to edit an actual
+                                if (radio === "Actual") {
+                                    console.log("Editing actual...")
+                                    childPath.update({
+                                        actual: data,
+                                        lowlights: lowlight,
+                                        highlights: highlight,
+                                        coe: coe
+                                    })
+                                    // If user wants to edit a target
+                                } else {
+                                    childPath.update({
                                         target: data,
                                         lowlights: lowlight,
                                         highlights: highlight,
                                         coe: coe
-                                    }
-                                    )
+                                    })
+                                }
+
+                                // If data doesn't exist, create new entry.
+                            } else {
+                                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
                             }
-                        }
-                    })
-                }
-            })
+                        })
+                    } else {
+                        this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+                    }
+                })
+            } else {
+                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+            }
         })
+    }
+
+    newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe) {
+        if (radio === "Actual") {
+            console.log("Data does not exist yet!")
+            console.log("Create a target before inserting an actual!")
+        } else {
+            firebase.database().ref('metricGoalsMonths/' + calcID + "/" + keyString).update({
+                target: data,
+                lowlights: lowlight,
+                highlights: highlight,
+                coe: coe
+            })
+        }
     }
 
     render() {
@@ -417,7 +435,7 @@ export class DataEntry extends Component {
                         <h1> Data Entry Form </h1>
 
                         {/* Populate based on whether metric owner owns metric */}
-                        <h2 class='MetricTitles'> Metric Area * </h2>
+                        <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
                         <CardDeck className="datadeck">
                             {metricAreaElements}
                         </CardDeck>
@@ -425,7 +443,7 @@ export class DataEntry extends Component {
                             <p>{this.state.invalidMetricArea}</p>
                         </div>
                         {/* Populate based on metric chosen */}
-                        <h2 class='MetricTitles'> Metric Calculation *</h2>
+                        <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
                         <CardDeck className="datadeck">
                             {metricAreaCalculationsElements}
                         </CardDeck>
@@ -492,7 +510,7 @@ class MetricAreaCalcButton extends Component {
         let typeString = this.props.metricCalcName
         return (
             <button
-                onClick={() => this.props.metricCalcFunc(this.props.metricCalc)}
+                onClick={() => this.props.metricCalcFunc(this.props.metricCalcName)}
                 class='selection' type={typeString} value={typeString}>{typeString}</button>
         )
     }
@@ -511,7 +529,7 @@ export class DataEntryForm extends Component {
                     <div>
                         <h2> Summary of Entered Data </h2>
                         <p>Metric Area: <b>{this.props.metricAreaName}</b></p>
-                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculations.metric}</b></p>
+                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculations}</b></p>
                         <p>Month: <b>{this.props.month}</b></p>
                         <p>Data Type (Actual/Target): <b>{this.props.radio}</b></p>
                         <p>Data: <b>{this.props.data}</b></p>
@@ -533,7 +551,7 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                        <h2 id='month'> Month *</h2>
+                        <h2 id='month'> Month <span class="required">*</span></h2>
                         <select
                             value={this.props.month}
                             onChange={(e) => this.props.updateSelectForm(e)}>
@@ -550,7 +568,7 @@ export class DataEntryForm extends Component {
                             <option value="November">November</option>
                             <option value="December">December</option>
                         </select>
-                        <h2 class='InputOption'> Input Data For: * </h2>
+                        <h2 class='InputOption'> Input Data For: <span class="required">*</span> </h2>
                         <div>
                             <label for="actual"> <input
                                 onChange={(e) => this.props.updateRadioForm(e)}
@@ -570,7 +588,7 @@ export class DataEntryForm extends Component {
                         </div>
 
                         <p class='textInput'>
-                            <label for="fname">Enter a value * </label>
+                            <label for="fname">Enter a value <span class="required">*</span> </label>
                             <input
                                 value={this.props.data}
                                 onChange={(e) => this.props.updateChange(e)}
