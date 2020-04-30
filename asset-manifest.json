@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/InSightful/static/css/main.b80e2768.chunk.css",
-    "main.js": "/InSightful/static/js/main.29813557.chunk.js",
-    "main.js.map": "/InSightful/static/js/main.29813557.chunk.js.map",
+    "main.css": "/InSightful/static/css/main.8123ae5b.chunk.css",
+    "main.js": "/InSightful/static/js/main.3a1bc9df.chunk.js",
+    "main.js.map": "/InSightful/static/js/main.3a1bc9df.chunk.js.map",
     "runtime-main.js": "/InSightful/static/js/runtime-main.07ce3d6f.js",
     "runtime-main.js.map": "/InSightful/static/js/runtime-main.07ce3d6f.js.map",
     "static/css/2.47e06e2e.chunk.css": "/InSightful/static/css/2.47e06e2e.chunk.css",
-    "static/js/2.56d18093.chunk.js": "/InSightful/static/js/2.56d18093.chunk.js",
-    "static/js/2.56d18093.chunk.js.map": "/InSightful/static/js/2.56d18093.chunk.js.map",
+    "static/js/2.97938a93.chunk.js": "/InSightful/static/js/2.97938a93.chunk.js",
+    "static/js/2.97938a93.chunk.js.map": "/InSightful/static/js/2.97938a93.chunk.js.map",
     "index.html": "/InSightful/index.html",
-    "precache-manifest.5ca8f0048bf96e284169e1dfb45f335d.js": "/InSightful/precache-manifest.5ca8f0048bf96e284169e1dfb45f335d.js",
+    "precache-manifest.190b328bb38ac8b0285c721573ba936a.js": "/InSightful/precache-manifest.190b328bb38ac8b0285c721573ba936a.js",
     "service-worker.js": "/InSightful/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/InSightful/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.b80e2768.chunk.css.map": "/InSightful/static/css/main.b80e2768.chunk.css.map",
-    "static/js/2.56d18093.chunk.js.LICENSE.txt": "/InSightful/static/js/2.56d18093.chunk.js.LICENSE.txt",
+    "static/css/main.8123ae5b.chunk.css.map": "/InSightful/static/css/main.8123ae5b.chunk.css.map",
+    "static/js/2.97938a93.chunk.js.LICENSE.txt": "/InSightful/static/js/2.97938a93.chunk.js.LICENSE.txt",
     "static/media/alex.jpg": "/InSightful/static/media/alex.5b6cafaf.jpg",
     "static/media/development.png": "/InSightful/static/media/development.b5edeee8.png",
     "static/media/home-run.svg": "/InSightful/static/media/home-run.6f087f95.svg",
@@ -33,8 +33,8 @@
   "entrypoints": [
     "static/js/runtime-main.07ce3d6f.js",
     "static/css/2.47e06e2e.chunk.css",
-    "static/js/2.56d18093.chunk.js",
-    "static/css/main.b80e2768.chunk.css",
-    "static/js/main.29813557.chunk.js"
+    "static/js/2.97938a93.chunk.js",
+    "static/css/main.8123ae5b.chunk.css",
+    "static/js/main.3a1bc9df.chunk.js"
   ]
 }
