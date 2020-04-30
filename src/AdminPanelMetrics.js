@@ -153,7 +153,8 @@ export class AdminPanelMetrics extends Component {
                         <div>
                             <CardDeck className="PermDatadeck">
                                 <h1 class='selection' id='met-areas'> Metric Areas 
-                                <button 
+                                <button
+                                    id="addMetricAreaButton" 
                                     onClick={() => this.renderModal()}>
                                     <img class='more' src={More} /></button> </h1>
                                 {metricAreaElements}

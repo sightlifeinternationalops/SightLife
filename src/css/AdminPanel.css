@@ -38,6 +38,19 @@ div.PermDatadeck {
     font-size: 18px
 }
 
+.column ul {
+    margin: 0 auto;
+}
+
+.left-submission{
+    margin-right: 1rem;
+}
+
+.right-submission {
+    margin-left: 1rem;
+}
+
+
 #addUserForm {
     display: none;
     width: 100%;
@@ -62,7 +75,7 @@ div.PermDatadeck {
 .save {
     text-align: center;
     line-height: 50px;
-    background-color: rgb(153, 145, 198);
+    background-color: green;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
     border-style: inherit;
@@ -70,7 +83,23 @@ div.PermDatadeck {
     color: white;
     width: 150px;
     margin-bottom: 20px;
-    margin-top: 10px
+    margin-top: 10px;
+    margin-right: 1rem;
+}
+
+.cancel {
+    text-align: center;
+    line-height: 50px;
+    background-color: rgb(153, 145, 198); 
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-style: inherit;
+    border-radius: 10px;
+    color: white;
+    width: 150px; 
+    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 1rem;
 }
 
 .save:hover {

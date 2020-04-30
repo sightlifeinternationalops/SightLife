@@ -221,7 +221,6 @@ export class DashBoard extends Component {
     }
 
     quarterArrayElements(numValue) {
-        
         // Metrics for quarterly information
         let currentQuarterCalc = this.state.metricAreaCalculationsQuarter
         let calculationInfoQuarter = currentQuarterCalc[numValue]

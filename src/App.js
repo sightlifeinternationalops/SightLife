@@ -232,10 +232,10 @@ class App extends Component {
                 />}
               />
               <Route path="/FAQ" component={FAQ} />
-              <Route 
+              <Route
                 path='/AdminPanel'
                 render={() => <AdminPanelUserPermissions
-                  metrics={this.state.metrics}/>
+                  metrics={this.state.metrics} />
                 }
               />
               <Route
@@ -304,15 +304,16 @@ class NavBar extends Component {
               <div class="dropdown" id="myForm">
                 <img class="profile" src={Profile} />
                 <div class="dropdown-content" id="sign">
-                  <image class='prof-pic'>User's Profile Picture</image>
+                  {/* <image class='prof-pic'>User's Profile Picture</image> */}
                   <p class='user-name'>User's Name</p>
                   <button type="submit" class="btn">
                     <NavLink to='/Metrics' className="nav-link"> DashBoard </NavLink>
                   </button>
                   <button type="submit" class="btn">
-                    <NavLink to='/AdminPanel' className="nav-link"> Admin Panel </NavLink>
+                    <NavLink to='/AdminPanel' className="nav-link">Admin Panel</NavLink>
                   </button>
-                  <button onClick={() => this.props.signOut()}>
+                  <button id="signOutButton"
+                    onClick={() => this.props.signOut()}>
                     Sign Out
                   </button>
                 </div>

@@ -105,6 +105,10 @@ label {
     display: inline;
 }
 
+.errorMsg {
+    text-align: center;
+}
+
 div.datadeck {
     align-content: center;
     align-items: center;

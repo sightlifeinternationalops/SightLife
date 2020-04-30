@@ -170,31 +170,6 @@ export class AdminPanelUserPermissions extends Component {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
 
-        let content = null
-
-        if (!this.state.enableEdit) {
-            content = (
-                <div>
-                    <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p>
-                    <button class='save'
-                        type="Save"
-                        value="Save"
-                        onClick={() => { this.editMetricOwners() }}> Edit </button>
-                </div>
-            )
-        } else {
-            content = (
-                <div>
-                    <button
-                        onClick={() => { this.addOwnerModal() }}
-                        class='save'>Add Owner</button>
-                    <button
-                        onClick={() => { this.cancelMetricOwners() }}
-                        class='save'>Cancel</button>
-                </div>
-            )
-        }
-
         return (
             <div className="body">
                 <main>
@@ -241,11 +216,11 @@ class MetricAreaInfo extends Component {
         if (!this.props.enableEdit) {
             content = (
                 <div>
-                    <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p>
+                    {/* <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p> */}
                     <button class='save'
                         type="Save"
                         value="Save"
-                        onClick={() => { this.props.editMetricOwners() }}> Edit </button>
+                        onClick={() => { this.props.editMetricOwners()}}> Edit </button>
                 </div>
             )
         } else {
@@ -256,7 +231,7 @@ class MetricAreaInfo extends Component {
                         class='save'>Add Owner</button>
                     <button
                         onClick={() => { this.props.cancelMetricOwners() }}
-                        class='save'>Cancel</button>
+                        class='cancel'>Cancel</button>
                 </div>
             )
         }
@@ -270,9 +245,11 @@ class MetricAreaInfo extends Component {
                     </div>
                     <div class="PermissionInfo">
                         <p class="PermText">Owner(s):</p>
-                        <ul>
+                        <ul   id="owners">
+                            <div  id="listitem">
                             {metricAreaOwners}
-                        </ul>
+                            </div>
+                        </ul >
                         {content}
                     </div>
                 </div>

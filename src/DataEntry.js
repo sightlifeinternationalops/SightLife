@@ -439,7 +439,7 @@ export class DataEntry extends Component {
                         <CardDeck className="datadeck">
                             {metricAreaElements}
                         </CardDeck>
-                        <div>
+                        <div class="errorMsg">
                             <p>{this.state.invalidMetricArea}</p>
                         </div>
                         {/* Populate based on metric chosen */}
@@ -447,7 +447,7 @@ export class DataEntry extends Component {
                         <CardDeck className="datadeck">
                             {metricAreaCalculationsElements}
                         </CardDeck>
-                        <div>
+                        <div class="errorMsg">
                             <p>{this.state.invalidMetricCalc}</p>
                         </div>
                     </section>
