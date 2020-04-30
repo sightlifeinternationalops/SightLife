@@ -4,6 +4,15 @@
     padding: 16px;
 }
 
+.form p {
+    text-align: center;
+}
+
+.form label {
+    text-align: left;
+    margin-left: 9rem;
+}
+
 input, label {
     display: block;
 }
@@ -52,4 +61,8 @@ a.create {
 .sign-in:hover {
     background-color: rgb(153, 145, 198);
     color: white;
+}
+
+#pList { 
+    margin-left: 8rem;
 }

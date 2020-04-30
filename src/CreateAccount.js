@@ -200,9 +200,13 @@ export class CreateAccount extends Component {
                         <label for='Password'> Password </label>
                         <input
                             onChange={(e) => this.updatePassword(e)}
-                            type='password' name='Password' required placeholder=" At least 8 characters" />
+                            type='password' name='Password' required/>
                     </p>
-
+                    <ul id="pList">
+                        <li>A password requires at least 8 characters</li>
+                        <li>A password requires one special character (ex: @!?/)</li>
+                        <li>A password requires one number</li>
+                    </ul>
                     <p>
                         <label for='Re-Enter Password'> Re-enter Password </label>
                         <input
