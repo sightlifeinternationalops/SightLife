@@ -5,6 +5,7 @@ import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import {AdminSettings} from './AdminSettings'
 import {AdminPanelMetrics} from './AdminPanelMetrics'
 import {AdminPanelUserPermissions} from './AdminPanelUserPermissions'
+import {AdminPanelMetricCalcs} from './AdminPanelMetricCalcs'
 import { CardDeck } from 'reactstrap';
 
 class AdminPanel extends Component {
@@ -15,6 +16,7 @@ class AdminPanel extends Component {
             <Route path='/AdminPanel' component={AdminPanelUserPermissions}/> 
             <Route path='/AdminSettings' component={AdminSettings} />
             <Route path='/AdminPanelMetrics' component={AdminPanelMetrics} />
+            <Route path='/AdminPanelMetricCalcs' component={AdminPanelMetricCalcs} />
             <Redirect to="/AdminPanel" />
           </Switch>
         </main>
@@ -37,6 +39,7 @@ export class AdminPanelNav extends Component  {
                     <ul>
                         <li><NavLink to='/AdminPanel' class="Admin"> User Permissions </NavLink></li>
                         <li><NavLink to="/AdminPanelMetrics" class="Admin"> Metrics</NavLink></li>
+                        <li><NavLink to='/AdminPanelMetricCalcs' class="Admin"> Metric Calcs</NavLink></li>
                         <li><a class="Admin" href="#"> Data Entry </a></li>
                         <li><NavLink to="/AdminSettings" class="Admin"> Settings </NavLink></li>
                     </ul> 

@@ -10,8 +10,13 @@ div .metricsDeck{
 
 div.metricsDeck.card-deck {
     align-items: center;
+<<<<<<< HEAD
     margin-right: 20rem;
     margin-left: 20rem;
+=======
+    margin-right: 15rem;
+    margin-left: 15rem;
+>>>>>>> 2c6f7d1a2d48db0bb54d2005e9a07566d1dce6e1
     align-content: center;
     justify-content: center;
     display: flex;

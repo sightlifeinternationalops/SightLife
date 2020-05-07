@@ -36,6 +36,10 @@ export class DashBoard extends Component {
         this.renderMetricAnnually()  
     }
 
+    // componentDidUpdate() {
+    //     console.log(this.state)
+    // }
+
     // Convert map to an array in the state
     arrayMonthCalculations(map) {
         this.setState((state) => {
@@ -78,11 +82,12 @@ export class DashBoard extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             keys.map((key) => {
-                let intKey = parseInt(key, 10)
                 // If the our prop of metric calculation IDs contains the ID, add it to the month map.
-                if (this.props.metricAreaCalculationIDs.includes(intKey)) {
-                    monthMap.set(key, info[key])
-                }
+                Array.from(this.props.metricAreaCalculations.entries()).map((key2) => {
+                    if (key2[0] == key) {
+                        monthMap.set(key, info[key])
+                    }
+                }) 
             })
             this.arrayMonthCalculations(monthMap)
         })
@@ -98,9 +103,9 @@ export class DashBoard extends Component {
             let keys = Object.keys(info);
             keys.map((key) => {
                 let intKey = parseInt(key, 10)
-                if (this.props.metricAreaCalculationIDs.includes(intKey)) {
-                    quarterMap.set(key, info[key])
-                }
+                // if (this.props.metricAreaCalculations.includes(intKey)) {
+                //     quarterMap.set(key, info[key])
+                // }
             })
             this.arrayQuarterCalculations(quarterMap)
         })
@@ -115,12 +120,11 @@ export class DashBoard extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             keys.map((key) => {
-                console.log(key)
                 let intKey = parseInt(key, 10)
-                if (this.props.metricAreaCalculationIDs.includes(intKey)) {
-                    console.log(info[key])
-                    annualMap.set(key, info[key])
-                }
+                // if (this.props.metricAreaCalculationIDs.includes(intKey)) {
+                //     console.log(info[key])
+                //     annualMap.set(key, info[key])
+                // }
             })
             this.arrayAnnualCalculations(annualMap)
         })
@@ -145,27 +149,65 @@ export class DashBoard extends Component {
         const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
             //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricCalculationRow
-                    metrics={key[1].metric}
-                    metricCalc={key[1].metricCalculation}
+                    metrics={key[1].calcMetric}
+                    metricCalc={key[1].calcName}
                     />
         })
         return test
     }
 
-    monthArrayElements(numValue) {
-        // Metrics for monthly information
-        let currentMonthCalc = this.state.metricAreaCalculationsMonth
-        let calculationInfo = currentMonthCalc[numValue]
-        let monthArrayInfo = []
+    // monthArrayElements(numValue) {
+    //     // Metrics for monthly information
+    //     // let currentMonthCalc = this.state.metricAreaCalculationsMonth
+    //     // let calculationInfo = currentMonthCalc[numValue]
+    //     let monthArrayInfo = []
+    //     let currentMonthCalc = this.state.metricareaCalculationsMonth
+    //     console.log(this.state)
 
-        // Render if not undefined/null for month information
-        if (calculationInfo) {
-            let calculationKeys = calculationInfo[1]
-            let keys = Object.keys(calculationKeys)
+    //     // console.log(currentMonthCalc)
+    //     // console.log(calculationInfo)
+
+    //     for (var testtest in currentMonthCalc) {
+    //         console.log(testtest)
+    //     }
+
+    //     // Render if not undefined/null for month information
+    //     // if (calculationInfo) {
+    //     //     let calculationKeys = calculationInfo[1]
+    //     //     let keys = Object.keys(calculationKeys)
+    //     //     monthArrayInfo = keys.map((key) => {
+    //     //         let monthInfo = calculationKeys[key]
+    //     //         if (monthInfo.year = this.state.currentYear) {
+    //     //             return <MetricMonthly
+    //     //             actual={monthInfo.actual}
+    //     //             target={monthInfo.target}
+    //     //             month={monthInfo.month}
+    //     //             highlight={monthInfo.highlights}
+    //     //             lowlight={monthInfo.lowlights}
+    //     //             coe={monthInfo.coe}
+    //     //         />
+    //     //         }
+    //     //     })
+    //     // }
+    //     return monthArrayInfo
+    // }
+
+    monthArrayElements() {
+        let currentMonth = this.state.metricAreaCalculationsMonth
+        let monthArrayInfo = []
+        var monthArray
+
+        for (var test in currentMonth) {
+            if (currentMonth[test][0] == this.state.currentCalc) {
+                monthArray = currentMonth[test][1]
+            }
+        }
+
+        if (monthArray) {
+            let keys = Object.keys(monthArray)
             monthArrayInfo = keys.map((key) => {
-                let monthInfo = calculationKeys[key]
-                if (monthInfo.year = this.state.currentYear) {
-                    return <MetricMonthly
+                let monthInfo = monthArray[key]
+                return <MetricMonthly
                     actual={monthInfo.actual}
                     target={monthInfo.target}
                     month={monthInfo.month}
@@ -173,14 +215,12 @@ export class DashBoard extends Component {
                     lowlight={monthInfo.lowlights}
                     coe={monthInfo.coe}
                 />
-                }
             })
         }
         return monthArrayInfo
     }
 
     quarterArrayElements(numValue) {
-        
         // Metrics for quarterly information
         let currentQuarterCalc = this.state.metricAreaCalculationsQuarter
         let calculationInfoQuarter = currentQuarterCalc[numValue]
@@ -232,6 +272,13 @@ export class DashBoard extends Component {
         return annualArrayInfo
     }
 
+    handleChange = (event) => {
+        let area = event.target.value
+        this.setState((state) => {
+            state.currentCalc = area
+        })
+    }
+
     render() {
         const metricElements = this.arrayElements()
 
@@ -247,35 +294,31 @@ export class DashBoard extends Component {
             <div className = "body">
             <h1> {this.props.metricAreaInfo} </h1>
             <h2> Metric Area Summary </h2>
-            <h3> Owner: {this.props.metricAreaOwner} </h3>
+            {/* <h3> Owner: {this.props.metricAreaOwner} </h3> */}
 
-            <Table bordered align="center">
+            <select id="select-dropdown"
+                onChange={(e) => this.handleChange(e)}>
+                <option value="None">None</option>
+                {metricElements}
+            </select>
+
+            {/* <Table bordered align="center">
                 <thead>
                     <tr>
-                    <th> Metric </th>
                     <th> Metric Calculations </th>
-
+                    <th> Metric Calculations </th>
                     </tr>
                 </thead>
 
 
-                {/* Table representing metric and metric caluclation */}
+                Table representing metric and metric caluclation
                 <tbody>
                     {metricElements}
                 </tbody>
-            </Table>
+            </Table> */}
 
             {/* Container for current  */}
             <div>
-                {/* <div>
-                    <Button onClick={this.leftButtonClick}>   
-                        {leftButtonString}
-                    </Button>
-                    <Button onClick={this.rightButtonClick}>
-                        {rightButtonString}
-                    </Button>
-                </div> */}
-
                 {/* Monthly Information */}
                 {monthElements}
             
@@ -293,29 +336,25 @@ export class DashBoard extends Component {
 // Represents a single row in the metric/metric calculations table
 // Contains all metric name and metric calculation names for a metric area
 class MetricCalculationRow extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
     render() {
         return (
-            <tr>
-                <th>
-                    {this.props.metrics}
-                </th>
-                <th>
-                    {this.props.metricCalc}
-                </th>
-            </tr>
+            // <tr>
+            //     <th>
+            //         {this.props.metrics}
+            //     </th>
+            //     {/* <th>
+            //         {this.props.metricCalc}
+            //     </th> */}
+            // </tr>
+            <option value={this.props.metrics}
+                name={this.props.metrics}>
+                {this.props.metrics}
+            </option>
         )
     }
 }
 
 class MetricMonthly extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
     componentDidMount() {
     }
 
@@ -402,10 +441,6 @@ class MetricMonthly extends Component {
 }
 
 class MetricQuarterly extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
     render() {
 
         let actualValue = this.props.actual
@@ -444,10 +479,6 @@ class MetricQuarterly extends Component {
 }
 
 class MetricAnnuals extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
     render() {
         return (
             <div>

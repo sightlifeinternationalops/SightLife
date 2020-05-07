@@ -10,16 +10,14 @@ export class DataEntry extends Component {
         super(props);
 
         this.setMetric = this.setMetric.bind(this)
+        this.updateChange = this.updateChange.bind(this)
         this.updateSelectForm = this.updateSelectForm.bind(this)
         this.updateRadioForm = this.updateRadioForm.bind(this)
-        this.updateValueForm = this.updateValueForm.bind(this)
-        this.updateHLForm = this.updateHLForm.bind(this)
-        this.updateLForm = this.updateLForm.bind(this)
-        this.updatePlanForm = this.updatePlanForm.bind(this)
         this.previewForm = this.previewForm.bind(this)
         this.editForm = this.editForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
         this.updateSelectedMetricAreaCalculation = this.updateSelectedMetricAreaCalculation.bind(this)
+        this.check = this.check.bind(this)
         // this.enablePreviewButton = this.enablePreviewButton.bind(this)
 
         this.state = {
@@ -30,16 +28,14 @@ export class DataEntry extends Component {
             canEditActuals: false, // Determines users ability to enter data for actuals
             canEditTargets: false, // Determines users ability to enter data for targets
             currentYear: new Date(), // Used for entering data for the current year
-            highlight: null,
-            lowlight: null,
-            data: null,
             month: "January", // Will always default to January
-            radio: null,
             actualEn: false,
             targetEn: false,
-            mitigation: null,
             preview: false,
-            previewButton: false
+            lowlight: "", // Needed for firebase interaction
+            highlight: "", // Needed for firebase interaction
+            mitigation: "" // Needed for firebase interaction
+            // previewButton: false
         }
     }
 
@@ -52,23 +48,7 @@ export class DataEntry extends Component {
         console.log(this.state)
     }
 
-    // Enable preview button
-    // when all the following conditions are met:
-    // 1. Valid Information is entered
-    // 2. All the necessary fields are filled out
-    //      Necessary fields are:
-    //          Data
-    //          Radio
-    //          Month (Enabled by default)
-    enablePreviewButton() {
-        if (this.state.data != null &&
-            this.state.radio != null && this.data != "") {
-            this.setState((state) => {
-                state.previewButton = true
-                return state
-            })
-        }
-    }
+
 
     // Checks the current date of the month. If it is the first 3 months of the year
     // the user can enter target data for the year.
@@ -91,7 +71,7 @@ export class DataEntry extends Component {
         // Allow user to submit entry for actuals if 
         if (checkActuals || (currentDay <= 14)) {
             this.enableActuals()
-        // Display error messaging
+            // Display error messaging
         } else {
             console.log("Current date is within latter half of the month!")
             console.log("Data cannot be submitted without admin permissions")
@@ -150,9 +130,9 @@ export class DataEntry extends Component {
 
     // Sets current state of metric area ID to button that was clicked
     setMetric(name, id) {
-        console.log('Button was clicked!')
+        console.log(id.metricName)
         this.setState((state) => {
-            state.metricAreaID = id
+            state.metricAreaID = id.metricName
             state.metricAreaName = name
             return state
         })
@@ -178,7 +158,11 @@ export class DataEntry extends Component {
             let mapCalculations = new Map()
 
             databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricAreaID
+                // let id = metricCalcInfo[key].metricAreaID
+                // if (id == this.state.metricAreaID) {
+                //     mapCalculations.set(key, metricCalcInfo[key])
+                // }
+                let id = metricCalcInfo[key].metricArea
                 if (id == this.state.metricAreaID) {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
@@ -188,6 +172,7 @@ export class DataEntry extends Component {
     }
 
     updateSelectedMetricAreaCalculation(calc) {
+        console.log(calc)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             return state
@@ -210,51 +195,23 @@ export class DataEntry extends Component {
             state.radio = atVal
             return state
         })
-        this.enablePreviewButton()
     }
 
-    // Updates state for num value when data is inputted
-    updateValueForm(event) {
-        let numVal = (event.target.value)
-        this.setState((state) => {
-            state.data = numVal
-            return state
-        })
-        this.enablePreviewButton()
-    }
+    updateChange(event) {
+        let field = event.target.name
+        let value = event.target.value
 
-    // Updates state for highlight text field when text is inputted
-    updateHLForm(event) {
-        let hlVal = (event.target.value)
-        this.setState((state) => {
-            state.highlight = hlVal
-            return state
-        })
-    }
+        let changes = {}
 
-    // Updates state for lowlight text field when text is inputted
-    updateLForm(event) {
-        let lVal = (event.target.value)
-        this.setState((state) => {
-            state.lowlight = lVal
-            return state
-        })
-    }
-
-    // Updates state for mitigation plan text field when text is inputted
-    updatePlanForm(event) {
-        let pVal = (event.target.value)
-        console.log(pVal)
-        this.setState((state) => {
-            state.mitigation = pVal
-            return state
-        })
+        changes[field] = value
+        this.setState(changes)
     }
 
     // Represents metric area elements to render on page.
     metricAreaElements() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
-            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+            // Pass metricName, metricID into metricAreaCard as props then also pass in a 
+            // list of props containing information about that specific metric
             return <MetricAreaButton
                 metricName={key[0]}
                 metricID={key[1]}
@@ -267,14 +224,14 @@ export class DataEntry extends Component {
     // Represents metric area calculation elements to render after
     // a metric area is chosen. 
     metricAreaCalculations() {
-        const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.entries()).map((key) => {
-            return <MetricAreaCalcButton
-                metricCalc={key[1]}
-                metricCalcName={key[1].metric}
-                metricCalcID={key[1].metricCalculationID}
-                metricCalcFunc={this.updateSelectedMetricAreaCalculation}
-            />
-        })
+        const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
+            entries()).map((key) => {
+                let calculation = key[1]
+                return <MetricAreaCalcButton
+                    metricCalcName={calculation.calcName}
+                    metricCalcFunc={this.updateSelectedMetricAreaCalculation}
+                />
+            })
         return metricCalcElements
     }
 
@@ -285,11 +242,13 @@ export class DataEntry extends Component {
     // IMPORTANT! If target/actual being submitted is not an annual,
     // allow user to submit null values for highlights, lowlights,
     // and mitigation plans. 
-    previewForm() {
-        this.setState((state) => {
-            state.preview = true
-            return state
-        })
+    previewForm(t) {
+        if (t) {
+            this.setState((state) => {
+                state.preview = true
+                return state
+            })
+        }
     }
 
     // Will switch to preview view when
@@ -302,15 +261,47 @@ export class DataEntry extends Component {
         })
     }
 
+    // // Enable preview button
+    // // when all the following conditions are met:
+    // // 1. Valid Information is entered
+    // // 2. All the necessary fields are filled out
+    // //      Necessary fields are:
+    // //          Data
+    // //          Radio
+    // //          Month (Enabled by default)
+    check() {
+        if (this.state.data && this.state.radio && this.state.data !== ""
+            && this.state.currentMetricAreaCalculations.size >= 1
+            && this.state.selectedMetricAreaCalculations) {
+            return true
+        }
+        let errors = {} // Object to hold errors
+
+        if (!this.state.data) {
+            errors["invalidData"] = "A value must be entered"
+        }
+        if (!this.state.radio) {
+            errors["invalidRadio"] = "An actual or target must be selected"
+        }
+        if (this.state.currentMetricAreaCalculations.size < 1) {
+            errors["invalidMetricArea"] = "A metric area must be selected"
+        }
+        if (!this.state.selectedMetricAreaCalculations) {
+            errors["invalidMetricCalc"] = "A metric calculation must be selected"
+        }
+        errors["errorMsg"] = "Not all required fields have been answered/selected. Check above for more detail."
+
+        this.setState(errors)
+        return false
+    }
+
     // Push information to database
     // as a JSON readable format.
     // Check database if enty already exists, if it does, replace values in database
     // otherwise, simply add the new data
     submitForm(month, calcID, radio, data, highlight, lowlight, coe) {
-        console.log("Submitting form...")
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
-
         let year = new Date()
         year = year.getFullYear()
         // year = 2011
@@ -359,62 +350,79 @@ export class DataEntry extends Component {
 
         // Find metricareacalculation
         let rootPath = firebase.database().ref('metricGoalsMonths')
+        let monthString = x.toString()
+        if (x.toString().length === 1) {
+            monthString = "0" + monthString
+        }
+        let keyString = year + monthString + calcID
+
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
-            let keys = Object.keys(info)
 
-            keys.map((key) => {
-                if (key === calcID.metricCalculationID) {
-                    let monthString = x.toString()
-                    if (x.toString().length === 1) {
-                        monthString = "0" + monthString
-                    }
-                    let keyString = year + monthString + calcID.metricCalculationID.toString()
+            // If metricgoalsMonths does not exist
+            // Log error here...
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    console.log(key)
+                    console.log(calcID)
 
-                    // Check if the data already exists 
-                    let childPath = firebase.database().ref('metricGoalsMonths/' + calcID.metricCalculationID.toString() + "/" + keyString)
-                    childPath.once('value', (snapshot) => {
-                        let cInfo = snapshot.val();
-
-                        // If data exists, overwrite it.
-                        if (cInfo) {
-                            // If user wants to edit an actual
-                            if (radio === "Actual") {
-                                childPath.update({
-                                    actual: data,
-                                    lowlights: lowlight,
-                                    highlights: highlight,
-                                    coe: coe
-                                })
-                            // If user wants to edit a target
-                            } else {
-                                childPath.update({
-                                    target: data,
-                                    lowlights: lowlight,
-                                    highlights: highlight,
-                                    coe: coe
-                                })
-                            }
-
-                        // If data doesn't exist, create new entry.
-                        } else {
-                            if (radio === "Actual") {
-                                console.log("Data does not exist yet!")
-                                console.log("Create a target before inserting an actual!")
-                            } else {
-                                firebase.database().ref('metricGoalsMonths/' + calcID.metricCalculationID.toString()).child(keyString).update({
-                                    target: data,
-                                    lowlights: lowlight,
-                                    highlights: highlight,
-                                    coe: coe
+                    // If data exists in database...
+                    if (key === calcID) {
+                        // Check if the data already exists 
+                        let childPath = firebase.database().ref('metricGoalsMonths/' +
+                            calcID + "/" + keyString)
+                        childPath.once('value', (snapshot) => {
+                            let cInfo = snapshot.val();
+    
+                            // If data exists, overwrite it.
+                            if (cInfo) {
+                                // If user wants to edit an actual
+                                if (radio === "Actual") {
+                                    console.log("Editing actual...")
+                                    childPath.update({
+                                        actual: data,
+                                        lowlights: lowlight,
+                                        highlights: highlight,
+                                        coe: coe
+                                    })
+                                    // If user wants to edit a target
+                                } else {
+                                    childPath.update({
+                                        target: data,
+                                        lowlights: lowlight,
+                                        highlights: highlight,
+                                        coe: coe
+                                    })
                                 }
-                                )
+
+                                // If data doesn't exist, create new entry.
+                            } else {
+                                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
                             }
-                        }
-                    })
-                }
-            })
+                        })
+                    } else {
+                        this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+                    }
+                })
+            } else {
+                this.newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe)
+            }
         })
+    }
+
+    newMetricCalculation(radio, calcID, keyString, data, lowlight, highlight, coe) {
+        if (radio === "Actual") {
+            console.log("Data does not exist yet!")
+            console.log("Create a target before inserting an actual!")
+        } else {
+            firebase.database().ref('metricGoalsMonths/' + calcID + "/" + keyString).update({
+                target: data,
+                lowlights: lowlight,
+                highlights: highlight,
+                coe: coe
+            })
+        }
     }
 
     render() {
@@ -427,40 +435,48 @@ export class DataEntry extends Component {
                         <h1> Data Entry Form </h1>
 
                         {/* Populate based on whether metric owner owns metric */}
-                        <h2 class='MetricTitles'> Metric Area </h2>
+                        <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
                         <CardDeck className="datadeck">
                             {metricAreaElements}
                         </CardDeck>
-
+                        <div class="errorMsg">
+                            <p>{this.state.invalidMetricArea}</p>
+                        </div>
                         {/* Populate based on metric chosen */}
-                        <h2 class='MetricTitles'> Metric Calculation </h2>
+                        <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
                         <CardDeck className="datadeck">
                             {metricAreaCalculationsElements}
                         </CardDeck>
+                        <div class="errorMsg">
+                            <p>{this.state.invalidMetricCalc}</p>
+                        </div>
                     </section>
 
                     <section id="forms">
                         <DataEntryForm
-                            metricAreaName={this.state.metricAreaName}
-                            selectedMetricAreaCalculations={this.state.selectedMetricAreaCalculations}
                             updateSelectForm={this.updateSelectForm}
                             updateRadioForm={this.updateRadioForm}
-                            updateValueForm={this.updateValueForm}
-                            updateHLForm={this.updateHLForm}
-                            updateLForm={this.updateLForm}
-                            updatePlanForm={this.updatePlanForm}
+                            updateChange={this.updateChange}
+                            previewForm={this.previewForm}
+                            submitForm={this.submitForm}
+                            editForm={this.editForm}
+                            check={this.check}
                             month={this.state.month}
                             highlight={this.state.highlight}
                             lowlight={this.state.lowlight}
                             data={this.state.data}
                             mitigation={this.state.mitigation}
-                            previewForm={this.previewForm}
-                            submitForm={this.submitForm}
-                            editForm={this.editForm}
                             preview={this.state.preview}
                             radio={this.state.radio}
                             calc={this.state.selectedMetricAreaCalculations}
+                            metricAreaName={this.state.metricAreaName}
+                            selectedMetricAreaCalculations={this.state.selectedMetricAreaCalculations}
                             previewButton={this.state.previewButton}
+                            invalidData={this.state.invalidData}
+                            invalidRadio={this.state.invalidRadio}
+                            errorMsg={this.state.errorMsg}
+                        // invalidMetricArea={this.state.invalidMetricArea}
+                        // invalidMetricCalc={this.state.invalidMetricCalc}
                         />
                     </section>
                 </main>
@@ -494,7 +510,7 @@ class MetricAreaCalcButton extends Component {
         let typeString = this.props.metricCalcName
         return (
             <button
-                onClick={() => this.props.metricCalcFunc(this.props.metricCalc)}
+                onClick={() => this.props.metricCalcFunc(this.props.metricCalcName)}
                 class='selection' type={typeString} value={typeString}>{typeString}</button>
         )
     }
@@ -504,13 +520,6 @@ class MetricAreaCalcButton extends Component {
 // This component will take in input from the user
 // for data entry. 
 export class DataEntryForm extends Component {
-    check() {
-        if (this.props.data !== null && this.props.radio !== null && this.props.data !== "") {
-            return true
-        }
-        return false
-    }
-
     render() {
         let content = null
         // Will switch content to be the preview
@@ -520,7 +529,7 @@ export class DataEntryForm extends Component {
                     <div>
                         <h2> Summary of Entered Data </h2>
                         <p>Metric Area: <b>{this.props.metricAreaName}</b></p>
-                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculations.metric}</b></p>
+                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculations}</b></p>
                         <p>Month: <b>{this.props.month}</b></p>
                         <p>Data Type (Actual/Target): <b>{this.props.radio}</b></p>
                         <p>Data: <b>{this.props.data}</b></p>
@@ -542,7 +551,7 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                        <h2 id='month'> Month </h2>
+                        <h2 id='month'> Month <span class="required">*</span></h2>
                         <select
                             value={this.props.month}
                             onChange={(e) => this.props.updateSelectForm(e)}>
@@ -559,7 +568,7 @@ export class DataEntryForm extends Component {
                             <option value="November">November</option>
                             <option value="December">December</option>
                         </select>
-                        <h2 class='InputOption'> Input Data For: </h2>
+                        <h2 class='InputOption'> Input Data For: <span class="required">*</span> </h2>
                         <div>
                             <label for="actual"> <input
                                 onChange={(e) => this.props.updateRadioForm(e)}
@@ -571,40 +580,55 @@ export class DataEntryForm extends Component {
                                 type="radio" id="Target" value="Target" name="dataAT" />Target</label>
                         </div>
 
+
+                        <div>
+                            <p>
+                                {this.props.invalidRadio}
+                            </p>
+                        </div>
+
                         <p class='textInput'>
-                            <label for="fname">Enter a value </label>
+                            <label for="fname">Enter a value <span class="required">*</span> </label>
                             <input
                                 value={this.props.data}
-                                onChange={(e) => this.props.updateValueForm(e)}
-                                type="number" id="form" name="Data" />
+                                onChange={(e) => this.props.updateChange(e)}
+                                type="number" id="form" name="data" />
                         </p>
+
+                        <div>
+                            <p>
+                                {this.props.invalidData}
+                            </p>
+                        </div>
 
                         <p class='textInput'>
                             <label for="lname">Highlights</label>
                             <textarea
-                                onChange={(e) => this.props.updateHLForm(e)}
-                                value={this.props.highlight} type="text" id="form" name="Higlights" />
+                                onChange={(e) => this.props.updateChange(e)}
+                                value={this.props.highlight} type="text" id="form" name="highlight" />
                         </p>
 
                         <p class='textInput'>
                             <label for="lname">Lowlights </label>
                             <textarea
-                                onChange={(e) => this.props.updateLForm(e)}
-                                value={this.props.lowlight} type="text" id="form" name="Lowlights" />
+                                onChange={(e) => this.props.updateChange(e)}
+                                value={this.props.lowlight} type="text" id="form" name="lowlight" />
                         </p>
 
                         <p class='textInput'>
                             <label for="lname">Mitigation Plan</label>
                             <textarea
-                                onChange={(e) => this.props.updatePlanForm(e)}
-                                value={this.props.mitigation} type="text" id="form" name="Mitigation" />
+                                onChange={(e) => this.props.updateChange(e)}
+                                value={this.props.mitigation} type="text" id="form" name="mitigation" />
                         </p>
                     </form>
+                    <div>
+                        <p>
+                            {this.props.errorMsg}
+                        </p>
+                    </div>
                     <button
-                        disabled={!this.check()}
-                        onClick={() => this.props.previewForm(this.props.highlight, this.props.lowlight,
-                            this.props.data, this.props.month, this.props.mitigation,
-                            this.props.radio)}
+                        onClick={() => this.props.previewForm(this.props.check())}
                         class="preview">Preview</button>
                 </div>
             )
