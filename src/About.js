@@ -135,7 +135,7 @@ export class About extends Component {
                                 <CardText>
                                     <p> Full-Stack Developer </p>
                                     <p> Cybersecurity </p>
-                                    <p> magdanat@uw.edu </p>
+                                    <p> nathanmagdalera@gmail.edu </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -147,7 +147,7 @@ export class About extends Component {
                                 <CardText>
                                     <p> User Experience</p>
                                     <p>Project Management </p>
-                                    <p> shrutir@uw.edu </p>
+                                    <p> shrutirdesign@gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -159,7 +159,7 @@ export class About extends Component {
                                 <CardText>
                                     <p> Back-End Developer</p>
                                     <p> User Experience </p>
-                                    <p> aoes@uw.edu </p>
+                                    <p> alexander.e1918@gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -171,21 +171,19 @@ export class About extends Component {
                                 <CardText>
                                     <p> Data Science</p>
                                     <p> Front-End Developer </p>
-                                    <p> yungtc22@uw.edu </p>
+                                    <p> yungtsye@gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
-
                     </CardDeck>
-
-
                 </div>
+                <p><b>This project is complete and ownership will be transferred to the (future) Global Operations Business Manager. In the meantime, ownership will be given to Nashrah Mazhar: Nashrah.Mazhar@sightlife.org. For pressing questions, feel free to contact any of the team members who worked on the project.</b></p>
             </section>
             <footer>
                 <div className="footer-container">
                     <p className="inSightful Footer"> 
-                        This project is a part of the: 
-                    <a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
+                        This project is a part of the
+                    <a className="Data" href="https://ischool.uw.edu/capstone"> Capstone Project course at the University of Washington Information School </a></p>
                 </div>
             </footer>
         </div>
