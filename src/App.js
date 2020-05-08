@@ -185,10 +185,6 @@ class App extends Component {
         <div>
           <main>
             <Switch>
-              <Route exact path="/" component={SignIn}></Route>
-              {/* <Route path="/Createaccount" component={CreateAccount}/> */
-              /*
-              <Route path="/Createaccount" render={(props) => <CreateAccount
               <Route exact path="/" render={() => <SignIn
                 handleSignIn={this.handleSignIn}
               />} />
@@ -228,11 +224,6 @@ class App extends Component {
                 // retrieveMetricCalculations={this.retrieveMetriCalculations}
                 />}
               />
-              {/* <Route exact path="/DataEntry" component={DataEntry} /> */
-              /*
-              <Route 
-                exact path="/DataEntry" 
-                render={(props) => <DataEntry 
               <Route
                 exact path="/DataEntry"
                 render={() => <DataEntry
@@ -269,12 +260,10 @@ class App extends Component {
               <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
             </div>
           </footer> */}
-          </Switch>
-          </main>
         </div>
       )
-    } 
-  
+    }
+
     return (
       <div>
         {content}
