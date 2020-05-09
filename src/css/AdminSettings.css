@@ -50,6 +50,8 @@ div.PermDatadeck {
     text-align: center;
 }
 
+<<<<<<< HEAD
+=======
 /* The switch - the box around the slider */
 .switch {
     position: relative;
@@ -134,6 +136,7 @@ div.PermDatadeck {
     border-radius: 50%;
   }
 
+>>>>>>> 2c6f7d1a2d48db0bb54d2005e9a07566d1dce6e1
 .Save2Button {
     align-items: center;
     text-align: center;

@@ -323,7 +323,6 @@ export class AdminSettings extends Component {
                         <div class='Save2Button'>
                             <button class='save2' type="Save" value="Save"> Save </button>
                         </div>
-
                     </div>
 
                 </main>
