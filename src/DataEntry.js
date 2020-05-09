@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './css/DataEntry.css';
 import './index.js';
 
-import { CardDeck } from 'reactstrap';
+import { CardDeck, FormGroup, Input } from 'reactstrap';
 import firebase from 'firebase/app';
 
 export class DataEntry extends Component {
@@ -156,12 +156,8 @@ export class DataEntry extends Component {
             let mapCalculations = new Map()
 
             databaseKeys.map((key) => {
-                // let id = metricCalcInfo[key].metricAreaID
-                // if (id == this.state.metricAreaID) {
-                //     mapCalculations.set(key, metricCalcInfo[key])
-                // }
                 let id = metricCalcInfo[key].metricArea
-                if (id == this.state.metricAreaID) {
+                if (id === this.state.metricAreaID) {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
             })

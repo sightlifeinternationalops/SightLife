@@ -23,6 +23,7 @@ export class AdminSettings extends Component {
 
     componentDidMount() {
         this.retrieveAdminUsers()
+        this.retrieveSettings()
     }
 
     componentDidUpdate() {
@@ -203,7 +204,7 @@ export class AdminSettings extends Component {
         let usersList = this.usersList()
         let form = (
             <div
-                id="form"
+                id="formOne"
                 style={{ display: this.state.modalDisplay }}>
                 <div>
                     <form id="formBox">
@@ -234,7 +235,10 @@ export class AdminSettings extends Component {
     // all data entry for actuals
     // and targets
     retrieveSettings() {
-        let rootPath = firebase.database().ref('')
+        let actualSettings = firebase.database().ref('dataEntrySettings/actualEnabled')
+        console.log(actualSettings)
+        let targetSettings = firebase.database().ref('dataEntrySettings/targetEnabled')
+        console.log(targetSettings)
     }
 
     render() {
