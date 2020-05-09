@@ -110,11 +110,6 @@ class App extends Component {
 
   // ADMIN PANEL FUNCTIONS // 
 
-  // Adds a new metric area, for admin panel use.
-  addMetricArea() {
-
-  }
-
   // Adds a new metric calculation for a selected metric area,
   // for admin panel use. 
   addMetricCalculation() {
