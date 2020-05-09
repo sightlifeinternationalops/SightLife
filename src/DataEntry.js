@@ -48,8 +48,6 @@ export class DataEntry extends Component {
         console.log(this.state)
     }
 
-
-
     // Checks the current date of the month. If it is the first 3 months of the year
     // the user can enter target data for the year.
     // Note: To allow admin panel compatability to enable users to alter
@@ -172,7 +170,6 @@ export class DataEntry extends Component {
     }
 
     updateSelectedMetricAreaCalculation(calc) {
-        console.log(calc)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             return state
@@ -213,8 +210,8 @@ export class DataEntry extends Component {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a 
             // list of props containing information about that specific metric
             return <MetricAreaButton
-                metricName={key[0]}
-                metricID={key[1]}
+                metricName={key[1].metricName}
+                metricID={key[1].metricID}
                 metricFunc={this.setMetric}
             />
         })
@@ -364,8 +361,6 @@ export class DataEntry extends Component {
             if (info) {
                 let keys = Object.keys(info)
                 keys.map((key) => {
-                    console.log(key)
-                    console.log(calcID)
 
                     // If data exists in database...
                     if (key === calcID) {
@@ -379,7 +374,6 @@ export class DataEntry extends Component {
                             if (cInfo) {
                                 // If user wants to edit an actual
                                 if (radio === "Actual") {
-                                    console.log("Editing actual...")
                                     childPath.update({
                                         actual: data,
                                         lowlights: lowlight,

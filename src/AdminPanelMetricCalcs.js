@@ -20,7 +20,8 @@ export class AdminPanelMetricCalcs extends Component {
     metricAreaItemsList() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             return <MetricAreaItem
-                metricValue={key[0]}
+                metricValue={key[1].metricName}
+                metricID={key[1].metricID}
                 metricFunc={this.updateChange}
             />
         })
@@ -46,18 +47,14 @@ export class AdminPanelMetricCalcs extends Component {
 
     addCalculation() {
         console.log(this.state)
-        firebase.database().ref('metricCalculations/' + this.state.calcName).update({
+        let ref = firebase.database().ref('metricCalculations')
+        let id = ref.push().getKey()
+        firebase.database().ref('metricCalculations/' + id.toString()).update({
             calcName: this.state.calcName,
             calcMetric: this.state.calcName,
-            metricArea: this.state.current
+            calcID: id,
+            metricAreaID: this.state.current
         })
-        // firebase.database().ref('metricGoalsMonths/' + this.state.calcName)
-        // firebase.database().ref('metricGoalsQuarters').update({
-        //     calcName: this.state.calcName
-        // })
-        // firebase.database().ref('metricGoalsAnnuals').update({
-        //     calcName: this.state.calcName
-        // })
     }
 
     render() {
@@ -84,12 +81,12 @@ export class AdminPanelMetricCalcs extends Component {
                                         onChange={(e) => this.handleChange(e)}
                                         type="text" id="form" name="calcName" />
                                 </form>
-                                <form>
+                                {/* <form>
                                     <label for="fname">Enter a calculation metric </label>
                                     <textarea
                                         onChange={(e) => this.handleChange(e)}
                                         type="text" id="form" name="calcMetric" />
-                                </form>
+                                </form> */}
                                 <button onClick={() => this.addCalculation()}>Add Calculation</button>
                             </div>
                         </div>
@@ -103,7 +100,7 @@ export class AdminPanelMetricCalcs extends Component {
 class MetricAreaItem extends Component {
     render() {
         return (
-            <option value={this.props.metricValue}>
+            <option value={this.props.metricID}>
                 {this.props.metricValue}
             </option>
         )

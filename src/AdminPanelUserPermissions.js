@@ -3,7 +3,7 @@ import './css/AdminPanel.css';
 import { AdminPanelNav } from './AdminPanel'
 import firebase from 'firebase/app';
 
-import { CardDeck } from 'reactstrap';
+import { CardDeck, ListGroup, ListGroupItem } from 'reactstrap';
 
 // Not sure if AdminPanelNav is redundant. It is in the Admin panel js file
 export class AdminPanelUserPermissions extends Component {
@@ -15,6 +15,7 @@ export class AdminPanelUserPermissions extends Component {
         this.addOwnerModal = this.addOwnerModal.bind(this)
         this.cancelMetricOwners = this.cancelMetricOwners.bind(this)
         this.setMetricOwner = this.setMetricOwner.bind(this)
+        this.removeMetricOwner = this.removeMetricOwner.bind(this)
 
         this.state = {
             currentMetricA: "Choose a metric area",
@@ -36,7 +37,6 @@ export class AdminPanelUserPermissions extends Component {
             let keys = Object.keys(info)
             let users = keys.map((key) => {
                 let name = info[key].fName + " " + info[key].lName
-                console.log(name)
             })
             return users
         })
@@ -46,9 +46,9 @@ export class AdminPanelUserPermissions extends Component {
     // Renders current information
     // for a metric area such as who owns it,
     // current metric calculations?
-    setMetricOwnerInfo(mName) {
+    setMetricOwnerInfo(mID, mName) {
         // let userMap = new Map()
-        let rootPath = firebase.database().ref('metricAreas/' + mName)
+        let rootPath = firebase.database().ref('metricAreas/' + mID)
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val();
             let keys = Object.keys(info);
@@ -57,19 +57,29 @@ export class AdminPanelUserPermissions extends Component {
                 if (key === "owners") {
                     let objectMap = info[key]
                     for (var object in objectMap) {
-                        userMap.set(object, objectMap[object])
+                        console.log(object)
+                        userMap.set(object, objectMap[object].userName)
                     }
                 }
             })
-            this.setMetricOwner(userMap, mName)
+            this.setMetricOwner(userMap, mName,mID)
         })
     }
 
-    setMetricOwner(userMap, name) {
+
+    setMetricOwner(userMap, name, mID) {
         this.setState((state) => {
             state.currentMetricA = name
+            state.currentMetricID = mID
             state.currentMetricAOwners = userMap
             state.enableEdit = false
+            return state
+        })
+    }
+
+    setMetricOwners(owners) {
+        this.setState((state) => {
+            state.currentMetricAOwners = owners
             return state
         })
     }
@@ -83,6 +93,31 @@ export class AdminPanelUserPermissions extends Component {
         }
     }
 
+    removeMetricOwner(removedItem) {
+        let rootPath = firebase.database().ref('metricAreas')
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val();
+            let keys = Object.keys(info);
+
+            keys.map((key) => {
+                if (info[key].metricName === this.state.currentMetricA) {
+                    for (var item in info[key].owners) {
+                        if (info[key].owners[item].userName === removedItem) {
+                            let refPath = 'metricAreas/' + this.state.currentMetricID + '/owners/' + item
+
+                            firebase.database().ref(refPath).remove()
+                            
+                            let usersInfo = this.state.currentMetricAOwners
+                            usersInfo.delete(item)
+                            this.setMetricOwners(usersInfo)
+                        }
+                    }
+                }
+            })
+        })
+    }
+
     handleChange = (event) => {
         let field = event.target.name
         let value = event.target.value
@@ -93,7 +128,21 @@ export class AdminPanelUserPermissions extends Component {
         this.setState(changes)
     }
 
+    updateUser(event) {
+        const selected = event.target.options.selectedIndex
+        let id = (event.target.options[selected].getAttribute('id'))
+        let user = event.target.value
+        console.log(id)
+        this.setState((state) => {
+            state.currentUserID = id
+            state.currentUserName = user
+            return state
+        })
+    }
+
     addForm() {
+        const usersElements = this.userList()
+
         let form = (
             <div
                 id="addUserForm"
@@ -102,10 +151,14 @@ export class AdminPanelUserPermissions extends Component {
                     <div>
                         <h2>Enter Metric Owner</h2>
                         <label>
-                            <input
+                            {/* <input
                                 onChange={(e) => this.handleChange(e)}
-                                type="text" name="addMetricOwner" />
-
+                                type="text" name="addMetricOwner" /> */}
+                            <select
+                            onChange={(e) => this.updateUser(e)}>
+                                <option value="None">None</option>
+                                {usersElements}
+                            </select>
                         </label>
                     </div>
                     <button
@@ -131,7 +184,26 @@ export class AdminPanelUserPermissions extends Component {
         e.preventDefault()
         console.log(this.state)
         let rootPath = firebase.database().ref('metricAreas/' + this.state.currentMetricA + '/owners')
-        rootPath.push(this.state.addMetricOwner)
+        let id = rootPath.push().getKey()
+        let userObject = {
+            userID: this.state.currentUserID,
+            userName: this.state.currentUserName,
+            userMetricID: id
+        }
+        // firebase.database().ref('metricAreas/' + id.toString()).update({
+        //     userID: this.state.currentUserID,
+        //     userName: this.state.currentUserName,
+        //     userMetricID: id
+        // })
+        firebase.database().ref('metricAreas/' + this.state.currentMetricID + '/owners/' + id.toString()).update({
+            userID: this.state.currentUserID,
+            userName: this.state.currentUserName,
+            userMetricID: id
+        })
+
+        let usersMap = this.state.currentMetricAOwners
+        usersMap.set(id, userObject.userName)
+        this.setMetricOwners(usersMap)
         this.cancelOwnerModal(e)
     }
 
@@ -158,12 +230,23 @@ export class AdminPanelUserPermissions extends Component {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a 
             // list of props containing information about that specific metric
             return <MetricAreaButton
-                metricName={key[0]}
-                metricID={key[1]}
+                metricName={key[1].metricName}
+                metricID={key[1].metricID}
                 metricFunc={this.setMetricOwnerInfo}
             />
         })
         return metricAreaElements
+    }
+
+    userList() {
+        const usersElements = Array.from(this.props.users.entries()).map((key) => {
+            let name = key[1].fName + " " + key[1].lName
+            return <UserItem
+                name={name}
+                uid={key[1].uid}
+            />
+        })
+        return usersElements
     }
 
     render() {
@@ -189,7 +272,9 @@ export class AdminPanelUserPermissions extends Component {
                             enableEdit={this.state.enableEdit}
                             currentMetricA={this.state.currentMetricA}
                             currentMetricAOwners={this.state.currentMetricAOwners}
-                            setMetricOwner={this.setMetricOwner}/>
+                            setMetricOwner={this.setMetricOwner}
+                            removeMetricOwner={this.removeMetricOwner}
+                            users={this.props.users}/>
                         {form}
                     </div>
                 </main>
@@ -204,6 +289,8 @@ class MetricAreaInfo extends Component {
         const metricAreaOwners = Array.from(this.props.currentMetricAOwners.entries()).map((key) => {
             return <MetricAreaOwner
                 owner={key[1]}
+                enableEdit={this.props.enableEdit}
+                removeMetricOwner={this.props.removeMetricOwner}
             />
         })
         return metricAreaOwners
@@ -241,13 +328,15 @@ class MetricAreaInfo extends Component {
                 <div class="PermInfo">
                     <div class="PermissionBox">
                         <h3 class='PermissionText'> {this.props.currentMetricA} </h3>
-                        {/* <h3 class='PermissionText'> Test </h3> */}
                     </div>
                     <div class="PermissionInfo">
                         <p class="PermText">Owner(s):</p>
                         <ul   id="owners">
                             <div  id="listitem">
-                            {metricAreaOwners}
+                                <ListGroup>
+                                    {metricAreaOwners}
+                                </ListGroup>
+                                {/* {metricAreaOwners} */}
                             </div>
                         </ul >
                         {content}
@@ -268,7 +357,7 @@ class MetricAreaButton extends Component {
                 class='selection'
                 type={typeString}
                 value={typeString}
-                onClick={() => this.props.metricFunc(typeString)}
+                onClick={() => this.props.metricFunc(this.props.metricID, this.props.metricName)}
             >
                 {typeString}
             </button>
@@ -279,8 +368,28 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
+    let button = !this.props.enableEdit ? <div></div> : <button
+    onClick={() => {this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA)}}>-</button>
+
         return (
-            <li>{this.props.owner}</li>
+            // <ListGroupItem>
+            //     {this.props.owner}
+            //     {button}
+            // </ListGroupItem>
+            <li>
+                {this.props.owner}
+                {button}
+            </li>
+        )
+    }
+}
+
+class UserItem extends Component { 
+    render() {
+        return (
+            <option value={this.props.name} id={this.props.uid}>
+                {this.props.name}
+            </option>
         )
     }
 }

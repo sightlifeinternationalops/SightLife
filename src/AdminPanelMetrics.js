@@ -28,8 +28,8 @@ export class AdminPanelMetrics extends Component {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricAreaButton
-                metricName={key[0]}
-                metricID={key[1]}
+                metricName={key[1].metricName}
+                metricID={key[1].metricID}
                 metricFunc={this.setMetric}
             />
         })
@@ -49,14 +49,6 @@ export class AdminPanelMetrics extends Component {
     // Retrieves archived metric area elements from Firebase
     getArchivedMetricAreaElements() {
 
-    }
-
-    // Adds a new metric area element to Firebase
-    addMetricAreaElement() {
-        let rootPath = firebase.database().ref('metricAreas')
-        rootPath.once('value', (snapshot) => {
-
-        })
     }
 
     renderModal() {
@@ -88,10 +80,12 @@ export class AdminPanelMetrics extends Component {
     // ask for a re-confirm
     submitForm(e) {
         e.preventDefault()
-        console.log(this.state)
         if (e.target != null) {
-            firebase.database().ref('metricAreas/'+ this.state.MetricName).update({
-                metricName: this.state.MetricName
+            let ref = firebase.database().ref('metricAreas')
+            let id = ref.push().getKey()
+            firebase.database().ref('metricAreas/' + id.toString()).update({
+                metricName: this.state.MetricName,
+                metricID: id
             })
             this.closeModal(e)
         } else {

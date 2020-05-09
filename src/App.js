@@ -29,9 +29,8 @@ class App extends Component {
     this.state = {
       email: '',
       password: '',
-      metrics: metricAreas
-      // user: true,
-      // verified: true
+      metrics: metricAreas,
+      users: new Map()
     };
   }
 
@@ -51,6 +50,7 @@ class App extends Component {
 
     // Retrieve current metric areas in database
     this.retrieveMetricsList()
+    this.retrieveCurrentUsers()
   }
 
   componentWillUnmount() {
@@ -143,7 +143,6 @@ class App extends Component {
       databaseKeys.map((key) => {
         metricMap.set(key, metricNameInfo[key])
       })
-
       this.setState((state) => {
         state.metrics = metricMap;
         return state;
@@ -174,6 +173,25 @@ class App extends Component {
       // // Set the state to the new values that were obtained
       // this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
     });
+  }
+
+    // Retrieves a list of all current users
+    // in SightLife
+    retrieveCurrentUsers() {
+      let rootPath = firebase.database().ref('users')
+      rootPath.once('value', (snapshot) => {
+          let info = snapshot.val();
+          let keys = Object.keys(info)
+          let usersMap = new Map()
+
+          keys.map((key) => {
+            usersMap.set(key, info[key])
+          })
+          this.setState((state) => {
+            state.users = usersMap
+            return state
+          })
+      })
   }
 
   render() {
@@ -235,7 +253,8 @@ class App extends Component {
               <Route
                 path='/AdminPanel'
                 render={() => <AdminPanelUserPermissions
-                  metrics={this.state.metrics} />
+                  metrics={this.state.metrics}
+                  users={this.state.users} />
                 }
               />
               <Route
@@ -244,10 +263,16 @@ class App extends Component {
                   metrics={this.state.metrics}
                 />}
               />
-              <Route path="/AdminSettings" component={AdminSettings} />
+              {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
+              <Route path="/AdminSettings"
+                render={() => <AdminSettings 
+                  users={this.state.users}
+                  metrics={this.state.metrics}/>}
+              />
               <Route
                 path="/AdminPanelMetrics"
                 render={() => <AdminPanelMetrics
+                  users={this.state.users}
                   metrics={this.state.metrics}
                 />}
               />

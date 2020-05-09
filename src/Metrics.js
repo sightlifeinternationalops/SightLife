@@ -82,8 +82,8 @@ export class Metrics extends Component {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricAreaCard
-                metricName={key[0]}
-                metricID={key[1]}
+                metricName={key[1].metricName}
+                metricID={key[1].metricID}
                 metricNameFunc={this.setMetricName}
             />
         })
