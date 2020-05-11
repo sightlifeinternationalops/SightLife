@@ -13,8 +13,12 @@ export class AdminPanelMetrics extends Component {
         super(props);
         this.addRef = React.createRef();
 
+        this.editMetricArea = this.editMetricArea.bind(this)
+        this.openModal = this.openModal.bind(this)
+
         this.state = {
-            display : "none"
+            display : "none",
+            modalDisplay: "none"
         }
     }
 
@@ -30,7 +34,7 @@ export class AdminPanelMetrics extends Component {
             return <MetricAreaButton
                 metricName={key[1].metricName}
                 metricID={key[1].metricID}
-                metricFunc={this.setMetric}
+                metricFunc={this.openModal}
             />
         })
         return metricAreaElements
@@ -95,10 +99,10 @@ export class AdminPanelMetrics extends Component {
 
     addForm() {
         let form = (
-            <div id="metricForm" style={
+            <div className="metricForm" style={
              {display: this.state.display}
             }>
-                <form id="metricBox">
+                <form className="metricBox">
                     <div>
                         <h2>Adding New Metric Area</h2>
                         <label>
@@ -118,26 +122,51 @@ export class AdminPanelMetrics extends Component {
         return form
     }
 
-    // editMetricArea() {
-    //     let editForm = (
-    //         <div style={{display: this.state.editDisplay}}>
-    //             <form id="metricBox">
-    //                 <div>
-    //                     <h3>Metric: </h3>
-    //                     <ul>
-                            
-    //                     </ul>
-    //                 </div>  
-    //             </form>
-    //         </div>
-    //     )
-    //     return editForm
-    // }
+    editMetricArea() {
+        let editForm = (
+            <div 
+                className="metricForm"
+                style={{display: this.state.modalDisplay}}>
+                <form className="metricBox">
+                <button id="close-button">
+                        X
+                    </button>
+                    <div>
+                        <h2>Metric: </h2>
+                        <label>
+                            test
+                        </label>
+                    </div>  
+                    <button>
+                        Save
+                    </button>
+                    <button>
+                        Archive
+                    </button>
+                </form>
+            </div>
+        )
+        return editForm
+    }
+
+    openModal() {
+        this.setState((state) => {
+            this.state.modalDisplay = "block"
+            return state
+        })
+    }
+
+    closeModal() {
+        this.setState((state) => {
+            this.state.modalDisplay = "block"
+            return state
+        })
+    }
 
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
-        // let editForm = this.editMetricArea() 
+        let editForm = this.editMetricArea() 
 
         return (
             <div className="body">
@@ -161,7 +190,7 @@ export class AdminPanelMetrics extends Component {
                             </CardDeck>
                         </div>
                         {form}
-                        {/* {editForm} */}
+                        {editForm}
                     </div>
                 </main>
             </div>
@@ -177,7 +206,7 @@ class MetricAreaButton extends Component {
                 class='selection'
                 type={typeString}
                 value={typeString}
-            // onClick={() => this.props.metricFunc(this.props.metricName, this.props.metricID)}
+                onClick={() => this.props.metricFunc()}
             >
                 {typeString}
             </button>

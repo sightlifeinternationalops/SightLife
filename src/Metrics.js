@@ -48,9 +48,8 @@ export class Metrics extends Component {
             let mapCalculations = new Map()
 
             let metricAreaCalculationIDs = databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricArea
-
-                if (this.state.metricAreaID && id == this.state.metricAreaID.metricName) {
+                let id = metricCalcInfo[key].metricAreaID
+                if (this.state.metricAreaID && id == this.state.metricAreaID) {
                     owner = metricCalcInfo[key].owner
                     mapCalculations.set(key, metricCalcInfo[key])
                     return metricCalcInfo[key].metricCalculationID

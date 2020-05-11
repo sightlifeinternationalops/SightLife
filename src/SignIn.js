@@ -39,27 +39,32 @@ export class SignIn extends Component {
         return (
             <div class='form'>
                 <h1>Sign Into Your Account </h1>
-                <p>
+                <div>
                     <label for='Email'>Email</label>
                     <input
                         onChange={(e) => this.updateEmail(e)}
                         type='email' name='Email' required />
-                </p>
-                <p>
+                </div>
+                <div>
                     <label for='Password'>Password</label>
                     <input
                         onChange={(e) => this.updatePassword(e)}
                         type='password' name='Password' required />
-                </p>
-                <p>
+                </div>
+                <div>
+                    <p>
+                        Forgot password?
+                    </p>
+                </div>
+                <div>
                     <button
                         onClick={(e) => this.handleSignIn(e)}
                         class='sign-in'>Sign In</button>
-                </p>
-                <p class='account'>Don't have an account? <a class='create'>
-                    <Link
-                        to={'/Createaccount'}>
+                </div>
+                <div class='account'><p>Don't have an account?<a class='create'>
+                    <Link to={'/Createaccount'}>
                         Create Account</Link></a></p>
+                </div>
             </div>
         )
     }
