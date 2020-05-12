@@ -57,6 +57,7 @@ class App extends Component {
     // Retrieve current metric areas in database
     // this.retrieveUsersMetricAreas()
     this.retrieveMetricsList()
+    this.retrieveCurrentUsers()
   }
 
   componentWillUnmount() {
@@ -128,8 +129,6 @@ class App extends Component {
   }
 
   retrieveUsersMetricAreas = () => {
-    // console.log(this.state.user)
-    // if (this.state.user) {
       let rootPath = firebase.database().ref('metricAreas')
 
       rootPath.once('value', (snapshot) => {
@@ -222,6 +221,7 @@ class App extends Component {
       keys.map((key) => {
         usersMap.set(key, info[key])
       })
+      console.log(usersMap)
       this.setState((state) => {
         state.users = usersMap
         return state

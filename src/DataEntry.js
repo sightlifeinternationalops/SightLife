@@ -30,7 +30,7 @@ export class DataEntry extends Component {
             canEditActuals: false, // Determines users ability to enter data for actuals
             canEditTargets: false, // Determines users ability to enter data for targets
             currentYear: new Date(), // Used for entering data for the current year
-            tfValue: "January", // Will always default to January
+            tfValue: 1, // Will always default to January
             selectTF: "metricGoalsMonths", // Will always default to Months
             dataType: "number", // Will always default to number
             actualEn: false,
@@ -292,7 +292,7 @@ export class DataEntry extends Component {
                 <h2 id='month'> Month <span class="required">*</span></h2>
                 <select
                 onChange={(e) => this.updateSelectForm(e)}>
-                <option value="January">January</option>
+                {/* <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
                 <option value="April">April</option>
@@ -303,7 +303,19 @@ export class DataEntry extends Component {
                 <option value="September">September</option>
                 <option value="October">October</option>
                 <option value="November">November</option>
-                <option value="December">December</option>
+                <option value="December">December</option> */}
+                <option value={1}>January</option>
+                <option value={2}>February</option>
+                <option value={3}>March</option>
+                <option value={4}>April</option>
+                <option value={5}>May</option>
+                <option value={6}>June</option>
+                <option value={7}>July</option>
+                <option value={8}>August</option>
+                <option value={9}>September</option>
+                <option value={10}>October</option>
+                <option value={11}>November</option>
+                <option value={12}>December</option>
             </select>
             </div>)
                 break;
@@ -421,15 +433,16 @@ export class DataEntry extends Component {
         // Need: Month, metricCalculationID, and Year
         let year = new Date()
         year = year.getFullYear()
-        let x = this.test(selectTF, tfValue)
+        // let x = this.test(selectTF, tfValue)
+        let x = tfValue
 
         let rootPath = firebase.database().ref(selectTF)
 
 
         let monthString = x.toString()
-        if (x.toString().length === 1) {
-            monthString = "0" + monthString
-        }
+        // if (x.toString().length === 1) {
+        //     monthString = "0" + monthString
+        // }
         let keyString = monthString
 
         rootPath.once('value', (snapshot) => {

@@ -27,6 +27,7 @@ export class AdminSettings extends Component {
         this.retrieveAdminUsers()
         this.retrieveActualSettings()
         this.retrieveTargetSettings()
+        console.log(this.props)
     }
 
     componentDidUpdate() {
@@ -120,6 +121,8 @@ export class AdminSettings extends Component {
         e.preventDefault()
         let adminExist = this.adminExists()
 
+        console.log(e.target.value)
+
         // If the user does not exist, add them to the owners
         if (adminExist) {
             let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
@@ -193,6 +196,7 @@ export class AdminSettings extends Component {
     // Returns all current users in SightLife as 
     // <option> elements
     usersList() {
+        console.log(this.props.users)
         const usersElements = Array.from(this.props.users.entries()).map((key) => {
             let name = key[1].fName + " " + key[1].lName
             return <UserItem
@@ -216,7 +220,7 @@ export class AdminSettings extends Component {
                             <label>
                                 <select
                                     onChange={(e) => this.updateUser(e)}>
-                                    <option value="None">None</option>
+                                    <option value="None" disabled selected>Select a user</option>
                                     {usersList}
                                 </select>
                             </label>
