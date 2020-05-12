@@ -23,7 +23,8 @@ export class DashBoard extends Component {
             metricAreaCalculationsQuarter: [],
             metricAreaCalculationsAnnual: [],
             currentCalculation: 0, // Will always default to the first value in an array
-            currentYear: year
+            currentYear: year,
+            selectEnable: true
         }
     }
 
@@ -33,13 +34,14 @@ export class DashBoard extends Component {
         this.renderMetricMonthly()
         this.renderMetricQuarterly()  
         this.renderMetricAnnually()
-        console.log(this.props.metricAreaCalculationIDs)
-        console.log(this.props.metricAreaCalculations)  
+        // console.log(this.props.metricAreaCalculationIDs)
+        // console.log(this.props.metricAreaCalculations)  
+        console.log(this.props)
     }
 
-    // componentDidUpdate() {
-    //     console.log(this.state)
-    // }
+    componentDidUpdate() {
+        console.log(this.state)
+    }
 
     // Convert map to an array in the state
     arrayMonthCalculations(map) {
@@ -139,7 +141,6 @@ export class DashBoard extends Component {
 
     arrayElements() {
         const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
-            console.log(key)
             //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricCalculationRow
                     metrics={key[1].calcMetric}
@@ -150,30 +151,38 @@ export class DashBoard extends Component {
         return test
     }
 
+    // monthArrayElements() {
+    //     let currentMonth = this.state.metricAreaCalculationsMonth
+    //     let monthArrayInfo = []
+    //     var monthArray
+
+    //     for (var test in currentMonth) {
+    //         if (currentMonth[test][0] === this.state.currentCalcID) {
+    //             monthArray = currentMonth[test][1]
+    //         }
+    //     }
+
+    //     if (monthArray) {
+    //         let keys = Object.keys(monthArray)
+    //         monthArrayInfo = keys.map((key) => {
+    //             let monthInfo = monthArray[key]
+    //             return <MetricMonthly
+    //                 actual={monthInfo.actual}
+    //                 target={monthInfo.target}
+    //                 month={monthInfo.month}
+    //                 highlight={monthInfo.highlights}
+    //                 lowlight={monthInfo.lowlights}
+    //                 coe={monthInfo.coe}
+    //             />
+    //         })
+    //     }
+    //     return monthArrayInfo
+    // }
+
     monthArrayElements() {
-        let currentMonth = this.state.metricAreaCalculationsMonth
         let monthArrayInfo = []
-        var monthArray
-
-        for (var test in currentMonth) {
-            if (currentMonth[test][0] === this.state.currentCalcID) {
-                monthArray = currentMonth[test][1]
-            }
-        }
-
-        if (monthArray) {
-            let keys = Object.keys(monthArray)
-            monthArrayInfo = keys.map((key) => {
-                let monthInfo = monthArray[key]
-                return <MetricMonthly
-                    actual={monthInfo.actual}
-                    target={monthInfo.target}
-                    month={monthInfo.month}
-                    highlight={monthInfo.highlights}
-                    lowlight={monthInfo.lowlights}
-                    coe={monthInfo.coe}
-                />
-            })
+        for (let i = 0; i < 12; i++) {
+            return <MetricMonthly/>
         }
         return monthArrayInfo
     }
@@ -230,6 +239,19 @@ export class DashBoard extends Component {
         return annualArrayInfo
     }
 
+    retrieveYears() {
+        let rootPath = firebase.database().ref('metricGoalsMonths/' + this.state.currentCalcID)
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+            let keys = Object.keys(info)
+
+            let yearArray = keys.map((key) => {
+                console.log(info[key])
+            })
+        })
+    }
+
     handleChange = (event) => {
         let area = event.target.value
         const selected = event.target.options.selectedIndex
@@ -251,14 +273,25 @@ export class DashBoard extends Component {
         return(        
             <div className = "body">
             <h1> Metric Area: {this.props.metricAreaInfo} </h1>
+            <div>
             <h2> Select A Metric Calculation </h2>
             {/* <h3> Owner: {this.props.metricAreaOwner} </h3> */}
 
-            <select id="select-dropdown"
+            <select
                 onChange={(e) => this.handleChange(e)}>
                 <option value="None">None</option>
                 {metricElements}
             </select>
+
+            {/* Once a metric is selected,
+                fill in depending on how many keys
+                and enable */}
+            <select
+                disabled={this.state.selectEnable}
+                name="selectedYear">
+            
+            </select>
+            </div>
 
             {/* <Table bordered align="center">
                 <thead>
