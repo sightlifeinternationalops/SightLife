@@ -12,6 +12,8 @@ export class AdminSettings extends Component {
         super(props)
 
         this.removeAdmin = this.removeAdmin.bind(this)
+        this.handleAToggle = this.handleAToggle.bind(this)
+        this.handleTToggle = this.handleTToggle.bind(this)
 
         this.state = {
             enableEdit: false,
@@ -23,11 +25,13 @@ export class AdminSettings extends Component {
 
     componentDidMount() {
         this.retrieveAdminUsers()
-        this.retrieveSettings()
+        this.retrieveActualSettings()
+        this.retrieveTargetSettings()
+        console.log(this.props)
     }
 
     componentDidUpdate() {
-
+        console.log(this.state)
         // this.retrieveAdminUsers()
     }
 
@@ -117,6 +121,8 @@ export class AdminSettings extends Component {
         e.preventDefault()
         let adminExist = this.adminExists()
 
+        console.log(e.target.value)
+
         // If the user does not exist, add them to the owners
         if (adminExist) {
             let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
@@ -190,6 +196,7 @@ export class AdminSettings extends Component {
     // Returns all current users in SightLife as 
     // <option> elements
     usersList() {
+        console.log(this.props.users)
         const usersElements = Array.from(this.props.users.entries()).map((key) => {
             let name = key[1].fName + " " + key[1].lName
             return <UserItem
@@ -209,36 +216,76 @@ export class AdminSettings extends Component {
                 <div>
                     <form id="formBox">
                         <h2>Select an Admin</h2>
-                        <label>
-                            <select
-                                onChange={(e) => this.updateUser(e)}>
-                                <option value="None">None</option>
-                                {usersList}
-                            </select>
-                        </label>
-                        <button onClick={(e) => this.addOwner(e)}>
-                            Submit
+                        <div>
+                            <label>
+                                <select
+                                    onChange={(e) => this.updateUser(e)}>
+                                    <option value="None" disabled selected>Select a user</option>
+                                    {usersList}
+                                </select>
+                            </label>
+                            <button onClick={(e) => this.addOwner(e)}>
+                                Submit
                     </button>
-                        <button
-                            onClick={() => this.closeForm()}>
-                            Cancel
+                            <button
+                                onClick={() => this.closeForm()}>
+                                Cancel
                     </button>
+                        </div>
                     </form>
-
                 </div>
             </div>
         )
         return form
     }
 
-    // Retrieves current settings for
-    // all data entry for actuals
-    // and targets
-    retrieveSettings() {
+    handleAToggle(actualToggle) {
+        // firebase.database().ref('dataEntrySettings').update({
+        //     actualEnabled: actualToggle
+        // })
+        this.setState({
+            actualToggle
+        })
+    }
+
+    handleTToggle(targetToggle) {
+        // firebase.database().ref('dataEntrySettings').update({
+        //     targetEnabled: targetToggle
+        // })
+        this.setState({
+            targetToggle
+        })
+    }
+
+    retrieveActualSettings() {
+        let actual = null
         let actualSettings = firebase.database().ref('dataEntrySettings/actualEnabled')
-        console.log(actualSettings)
+        actualSettings.once('value', (snapshot) => {
+            let info = snapshot.val()
+            actual = info
+            console.log(actual)
+            this.setState((state) => {
+                state.actualToggle = actual
+                return state
+            })
+        })
+    }
+
+    retrieveTargetSettings() {
+        let target = null
         let targetSettings = firebase.database().ref('dataEntrySettings/targetEnabled')
-        console.log(targetSettings)
+        targetSettings.once('value', (snapshot) => {
+            let info = snapshot.val()
+            target = info
+            this.setState((state) => {
+                state.targetToggle = target
+                return state
+            })
+        })
+    }
+
+    saveSettings() {
+
     }
 
     render() {
@@ -248,7 +295,7 @@ export class AdminSettings extends Component {
 
         if (this.state.enableEdit) {
             content = (
-                <div class="PermissionInfo">
+                <div class="adminButtons">
                     <button
                         onClick={() => this.openModal()}>
                         Add Admin
@@ -261,11 +308,14 @@ export class AdminSettings extends Component {
             )
         } else {
             content = (
-                <button class='edit'
+                <div class="adminButtons">
+                <button
                     value="test"
+                    class="edit"
                     onClick={() => this.editAdminInfo()}>
                     Edit Owners
                 </button>
+                </div>
             )
         }
 
@@ -284,9 +334,13 @@ export class AdminSettings extends Component {
                                 </div>
                                 <div class="PermissionInfo">
                                     <p class="PermText2"> Owner(s) </p>
+                                    <div id="ownerElements">
                                     <ul>
+                                        <div id="test">
                                         {adminElements}
+                                        </div>
                                     </ul>
+                                    </div>
                                     {content}
                                 </div>
                             </section>
@@ -301,35 +355,35 @@ export class AdminSettings extends Component {
                                 </div>
 
                                 <div class="PermissionInfo">
-                                    {/* <p>
-                                        Data Entry for Actuals:
-                                        <label class="switch">
-                                            <input type="checkbox" />
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </p> */}
-                                    {/* <p>
-                                        Data Entry for Targets:
-                                        <label class="switch">
-                                            <input type="checkbox" />
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </p> */}
+                                    <div id="entryFormSettings">
                                     <label>
-                                        <span>Data Entry for Actuals:</span>
-                                        <Switch class='toggle'/>
-                                    </label>
+                                        <span>Data Entry for Actuals:</span></label>
+                                        <Switch
+                                            uncheckedIcon={false}
+                                            checkedIcon={false}
+                                            onChange={this.handleAToggle}
+                                            checked={this.state.actualToggle}
+                                            className="react-switch"
+                                        />
                                     <label>
-                                        <span>Data Entry for Targets:</span>
-                                        <Switch class='toggle'/>
-                                    </label>
+                                        <span>Data Entry for Targets:</span></label>
+                                        <Switch
+                                            className="react-switch"
+                                            uncheckedIcon={false}
+                                            checkedIcon={false}
+                                            onChange={this.handleTToggle}
+                                            checked={this.state.targetToggle}
+                                        />
+                                        </div>
                                 </div>
 
                             </section>
                         </div>
 
                         <div class='Save2Button'>
-                            <button class='save2' type="Save" value="Save"> Save </button>
+                            <button
+                                onClick={this.saveSettings}
+                                class='save2' type="Save" value="Save"> Save </button>
                         </div>
                     </div>
 
@@ -356,7 +410,7 @@ class AdminItem extends Component {
         </button>
 
         return (
-            <li>
+            <li className="test">
                 {this.props.admin}
                 {button}
             </li>

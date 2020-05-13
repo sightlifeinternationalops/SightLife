@@ -53,6 +53,7 @@ export class AdminPanelUserPermissions extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             let userMap = new Map()
+            // is this loop necessary?
             keys.map((key) => {
                 if (key === "owners") {
                     let objectMap = info[key]

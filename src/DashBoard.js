@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import { Table, Button} from 'reactstrap';
-// import {MetricCalculationRow} from './test';
-
+import { Table, Button } from 'reactstrap';
 
 import './index.js';
 import './css/DashBoard.css';
@@ -16,6 +13,8 @@ export class DashBoard extends Component {
         let year = new Date()
         year = year.getFullYear().toString()
 
+        this.handleYearChange = this.handleYearChange.bind(this)
+
         this.state = {
             // Calculations should have the same array lengths...
             // Work on centralizing the data so we aren't hoping
@@ -24,250 +23,237 @@ export class DashBoard extends Component {
             metricAreaCalculationsQuarter: [],
             metricAreaCalculationsAnnual: [],
             currentCalculation: 0, // Will always default to the first value in an array
-            currentYear: year
+            currentYear: year,
+            selectEnable: true,
+            monthsYearsMap: new Map(),
+            quartersYearsMap: new Map(),
+            annualsYearsMap: new Map(),
+            selectedYearMap: new Map(),
+            selectedQuarterMap: new Map(),
+            selectedAnnualMap: new Map()
         }
     }
 
     // Do any information retrieval here
     componentDidMount() {
-        // Retrieve monthly information for a metric calculation
-        this.renderMetricMonthly()
-        this.renderMetricQuarterly()  
-        this.renderMetricAnnually()  
     }
 
-    // componentDidUpdate() {
-    //     console.log(this.state)
-    // }
-
-    // Convert map to an array in the state
-    arrayMonthCalculations(map) {
-        this.setState((state) => {
-            let monthArray = Array.from(map.entries()).map((key) => {
-                return key
-            })
-            state.metricAreaCalculationsMonth = monthArray
-            return state
-        })
-    }
-    
-    // Convert a map to an array in the state
-    arrayQuarterCalculations(map) {
-        this.setState((state) => {
-            let quarterArray = Array.from(map.entries()).map((key) => {
-                return key
-            })
-            state.metricAreaCalculationsQuarter = quarterArray
-            return state
-        })
-    }
-
-    // Convert a map to an array in the state
-    arrayAnnualCalculations(map) {
-        this.setState((state) => {
-            let yearArray = Array.from(map.entries()).map((key) => {
-                return key
-            })
-            state.metricAreaCalculationsAnnual = yearArray
-            return state
-        })
-    }
-
-    // Retrieve data for monthly calculations
-    renderMetricMonthly = () => {
-        let rootPath = firebase.database().ref('metricGoalsMonths')
-        let monthMap = new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val();
-            let keys = Object.keys(info);
-            keys.map((key) => {
-                // If the our prop of metric calculation IDs contains the ID, add it to the month map.
-                Array.from(this.props.metricAreaCalculations.entries()).map((key2) => {
-                    if (key2[0] == key) {
-                        monthMap.set(key, info[key])
-                    }
-                }) 
-            })
-            this.arrayMonthCalculations(monthMap)
-        })
-    }
-
-    // Retrieve data for quarterly calculations
-    renderMetricQuarterly = () => {
-        let rootPath = firebase.database().ref('metricGoalsQuarters')
-        let quarterMap = new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val();
-            let keys = Object.keys(info);
-            keys.map((key) => {
-                let intKey = parseInt(key, 10)
-                // if (this.props.metricAreaCalculations.includes(intKey)) {
-                //     quarterMap.set(key, info[key])
-                // }
-            })
-            this.arrayQuarterCalculations(quarterMap)
-        })
-    }
-
-    // Retrieve data for annually calculations
-    renderMetricAnnually = () => {
-        let rootPath = firebase.database().ref('metricGoalsAnnuals')
-        let annualMap = new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val();
-            let keys = Object.keys(info);
-            keys.map((key) => {
-                let intKey = parseInt(key, 10)
-                // if (this.props.metricAreaCalculationIDs.includes(intKey)) {
-                //     console.log(info[key])
-                //     annualMap.set(key, info[key])
-                // }
-            })
-            this.arrayAnnualCalculations(annualMap)
-        })
-    }
-
-    leftButtonClick() {
-        // let checkIfNullOrUnDef = this.state.metricAreaCalculationsQuarter.length
-        // console.log(checkIfNullOrUnDef)
-        // // if (checkIfNullOrUnDef) {
-        // //     console.log(this.state.metricAreaCalculationsMonth.length)
-        // // }
-    }
-
-    rightButtonClick() {
-        // let checkIfNullOrUnDef = this.state.metricAreaCalculationsQuarter
-        // if (checkIfNullOrUnDef) {
-        //     console.log(this.state.metricAreaCalculationsMonth.length)
-        // }
+    componentDidUpdate() {
+        // console.log(this.state)
     }
 
     arrayElements() {
         const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
             //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricCalculationRow
-                    metrics={key[1].calcMetric}
-                    metricCalc={key[1].calcName}
-                    />
+                metrics={key[1].calcMetric}
+                metricCalc={key[1].calcName}
+                metricCalcID={key[1].calcID}
+            />
         })
         return test
     }
 
-    monthArrayElements() {
-        let currentMonth = this.state.metricAreaCalculationsMonth
-        let monthArrayInfo = []
-        var monthArray
+    handleChange = (event) => {
+        let area = event.target.value
+        const selected = event.target.options.selectedIndex
+        let field = (event.target.options[selected].getAttribute('id'))
+        let monthsMap = this.information(field, "metricGoalsMonths")
+        let quartersMap = this.information(field, "metricGoalsQuarters")
+        let annualsMap = this.information(field, "metricGoalsAnnuals")
 
-        for (var test in currentMonth) {
-            if (currentMonth[test][0] == this.state.currentCalc) {
-                monthArray = currentMonth[test][1]
+        this.setState((state) => {
+            state.currentCalc = area
+            state.currentCalcID = field
+            state.monthsYearsMap = monthsMap
+            state.quartersYearsMap = quartersMap
+            state.annualsYearsMap = annualsMap
+            state.selectEnable = false
+        })
+    }
+
+    // Accepts two parameters,
+    // id and path, where id
+    // is the selected metric calculation id and
+    // path is the path to the specified times.
+    // Returns a map containing all information across years
+    // for that specific calculation id
+    information(id, path) {
+        let rootPath = firebase.database().ref(path + "/" + id)
+        let infoMap =  new Map()
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    infoMap.set(key, info[key])
+                })
             }
-        }
+        })
+        return infoMap
+    }
 
-        if (monthArray) {
-            let keys = Object.keys(monthArray)
-            monthArrayInfo = keys.map((key) => {
-                let monthInfo = monthArray[key]
-                console.log(monthInfo)
-                return <MetricMonthly
-                    actual={monthInfo.actual}
-                    target={monthInfo.target}
-                    month={monthInfo.month}
-                    highlight={monthInfo.highlights}
-                    lowlight={monthInfo.lowlights}
-                    coe={monthInfo.coe}
-                />
-            })
+    // Renders elements for the selected year for months
+    yearElements() {
+        const yearElements = Array.from(this.state.monthsYearsMap.entries()).map((key) => {
+            return <YearElement
+                year={key[0]}
+                yearFunc={this.handleYearChange} />
+        })
+        return yearElements
+    }
+
+    // When a year is selected,
+    // retrieves information for the month, quarter, and selected year
+    // and pushes changes to state
+    handleYearChange(event) {
+        let selectedYear = event.target.value
+        let selectedYearMap = this.state.monthsYearsMap.get(selectedYear)
+        let selectedQuarterMap = this.state.quartersYearsMap.get(selectedYear)
+        let selectedAnnualMap = this.state.annualsYearsMap.get(selectedYear)
+        this.setState((state) => {
+            state.selectedYear = selectedYear
+            state.selectedYearMap = selectedYearMap
+            state.selectedQuarterMap = selectedQuarterMap
+            state.selectedAnnualMap = selectedAnnualMap
+        })
+    }
+
+    // Renders information for months for
+    // the selected metric calculation and year
+    monthArrayElements() {
+        const monthArrayInfo = []
+        for (let i = 0; i <= 11; i++) {
+            let monthObj = this.state.selectedYearMap[i + 1]
+
+            if (monthObj) {
+                monthArrayInfo[i] = (
+                    <MetricMonthly
+                        month={i + 1}
+                        actual={monthObj.actual}
+                        coe={monthObj.coe}
+                        highlights={monthObj.highlights}
+                        lowlights={monthObj.lowlights}
+                        target={monthObj.target}/>
+                )
+            } else {
+                monthArrayInfo[i] = (
+                    <MetricMonthly
+                        month={i + 1}
+                        actual=""
+                        coe=""
+                        highlights=""
+                        lowlights=""
+                        target=""/>
+                )
+            }
         }
         return monthArrayInfo
     }
 
-    quarterArrayElements(numValue) {
-        // Metrics for quarterly information
-        let currentQuarterCalc = this.state.metricAreaCalculationsQuarter
-        let calculationInfoQuarter = currentQuarterCalc[numValue]
-        let quarterArrayInfo = []
-
-        if (calculationInfoQuarter) {
-            let calculationKeys = calculationInfoQuarter[1]
-            let keys = Object.keys(calculationKeys)
-            quarterArrayInfo = keys.map((key) => {
-                let quarterInfo = calculationKeys[key]
-                if (quarterInfo.year = this.state.currentYear) {
-                    return <MetricQuarterly
-                    actual={quarterInfo.actual}
-                    target={quarterInfo.target}
-                    quarter={quarterInfo.quarter}
-                    highlight={quarterInfo.highlights}
-                    lowlight={quarterInfo.lowlights}
-                    coe={quarterInfo.coe}
-                />
-                }
-            })
+    // Renders information for quarters for the
+    // selected metric calculation and year
+    quarterArrayElements() {
+        const quarterArrayInfo = []
+        for (let i = 0; i <= 3; i++) {
+            let quarterObj = this.state.selectedQuarterMap[i + 1]
+            if (quarterObj) {
+                quarterArrayInfo[i] = (
+                    <MetricQuarterly
+                        quarter={i + 1}
+                        actual={quarterObj.actual}
+                        coe={quarterObj.coe}
+                        highlights={quarterObj.highlights}
+                        lowlights={quarterObj.lowlights}
+                        target={quarterObj.target}
+                    />
+                )
+            } else {
+                quarterArrayInfo[i] = (
+                <MetricQuarterly
+                quarter={i + 1}
+                actual=""
+                coe=""
+                highlights=""
+                lowlights=""
+                target=""
+                
+            />)
+            }
         }
         return quarterArrayInfo
     }
 
-    annualArrayElements(numValue) {
-        // Metrics for annual information
-        let currentAnnualCalc = this.state.metricAreaCalculationsAnnual
-        let calculationInfoAnnual = currentAnnualCalc[numValue]
+    // Renders information for annuals for
+    // the selected metric calculation and year
+    annualsArrayElements() {
         let annualArrayInfo = []
-
-        if (calculationInfoAnnual) {
-            let calculationKeys = calculationInfoAnnual[1]
-            let keys = Object.keys(calculationKeys)
-            annualArrayInfo = keys.map((key) => {
-                let annualInfo = calculationKeys[key]
-                if (annualInfo.year = this.state.currentYear) {
-                    return <MetricAnnuals
-                    actual={annualInfo.actual}
-                    target={annualInfo.target}
-                    annual={annualInfo.quarter}
-                    highlight={annualInfo.highlights}
-                    lowlight={annualInfo.lowlights}
-                    coe={annualInfo.coe}
-                />
-                }
-            })
+        for (let i = 0; i < 1; i++) {
+            let annualObj = this.state.selectedAnnualMap[i + 1]
+            console.log(annualObj)
+            if (annualObj) {
+                annualArrayInfo[i] = (
+                    <MetricAnnuals
+                        year={this.state.selectedYear}
+                        actual={annualObj.actual}
+                        coe={annualObj.coe}
+                        highlights={annualObj.highlights}
+                        lowlights={annualObj.lowlights}
+                        target={annualObj.target}
+                    />
+                )
+            } else {
+                annualArrayInfo[i] = (
+                    <MetricAnnuals
+                    year={this.state.selectedYear}
+                    actual=""
+                    coe=""
+                    highlights=""
+                    lowlights=""
+                    target=""
+                    />
+                )
+            }
         }
         return annualArrayInfo
-    }
-
-    handleChange = (event) => {
-        let area = event.target.value
-        this.setState((state) => {
-            state.currentCalc = area
-        })
     }
 
     render() {
         const metricElements = this.arrayElements()
 
-        let leftButtonString = "<"
-        let rightButtonString = ">"
-
         let currentNumCalc = this.state.currentCalculation
-        let monthElements = this.monthArrayElements(currentNumCalc)
-        let quarterElements = this.quarterArrayElements(currentNumCalc)
-        let annualElements = this.annualArrayElements(currentNumCalc)
+        const monthElements = this.monthArrayElements()
+        const quarterElements = this.quarterArrayElements()
+        let annualElements = this.annualsArrayElements()
+        let yearElements = this.yearElements()
 
-        return(        
-            <div className = "body">
-            <h1> Metric Area: {this.props.metricAreaInfo} </h1>
-            <h2> Select A Metric Calculation </h2>
-            {/* <h3> Owner: {this.props.metricAreaOwner} </h3> */}
+        return (
+            <div className="body">
+                <h1> Metric Area: {this.props.metricAreaInfo} </h1>
+                <div>
+                    <h2> Select A Metric Calculation </h2>
 
-            <select id="select-dropdown"
-                onChange={(e) => this.handleChange(e)}>
-                <option value="None">None</option>
-                {metricElements}
-            </select>
+                    <select
+                        onChange={(e) => this.handleChange(e)}>
+                        <option value="None" disabled selected>None</option>
+                        {metricElements}
+                    </select>
 
-            {/* <Table bordered align="center">
+                    {/* Once a metric is selected,
+                    fill in depending on how many keys
+                    and enable */}
+                    <select
+                        disabled={this.state.selectEnable}
+                        name="selectedYear"
+                        onChange={(e) => this.handleYearChange(e)}>
+                        <option value="" disabled selected>Select a Year</option>
+                        {yearElements}
+                    </select>
+                </div>
+
+                {/* <Table bordered align="center">
                 <thead>
                     <tr>
                     <th> Metric Calculations </th>
@@ -282,18 +268,29 @@ export class DashBoard extends Component {
                 </tbody>
             </Table> */}
 
-            {/* Container for current  */}
-            <div>
-                {/* Monthly Information */}
-                {monthElements}
-            
-                {/* Quarterly Information */}
-                {quarterElements}
+                {/* Container for current  */}
+                <div>
+                    {/* Monthly Information */}
+                    {monthElements}
+                    {/* Quarterly Information */}
+                    {quarterElements}
 
-                {/* Yearly Information */}
-                {annualElements}
+                    {/* Yearly Information */}
+                    {annualElements}
+                </div>
             </div>
-        </div>
+        )
+    }
+}
+
+// Represents a single year <option> element in the
+// select drop-down.
+class YearElement extends Component {
+    render() {
+        return (
+            <option value={this.props.year}>
+                {this.props.year}
+            </option>
         )
     }
 }
@@ -303,16 +300,8 @@ export class DashBoard extends Component {
 class MetricCalculationRow extends Component {
     render() {
         return (
-            // <tr>
-            //     <th>
-            //         {this.props.metrics}
-            //     </th>
-            //     {/* <th>
-            //         {this.props.metricCalc}
-            //     </th> */}
-            // </tr>
             <option value={this.props.metrics}
-                name={this.props.metrics}>
+                id={this.props.metricCalcID}>
                 {this.props.metrics}
             </option>
         )
@@ -324,18 +313,18 @@ class MetricMonthly extends Component {
     }
 
     month(num) {
-        switch(num) {
+        switch (num) {
             case 1:
                 return "January"
             case 2:
                 return "February"
-            case 3: 
+            case 3:
                 return "March"
             case 4:
                 return "April"
             case 5:
                 return "May"
-            case 6: 
+            case 6:
                 return "June"
             case 7:
                 return "July"
@@ -360,19 +349,16 @@ class MetricMonthly extends Component {
     // If the actual is neither of the above,
     // change color to red. 
     actualColor(actual, target) {
-        if (actual >= target ) {
-            console.log("Green to go!")
+        if (actual >= target) {
+            console.log("Good to go!")
         } else {
             console.log("Actuals not met and not within 5%")
         }
     }
 
-    
-
     render() {
         let actualValue = this.props.actual
         let monthValue = this.month(this.props.month)
-        console.log(this.props.month)
         // If there is no value existing for the actual yet
         if (!actualValue) {
             actualValue = "N/A"
@@ -384,7 +370,7 @@ class MetricMonthly extends Component {
                 <Table responsive>
                     <tbody>
                         <tr>
-                        <th>Actual</th>
+                            <th>Actual</th>
                             <th>Target</th>
                             <th>Highlights</th>
                             <th>Lowlights</th>
@@ -393,8 +379,8 @@ class MetricMonthly extends Component {
                         <tr>
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
-                            <th>{this.props.highlight}</th>
-                            <th>{this.props.lowlight}</th>
+                            <th>{this.props.highlights}</th>
+                            <th>{this.props.lowlights}</th>
                             <th>{this.props.coe}</th>
                         </tr>
                     </tbody>
@@ -408,7 +394,7 @@ class MetricQuarterly extends Component {
     render() {
 
         let actualValue = this.props.actual
-        let quarterValue = "Q" + this.props.quarter
+        let quarterValue = "Quarter " + this.props.quarter
 
         // If there is no value existing for the actual yet
         if (!actualValue) {
@@ -423,7 +409,7 @@ class MetricQuarterly extends Component {
                         <tr>
                             <th>Actual</th>
                             <th>Target</th>
-                            <th>Highlights</th> 
+                            <th>Highlights</th>
                             <th>Lowlights</th>
                             <th>Correction of Error</th>
                         </tr>
@@ -431,9 +417,9 @@ class MetricQuarterly extends Component {
                             {/* This should be auto-calculated based upon month values */}
                             <th>{actualValue}</th>
                             <th>{this.props.target}</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
+                            <th>{this.props.highlights}</th>
+                            <th>{this.props.lowlights}</th>
+                            <th>{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
@@ -444,9 +430,15 @@ class MetricQuarterly extends Component {
 
 class MetricAnnuals extends Component {
     render() {
+
+        let actualValue = this.props.actual
+                // If there is no value existing for the actual yet
+                if (!actualValue) {
+                    actualValue = "N/A"
+                }
         return (
             <div>
-                <h2>Annual</h2>
+                <h2>Annual Information {this.props.year} </h2>
                 <Table>
                     <tbody>
                         <tr>
@@ -457,11 +449,11 @@ class MetricAnnuals extends Component {
                             <th>Correction of Error</th>
                         </tr>
                         <tr>
-                            <th>{this.props.actual}</th>
+                            <th>{actualValue}</th>
                             <th>{this.props.target}</th>
-                            <th>{this.props.highlight}</th>
-                            <th>{this.props.lowlight}</th>
-                            <th>{this.props.correction}</th>
+                            <th>{this.props.highlights}</th>
+                            <th>{this.props.lowlights}</th>
+                            <th>{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>

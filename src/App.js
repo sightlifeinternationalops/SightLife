@@ -25,12 +25,16 @@ class App extends Component {
     super(props);
 
     let metricAreas = new Map()
+    let userInfo = {
+      uid: ""
+    }
 
     this.state = {
       email: '',
       password: '',
       metrics: metricAreas,
-      users: new Map()
+      usersMetrics: new Map(),
+      users: new Map(),
     };
   }
 
@@ -41,6 +45,8 @@ class App extends Component {
           user: firebaseUser,
           verified: firebaseUser.emailVerified
         })
+        // Retrieve current user's metric areas
+        this.retrieveUsersMetricAreas()
       } else { // Log user out
         this.setState({
           user: null
@@ -49,6 +55,7 @@ class App extends Component {
     })
 
     // Retrieve current metric areas in database
+    // this.retrieveUsersMetricAreas()
     this.retrieveMetricsList()
     this.retrieveCurrentUsers()
   }
@@ -121,6 +128,31 @@ class App extends Component {
 
   }
 
+  retrieveUsersMetricAreas = () => {
+      let rootPath = firebase.database().ref('metricAreas')
+
+      rootPath.once('value', (snapshot) => {
+        let info = snapshot.val()
+        let keys = Object.keys(info);
+        let ownerMap = new Map()
+  
+        keys.map((key) => {
+          let currentOwners = info[key].owners
+          for (var user in currentOwners) {
+            if (currentOwners[user].userID === this.state.user.uid) {
+              ownerMap.set(key, info[key])
+            }
+          }
+        })
+        this.setState((state) => {
+          state.usersMetrics = ownerMap;
+          return state;
+        })
+        // this.updateMetricAreas(ownerMap)
+      })      
+    // }
+  }
+
   // Function for retrieving existing metrics
   // Note: Separated this from renderMetricsList so that we can just
   // pass in metricArea information to our components rather
@@ -143,6 +175,13 @@ class App extends Component {
         return state;
       })
     });
+  }
+
+  // Update current metric areas
+  updateMetricAreas(areas) {
+    this.setState((state) => {
+      state.usersMetrics = areas
+    })
   }
 
   // Function for retrieving metric calculations
@@ -170,24 +209,26 @@ class App extends Component {
     });
   }
 
-    // Retrieves a list of all current users
-    // in SightLife
-    retrieveCurrentUsers() {
-      let rootPath = firebase.database().ref('users')
-      rootPath.once('value', (snapshot) => {
-          let info = snapshot.val();
-          let keys = Object.keys(info)
-          let usersMap = new Map()
+  // Retrieves a list of all current users
+  // in SightLife
+  retrieveCurrentUsers() {
+    let rootPath = firebase.database().ref('users')
+    rootPath.once('value', (snapshot) => {
+      let info = snapshot.val();
+      let keys = Object.keys(info)
+      let usersMap = new Map()
 
-          keys.map((key) => {
-            usersMap.set(key, info[key])
-          })
-          this.setState((state) => {
-            state.users = usersMap
-            return state
-          })
+      keys.map((key) => {
+        usersMap.set(key, info[key])
       })
+      console.log(usersMap)
+      this.setState((state) => {
+        state.users = usersMap
+        return state
+      })
+    })
   }
+
 
   render() {
     let content = null
@@ -230,8 +271,8 @@ class App extends Component {
               <Route path="/HistoricalData" component={HistoricalData} />
               <Route
                 path="/Metrics"
-                render={(props) => <Metrics
-                  {...props}
+                render={() => <Metrics
+                  // {...this.state}
                   metrics={this.state.metrics}
                   metricAreaElements={this.metricAreaElements}
                 // retrieveMetricCalculations={this.retrieveMetriCalculations}
@@ -240,7 +281,8 @@ class App extends Component {
               <Route
                 exact path="/DataEntry"
                 render={() => <DataEntry
-                  metrics={this.state.metrics}
+                  {...this.state}
+                  usersMetrics={this.state.usersMetrics}
                   retMetricCalculations={this.retrieveMetricCalculations}
                 />}
               />
@@ -260,9 +302,9 @@ class App extends Component {
               />
               {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
               <Route path="/AdminSettings"
-                render={() => <AdminSettings 
+                render={() => <AdminSettings
                   users={this.state.users}
-                  metrics={this.state.metrics}/>}
+                  metrics={this.state.metrics} />}
               />
               <Route
                 path="/AdminPanelMetrics"
@@ -321,15 +363,15 @@ class NavBar extends Component {
               <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
             </li>
             <li className="nav-item">
-              <div class="dropdown" id="myForm">
-                <img class="profile" src={Profile} />
-                <div class="dropdown-content" id="sign">
+              <div className="dropdown" id="myForm">
+                <img className="profile" src={Profile} />
+                <div className="dropdown-content" id="sign">
                   {/* <image class='prof-pic'>User's Profile Picture</image> */}
-                  <p class='user-name'>User's Name</p>
-                  <button type="submit" class="btn">
+                  <p className='user-name'>User's Name</p>
+                  <button type="submit" className="btn">
                     <NavLink to='/Metrics' className="nav-link"> DashBoard </NavLink>
                   </button>
-                  <button type="submit" class="btn">
+                  <button type="submit" className="btn">
                     <NavLink to='/AdminPanel' className="nav-link">Admin Panel</NavLink>
                   </button>
                   <button id="signOutButton"
