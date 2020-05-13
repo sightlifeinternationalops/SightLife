@@ -12,7 +12,8 @@ export class Metrics extends Component {
     constructor(props) {
         super(props);
 
-        this.setMetricName = this.setMetricName.bind(this)
+        this.retrieveInfo = this.retrieveInfo.bind(this)
+
         this.state = {
             // Data to be passed into metric calculations
             // Represents metricAreaName
@@ -25,55 +26,40 @@ export class Metrics extends Component {
         }
     }
 
-    // Callback to render new information
-    setCalculations(owner, mapCalculations, metricAreaCalculationIDs) {
-        this.setState((state) => {
-            // state.metricAreaOwner = owner
-            state.metricAreaCalculations = mapCalculations
-            // state.metricAreaCalculationIDs = metricAreaCalculationIDs
-            return state
-        })
+    retrieveInfo(name, id) {
+        let rootPath = firebase.database().ref('metricCalculations')
+
+        rootPath.once('value', (snapshot) => {
+            let metricCalcInfo = snapshot.val();
+            let databaseKeys = Object.keys(metricCalcInfo);
+            let mapCalculations = new Map()
+
+            databaseKeys.map((key) => {
+                let Mid = metricCalcInfo[key].metricAreaID
+                if (id === Mid) {
+                    mapCalculations.set(key, metricCalcInfo[key])
+                }
+            })
+            // // Set the state to the new values that were obtained
+            // this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
+            console.log(mapCalculations)
+            this.setInfo(mapCalculations, name, id)
+        });
+        // this.setState({
+        //     metricAreaInfo: name,
+        //     metricAreaID: id,
+        //     dashboardEnabled: true
+        // })
     }
-
-    // // Render dashboard page and send it the necessary props
-    // // Note: Possibily redistribute later through App.js to metrics + data entry
-    // renderMetricCalculations = (routerProps) => {
-
-    //     // Retrieve all relevant information for a metric area 
-    //     let rootPath = firebase.database().ref('metricCalculations')
-
-    //     rootPath.once('value', (snapshot) => {
-    //         let metricCalcInfo = snapshot.val();
-    //         let databaseKeys = Object.keys(metricCalcInfo);
-    //         let owner = null
-    //         let mapCalculations = new Map()
-
-    //         let metricAreaCalculationIDs = databaseKeys.map((key) => {
-    //             let id = metricCalcInfo[key].metricAreaID
-    //             if (this.state.metricAreaID && id == this.state.metricAreaID) {
-    //                 owner = metricCalcInfo[key].owner
-    //                 mapCalculations.set(key, metricCalcInfo[key])
-    //                 return metricCalcInfo[key].metricCalculationID
-    //             }
-    //         })
-    //         // Set the state to the new values that were obtained
-    //         this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
-    //     });
-
-    //     return <DashBoard
-    //         {...routerProps}
-    //         metricAreaInfo={this.state.metricAreaInfo}
-    //         metricAreaID={this.state.metricAreaID}
-    //         metricAreaOwner={this.state.metricAreaOwner}
-    //         metricAreaCalculations={this.state.metricAreaCalculations}
-    //         metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-    //     />
-    // }
-
-    setMetricName(name, id) {
-        this.setState({
-            metricAreaInfo: name,
-            metricAreaID: id
+    
+    // Callback to render new information
+    setInfo(mapCalculations, name, id) {
+        this.setState((state) => {
+            state.metricAreaCalculations = mapCalculations
+            state.dashboardEnabled = true
+            state.metricAreaID = id
+            state.metricAreaInfo = name
+            return state
         })
     }
 
@@ -84,7 +70,7 @@ export class Metrics extends Component {
             return <MetricAreaCard
                 metricName={key[1].metricName}
                 metricID={key[1].metricID}
-                metricNameFunc={this.setMetricName}
+                metricNameFunc={this.retrieveInfo}
             />
         })
         return metricAreaElements
@@ -98,7 +84,14 @@ export class Metrics extends Component {
         if (this.state.dashboardEnabled) {
             content = (
                 <div>
-                    <DashBoard/>
+                    <DashBoard
+                        {...this.state}
+                        metricAreaInfo={this.state.metricAreaInfo}
+                        metricAreaID={this.state.metricAreaID}
+                        metricAreaOwner={this.state.metricAreaOwner}
+                        metricAreaCalculations={this.state.metricAreaCalculations}
+                        metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+                    />
                 </div>
             )
         } else {
@@ -119,25 +112,6 @@ export class Metrics extends Component {
         )
     }
 }
-
-// // Represents a single metric button to render. A single metric card will contain the name of the metric
-// // and acts as a link to the dashboard of the respective metric. 
-// export class MetricAreaCard extends Component {
-//     render() {
-//         return (
-//             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
-//             <Card className='metrics' border="primary">
-//                 <CardBody className='metricsBody'>
-//                     <Link
-//                         to={'/Metrics/' + this.props.metricName}
-//                         onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
-//                         {this.props.metricName}
-//                     </Link>
-//                 </CardBody>
-//             </Card>
-//         )
-//     }
-// }
 
 class MetricAreaCard extends Component {
     render() {
