@@ -1,0 +1,28 @@
+.questions {
+    text-align: left;
+    font-weight: bold;
+}
+
+.block {
+    margin-top: 3rem;
+    margin-left: 9rem;
+    margin-right: 9rem;
+}
+
+.title {
+    color: #6D6E70;
+}
+
+img.FAQ1 {
+    align-content: center;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+img.FAQ2 {
+    align-content: center;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}

@@ -261,7 +261,7 @@ export class AdminSettings extends Component {
             )
         } else {
             content = (
-                <button
+                <button class='edit'
                     value="test"
                     onClick={() => this.editAdminInfo()}>
                     Edit Owners
@@ -317,7 +317,11 @@ export class AdminSettings extends Component {
                                     </p> */}
                                     <label>
                                         <span>Data Entry for Actuals:</span>
-                                        <Switch/>
+                                        <Switch class='toggle'/>
+                                    </label>
+                                    <label>
+                                        <span>Data Entry for Targets:</span>
+                                        <Switch class='toggle'/>
                                     </label>
                                 </div>
 

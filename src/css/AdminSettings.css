@@ -203,4 +203,23 @@ a.Admin {
     color: #fff;
 }
 
-  
+.PermissionInfo {
+  text-align: center;
+  align-content: center;
+  padding-bottom: 20px;
+}
+
+.edit {
+  background: rgb(153, 145, 198);
+  border: transparent;
+  color: white;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding-bottom: center;
+}
+
+.toggle {
+  margin-top: 10px;
+}
