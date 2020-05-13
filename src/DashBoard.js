@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'reactstrap';
-// import {MetricCalculationRow} from './test';
-
 
 import './index.js';
 import './css/DashBoard.css';
@@ -60,9 +58,6 @@ export class DashBoard extends Component {
         let area = event.target.value
         const selected = event.target.options.selectedIndex
         let field = (event.target.options[selected].getAttribute('id'))
-        // let yearsMap = this.monthInformation(field)
-        // let quartersMap = this.quarterInformation(field)
-        // let annualsMap = this.annualInformation(field)
         let monthsMap = this.information(field, "metricGoalsMonths")
         let quartersMap = this.information(field, "metricGoalsQuarters")
         let annualsMap = this.information(field, "metricGoalsAnnuals")
@@ -247,8 +242,8 @@ export class DashBoard extends Component {
                     </select>
 
                     {/* Once a metric is selected,
-                fill in depending on how many keys
-                and enable */}
+                    fill in depending on how many keys
+                    and enable */}
                     <select
                         disabled={this.state.selectEnable}
                         name="selectedYear"
