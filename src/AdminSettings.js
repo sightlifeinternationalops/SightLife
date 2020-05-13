@@ -311,6 +311,7 @@ export class AdminSettings extends Component {
                 <div class="adminButtons">
                 <button
                     value="test"
+                    class="edit"
                     onClick={() => this.editAdminInfo()}>
                     Edit Owners
                 </button>

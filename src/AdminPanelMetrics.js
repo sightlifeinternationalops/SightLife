@@ -227,19 +227,19 @@ export class AdminPanelMetrics extends Component {
                     <AdminPanelNav />
                     <div class="main_content">
                         <div>
-                            <CardDeck className="PermDatadeck">
-                                <h1 class='selection' id='met-areas'> Metric Areas 
+                        <h1 class='selection' id='met-areas'> Metric Areas
                                 <button
                                     id="addMetricAreaButton" 
                                     onClick={() => this.renderModal()}>
                                     <img class='more' src={More} /></button> </h1>
+                            <CardDeck className="PermDatadeck">
                                 {metricAreaElements}
                             </CardDeck>
                         </div>
                         <div>
                             {/* Archived Metric Areas */}
+                            <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             <CardDeck className="PermDatadeck">
-                                <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             </CardDeck>
                         </div>
                         {form}

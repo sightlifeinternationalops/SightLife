@@ -695,15 +695,16 @@ export class DataEntryForm extends Component {
                         </select>
                         {timeDisplay}
                         <h2 class='InputOption'> Input Data For: <span class="required">*</span> </h2>
-                        <div>
-                            <label for="actual"> <input
-                                onChange={(e) => this.props.updateRadioForm(e)}
-                                type="radio" id="actual" value="Actual" name="dataAT" />Actual</label>
-                        </div>
-                        <div>
-                            <label for="target"><input
-                                onChange={(e) => this.props.updateRadioForm(e)}
-                                type="radio" id="Target" value="Target" name="dataAT" />Target</label>
+                        <div class='CheckBoxes'> 
+                            <div class='check-one'>
+                                <input class='box' type="checkbox" id="Target" name="Target" value="Target"  onChange={(e) => this.props.updateRadioForm(e)}/>
+                                <label class='check' for="Target">Target </label>
+                            </div>
+                            
+                            <div class='check-one'>
+                                <input class='box' type="checkbox" id="Actual" name="Actual" value="Actual"  onChange={(e) => this.props.updateRadioForm(e)}/>
+                                <label class='check' for="Actual">Actual</label>
+                            </div>
                         </div>
                         <div>
                             <p>
