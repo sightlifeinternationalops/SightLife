@@ -60,77 +60,44 @@ export class DashBoard extends Component {
         let area = event.target.value
         const selected = event.target.options.selectedIndex
         let field = (event.target.options[selected].getAttribute('id'))
-        let yearsMap = this.monthInformation(field)
-        let quartersMap = this.quarterInformation(field)
-        let annualsMap = this.annualInformation(field)
+        // let yearsMap = this.monthInformation(field)
+        // let quartersMap = this.quarterInformation(field)
+        // let annualsMap = this.annualInformation(field)
+        let monthsMap = this.information(field, "metricGoalsMonths")
+        let quartersMap = this.information(field, "metricGoalsQuarters")
+        let annualsMap = this.information(field, "metricGoalsAnnuals")
 
         this.setState((state) => {
             state.currentCalc = area
             state.currentCalcID = field
-            state.monthsYearsMap = yearsMap
+            state.monthsYearsMap = monthsMap
             state.quartersYearsMap = quartersMap
             state.annualsYearsMap = annualsMap
             state.selectEnable = false
         })
     }
 
-    monthInformation(id) {
-        let rootPath = firebase.database().ref('metricGoalsMonths/' + id)
-        let monthsYearsMap = new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val()
-
-            // Allows metric calculations with no months/quarters/annuals
-            // to be selected but it won't rerender 
-            if (info) {
-                let keys = Object.keys(info)
-
-                keys.map((key) => {
-                    console.log(key)
-                    monthsYearsMap.set(key, info[key])
-                })
-            }
-        })
-        return monthsYearsMap
-    }
-
-    quarterInformation(id) {
-        let rootPath = firebase.database().ref('metricGoalsQuarters/' + id)
-        let quartersYearsMap = new Map()
+    // Accepts two parameters,
+    // id and path, where id
+    // is the selected metric calculation id and
+    // path is the path to the specified times.
+    // Returns a map containing all information across years
+    // for that specific calculation id
+    information(id, path) {
+        let rootPath = firebase.database().ref(path + "/" + id)
+        let infoMap =  new Map()
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
 
             if (info) {
                 let keys = Object.keys(info)
-
                 keys.map((key) => {
-                        console.log(key)
-                    quartersYearsMap.set(key, info[key])
+                    infoMap.set(key, info[key])
                 })
             }
         })
-        return quartersYearsMap
-    }
-
-    annualInformation(id) {
-        let rootPath = firebase.database().ref('metricGoalsAnnuals/' + id) 
-        let annualsYearsMap = new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val()
-
-            if (info) {
-                let keys = Object.keys(info)
-
-                keys.map((key) => {
-                    console.log(key)
-                    annualsYearsMap.set(key, info[key])
-                })
-            }
-        })
-        return annualsYearsMap
+        return infoMap
     }
 
     // Renders elements for the selected year for months
@@ -143,14 +110,14 @@ export class DashBoard extends Component {
         return yearElements
     }
 
+    // When a year is selected,
+    // retrieves information for the month, quarter, and selected year
+    // and pushes changes to state
     handleYearChange(event) {
         let selectedYear = event.target.value
         let selectedYearMap = this.state.monthsYearsMap.get(selectedYear)
-        console.log(selectedYearMap)
         let selectedQuarterMap = this.state.quartersYearsMap.get(selectedYear)
-        console.log(selectedQuarterMap)
         let selectedAnnualMap = this.state.annualsYearsMap.get(selectedYear)
-        console.log(selectedAnnualMap)
         this.setState((state) => {
             state.selectedYear = selectedYear
             state.selectedYearMap = selectedYearMap
@@ -159,6 +126,8 @@ export class DashBoard extends Component {
         })
     }
 
+    // Renders information for months for
+    // the selected metric calculation and year
     monthArrayElements() {
         const monthArrayInfo = []
         for (let i = 0; i <= 11; i++) {
@@ -189,6 +158,8 @@ export class DashBoard extends Component {
         return monthArrayInfo
     }
 
+    // Renders information for quarters for the
+    // selected metric calculation and year
     quarterArrayElements() {
         const quarterArrayInfo = []
         for (let i = 0; i <= 3; i++) {
@@ -220,6 +191,8 @@ export class DashBoard extends Component {
         return quarterArrayInfo
     }
 
+    // Renders information for annuals for
+    // the selected metric calculation and year
     annualsArrayElements() {
         let annualArrayInfo = []
         for (let i = 0; i < 1; i++) {
