@@ -20,7 +20,8 @@ export class Metrics extends Component {
             // metricAreaID: null,     // Contains metric area ID
             metricAreaOwner: null,  // Contains metric area owner name
             metricAreaCalculations: new Map(), // Represents all calculations for a metric area
-            metricAreaCalculationIDs: []
+            metricAreaCalculationIDs: [],
+            dashboardEnabled: false
         }
     }
 
@@ -34,40 +35,40 @@ export class Metrics extends Component {
         })
     }
 
-    // Render dashboard page and send it the necessary props
-    // Note: Possibily redistribute later through App.js to metrics + data entry
-    renderMetricCalculations = (routerProps) => {
+    // // Render dashboard page and send it the necessary props
+    // // Note: Possibily redistribute later through App.js to metrics + data entry
+    // renderMetricCalculations = (routerProps) => {
 
-        // Retrieve all relevant information for a metric area 
-        let rootPath = firebase.database().ref('metricCalculations')
+    //     // Retrieve all relevant information for a metric area 
+    //     let rootPath = firebase.database().ref('metricCalculations')
 
-        rootPath.once('value', (snapshot) => {
-            let metricCalcInfo = snapshot.val();
-            let databaseKeys = Object.keys(metricCalcInfo);
-            let owner = null
-            let mapCalculations = new Map()
+    //     rootPath.once('value', (snapshot) => {
+    //         let metricCalcInfo = snapshot.val();
+    //         let databaseKeys = Object.keys(metricCalcInfo);
+    //         let owner = null
+    //         let mapCalculations = new Map()
 
-            let metricAreaCalculationIDs = databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricAreaID
-                if (this.state.metricAreaID && id == this.state.metricAreaID) {
-                    owner = metricCalcInfo[key].owner
-                    mapCalculations.set(key, metricCalcInfo[key])
-                    return metricCalcInfo[key].metricCalculationID
-                }
-            })
-            // Set the state to the new values that were obtained
-            this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
-        });
+    //         let metricAreaCalculationIDs = databaseKeys.map((key) => {
+    //             let id = metricCalcInfo[key].metricAreaID
+    //             if (this.state.metricAreaID && id == this.state.metricAreaID) {
+    //                 owner = metricCalcInfo[key].owner
+    //                 mapCalculations.set(key, metricCalcInfo[key])
+    //                 return metricCalcInfo[key].metricCalculationID
+    //             }
+    //         })
+    //         // Set the state to the new values that were obtained
+    //         this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
+    //     });
 
-        return <DashBoard
-            {...routerProps}
-            metricAreaInfo={this.state.metricAreaInfo}
-            metricAreaID={this.state.metricAreaID}
-            metricAreaOwner={this.state.metricAreaOwner}
-            metricAreaCalculations={this.state.metricAreaCalculations}
-            metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
-        />
-    }
+    //     return <DashBoard
+    //         {...routerProps}
+    //         metricAreaInfo={this.state.metricAreaInfo}
+    //         metricAreaID={this.state.metricAreaID}
+    //         metricAreaOwner={this.state.metricAreaOwner}
+    //         metricAreaCalculations={this.state.metricAreaCalculations}
+    //         metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+    //     />
+    // }
 
     setMetricName(name, id) {
         this.setState({
@@ -92,37 +93,59 @@ export class Metrics extends Component {
     render() {
         const metricAreaElements = this.metricAreaElements()
 
+        let content = null
+
+        if (this.state.dashboardEnabled) {
+            content = (
+                <div>
+                    <DashBoard/>
+                </div>
+            )
+        } else {
+            content = (
+                <div>
+                    <h1> Metric Areas </h1>
+                    <CardDeck className='metricsDeck'>
+                        {metricAreaElements}
+                    </CardDeck>
+                </div>
+            )
+        }
+
         return (
             <div>
-                <Switch>
-                    <Route path="/Metrics/:metricID" render={this.renderMetricCalculations} />
-                    <div>
-                        <h1> Metric Areas </h1>
-                        <CardDeck className='metricsDeck'>
-                            {metricAreaElements}
-                        </CardDeck>
-                    </div>
-                </Switch>
+                {content}
             </div>
         )
     }
 }
 
-// Represents a single metric button to render. A single metric card will contain the name of the metric
-// and acts as a link to the dashboard of the respective metric. 
-export class MetricAreaCard extends Component {
+// // Represents a single metric button to render. A single metric card will contain the name of the metric
+// // and acts as a link to the dashboard of the respective metric. 
+// export class MetricAreaCard extends Component {
+//     render() {
+//         return (
+//             // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
+//             <Card className='metrics' border="primary">
+//                 <CardBody className='metricsBody'>
+//                     <Link
+//                         to={'/Metrics/' + this.props.metricName}
+//                         onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
+//                         {this.props.metricName}
+//                     </Link>
+//                 </CardBody>
+//             </Card>
+//         )
+//     }
+// }
+
+class MetricAreaCard extends Component {
     render() {
         return (
-            // When a link is clicked, retrieve the necessary information from firebase and then put it into metricAreaInfo
-            <Card className='metrics' border="primary">
-                <CardBody className='metricsBody'>
-                    <Link
-                        to={'/Metrics/' + this.props.metricName}
-                        onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
-                        {this.props.metricName}
-                    </Link>
-                </CardBody>
-            </Card>
+            <Button className='metrics'
+                onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
+                {this.props.metricName}
+            </Button>
         )
     }
 }
