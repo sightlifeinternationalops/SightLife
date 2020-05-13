@@ -226,7 +226,7 @@ export class DashBoard extends Component {
         let currentNumCalc = this.state.currentCalculation
         const monthElements = this.monthArrayElements()
         const quarterElements = this.quarterArrayElements()
-        let annualElements = this.annualsArrayElements()
+        const annualElements = this.annualsArrayElements()
         let yearElements = this.yearElements()
 
         return (
