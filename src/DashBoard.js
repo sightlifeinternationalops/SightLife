@@ -70,7 +70,6 @@ export class DashBoard extends Component {
         const monthArrayInfo = []
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
-
             if (monthObj) {
                 monthArrayInfo[i] = (
                     <MetricMonthly
@@ -97,159 +96,167 @@ export class DashBoard extends Component {
     }
 
     barChart() {
-    //     const data = []
-    //     const months = this.monthArrayElements()
-    //     console.log(months)
-    //     for (let i = 0; i <= 11; i++) {
-    //         const month = i + 1
-    //             const actual = months[i].actual
-    //             const target = months[i].target
-    //             data[i] = ({
-    //                 month: month,
-    //                 actual: actual, 
-    //                 target: target
-    //             })
-    //     }
+        const data = []
+        for (let i = 0; i <= 11; i++) {
+            let monthObj = this.props.selectedYearMap[i + 1]
+            if (monthObj) {
+                // Need to do some work based on the data type received for the metric
+                // cannot always assume it's an int
+                const actual = parseInt(monthObj.actual, 10)
+                const target = parseInt(monthObj.target, 10)
+                data[i] = ({
+                    month: i + 1,
+                    actual: actual,
+                    target: target
+                })
+            } else {
+                data[i] = ({
+                    month: i + 1,
+                    actual: 0,
+                    target: 0
+                })
+            }
+        }
     
-    //     var margin = {top: 20, right: 100, bottom: 70, left: 40},
-    //     width = 1000 - margin.left - margin.right,
-    //     height = 300 - margin.top - margin.bottom;
+        var margin = {top: 20, right: 100, bottom: 70, left: 40},
+        width = 1000 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
 
 
-    // //     var svg = d3
-    // //   .select("body")
-    // //   .append("svg")
-    // //       .attr("width", width + margin.left + margin.right)
-    // //       .attr("height", height + margin.top + margin.bottom)
-    // //   .append("g")
-    // //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var svg = d3
+      .select("body")
+      .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     
-    // var dataset = [];
+    var dataset = [];
 
-    // for(let i = 0; i < data.length; i++ ) {
-    //   var date = data[i].month;
-    //   dataset[i] = {
-    //     date: date,
-    //     values: [
-    //     {name: 'Actuals', value: data[i].actual},
-    //     {name: 'Target', value: data[i].target}
-    //     ]
-    //   };
-    // }
+    for(let i = 0; i < data.length; i++ ) {
+      var date = data[i].month;
+      dataset[i] = {
+        date: date,
+        values: [
+        {name: 'Actuals', value: data[i].actual},
+        {name: 'Target', value: data[i].target}
+        ]
+      };
+    }
 
-    //     // X-Axis (Containing the months)
-    //     var x0 = d3.scaleBand()
-    //     .domain(dataset.map(function(d) { return d.date; }))
-    //     .rangeRound([0, width], .4);
+        // X-Axis (Containing the months)
+        var x0 = d3.scaleBand()
+        .domain(dataset.map(function(d) { return d.date; }))
+        .rangeRound([0, width], .4);
       
-    //   // A-Axis (The BARS)
-    //   var x1 = d3.scaleBand()
-    //     .domain(['Actuals', 'Target'])
-    //     .rangeRound([10, x0.bandwidth()]);
+      // A-Axis (The BARS)
+      var x1 = d3.scaleBand()
+        .domain(['Actuals', 'Target'])
+        .rangeRound([10, x0.bandwidth()]);
   
-    //   // Left Axis (Contains Left Ticks)
-    //   var y0 = d3.scaleLinear()
-    //     .domain([0, d3.max(dataset, function(d) { return d.values[0].value; })])
-    //     .range([height, 0]);
+      // Left Axis (Contains Left Ticks)
+      var y0 = d3.scaleLinear()
+        .domain([0, d3.max(dataset, function(d) { return d.values[0].value; })])
+        .range([height, 0]);
       
-    //   // Right Axis (Contains Right Ticks)
-    //   var y1 = d3.scaleLinear()
-    //     .domain([0, d3.max(dataset, function(d) { return d.values[1].value; })])
-    //     .range([height, 0]);
+      // Right Axis (Contains Right Ticks)
+      var y1 = d3.scaleLinear()
+        .domain([0, d3.max(dataset, function(d) { return d.values[1].value; })])
+        .range([height, 0]);
   
-    //   var color = d3.scaleOrdinal()
-    //     .range(["#D5D1E9", "#9991C6"]);
+      var color = d3.scaleOrdinal()
+        .range(["#D5D1E9", "#9991C6"]);
   
-    //   var xAxis = d3
-    //     .axisBottom(x0)
+      var xAxis = d3
+        .axisBottom(x0)
   
-    //   var yAxisLeft = d3
-    //       .axisLeft(y0)
-    //       .tickFormat(function(d) { return parseInt(d) });
+      var yAxisLeft = d3
+          .axisLeft(y0)
+          .tickFormat(function(d) { return parseInt(d) });
   
-    //   var yAxisRight = d3
-    //       .axisRight(y1)
-    //       .tickFormat(function(d) { return parseInt(d) });
+      var yAxisRight = d3
+          .axisRight(y1)
+          .tickFormat(function(d) { return parseInt(d) });
   
-    //   // Ticks on x-axis and y-axis
-    //   svg.append("g")
-    //       .attr("class", "x axis")
-    //       .attr("transform", "translate(0," + height + ")")
-    //       .call(xAxis);
+      // Ticks on x-axis and y-axis
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
   
-    //   // (Left Side) Y Label (ACTUALS)
-    //   svg.append("g")
-    //       .attr("class", "y0 axis")
-    //       .call(yAxisLeft)
-    //     .append("text")
-    //       .attr("transform", "rotate(-90)")
-    //       .attr("y", 6)
-    //       .attr("dy", ".71em")
-    //       .style("text-anchor", "end")
-    //       .style("font-size", "12")
-    //       .style("fill", "#9991C6")
-    //       .text("Actuals");
+      // (Left Side) Y Label (ACTUALS)
+      svg.append("g")
+          .attr("class", "y0 axis")
+          .call(yAxisLeft)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .style("font-size", "12")
+          .style("fill", "#9991C6")
+          .text("Actuals");
   
-    //   // Actuals TICKS
-    //   svg.select('.y0.axis')
-    //     .selectAll('.tick')
-    //       .style("fill", "black");
+      // Actuals TICKS
+      svg.select('.y0.axis')
+        .selectAll('.tick')
+          .style("fill", "black");
   
     
-    //   // MONTHS LABELS 
-    //   svg.append("text")
-    //     .style("text-anchor", "middle")
-    //     .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
-    //     .style("font-size", "12")
-    //     .text("Months")
+      // MONTHS LABELS 
+      svg.append("text")
+        .style("text-anchor", "middle")
+        .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
+        .style("font-size", "12")
+        .text("Months")
   
-    //   var graph = svg
-    //       .selectAll(".date")
-    //       .data(dataset)
-    //       .enter()
-    //       .append("g")
-    //         .attr("class", "g")
-    //         .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; });
+      var graph = svg
+          .selectAll(".date")
+          .data(dataset)
+          .enter()
+          .append("g")
+            .attr("class", "g")
+            .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; });
   
-    //   graph.selectAll("rect")
-    //       .data(function(d) { return d.values; })
-    //       .enter()
-    //       .append("rect")
-    //         .attr("width", x1.bandwidth())
-    //         .attr("x", function(d) { return x1(d.name); })
-    //         .attr("y", function(d) { return y0(d.value); })
-    //         .attr("height", function(d) { return height - y0(d.value); })
-    //         .style("fill", function(d) { return color(d.name); });
+      graph.selectAll("rect")
+          .data(function(d) { return d.values; })
+          .enter()
+          .append("rect")
+            .attr("width", x1.bandwidth())
+            .attr("x", function(d) { return x1(d.name); })
+            .attr("y", function(d) { return y0(d.value); })
+            .attr("height", function(d) { return height - y0(d.value); })
+            .style("fill", function(d) { return color(d.name); });
   
-    //   // Legend
-    //   var legend = svg
-    //       .selectAll(".legend")
-    //       .data(['Actuals', 'Target'].slice())
-    //       .enter()
-    //       .append("g")
-    //         .attr("class", "legend")
-    //         .attr("transform", function(d, i) { return "translate(90," + i * 20 + ")"; });
+      // Legend
+      var legend = svg
+          .selectAll(".legend")
+          .data(['Actuals', 'Target'].slice())
+          .enter()
+          .append("g")
+            .attr("class", "legend")
+            .attr("transform", function(d, i) { return "translate(90," + i * 20 + ")"; });
   
-    //   legend.append("rect")
-    //       .attr("x", width - 20)
-    //       .attr("width", 18)
-    //       .attr("height", 18)
-    //       .style("fill", color);
+      legend.append("rect")
+          .attr("x", width - 20)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", color);
   
-    //   legend.append("text")
-    //       .attr("x", width - 25)
-    //       .attr("y", 9)
-    //       .attr("dy", ".35em")
-    //       .style("text-anchor", "end")
-    //       .text(function(d) { return d; });
-    //       return svg.node();
+      legend.append("text")
+          .attr("x", width - 25)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .style("text-anchor", "end")
+          .text(function(d) { return d; });
+          return svg.node();
     }
 
 
     svgRender() {
-        // return <svg ref={this.barChart()}
-        //       width={860} height={210}/>
+        return <svg ref={this.barChart()}
+              width={860} height={210}/>
     }
     // Renders information for quarters for the
     // selected metric calculation and year

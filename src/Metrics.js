@@ -41,9 +41,6 @@ export class Metrics extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state.monthsYearsMap.entries())
-        console.log(this.state.quartersYearsMap.entries())
-        console.log(this.state.annualsYearsMap.entries())
         console.log(this.state)
     }
 
@@ -185,7 +182,6 @@ export class Metrics extends Component {
     // and pushes changes to state
     handleYearChange(event) {
         let selectedYear = event.target.value
-        console.log(event.target.value)
         let selectedYearMap = this.state.monthsYearsMap.get(selectedYear)
         let selectedQuarterMap = this.state.quartersYearsMap.get(selectedYear)
         let selectedAnnualMap = this.state.annualsYearsMap.get(selectedYear)
