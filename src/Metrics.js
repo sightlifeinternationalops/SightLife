@@ -18,13 +18,12 @@ export class Metrics extends Component {
 
         this.retrieveInfo = this.retrieveInfo.bind(this)
         this.handleCalChange = this.handleCalChange.bind(this)
-        this.information = this.information.bind(this)
+        this.handleYearChange = this.handleYearChange.bind(this)
 
         this.state = {
             // Data to be passed into metric calculations
             // Represents metricAreaName
             metricAreaInfo: null,   // Contains metric area name
-            // metricAreaID: null,     // Contains metric area ID
             metricAreaOwner: null,  // Contains metric area owner name
             metricAreaCalculations: new Map(), // Represents all calculations for a metric area
             metricAreaCalculationIDs: [],
@@ -43,6 +42,9 @@ export class Metrics extends Component {
 
     componentDidUpdate() {
         console.log(this.state.monthsYearsMap.entries())
+        console.log(this.state.quartersYearsMap.entries())
+        console.log(this.state.annualsYearsMap.entries())
+        console.log(this.state)
     }
 
     // Renders metric area cards 
@@ -92,19 +94,9 @@ export class Metrics extends Component {
         let area = event.target.value
         const selected = event.target.options.selectedIndex
         let field = (event.target.options[selected].getAttribute('id'))
-        this.information(area, field, "metricGoalsMonths")
-        // let quartersMap = this.information(field, "metricGoalsQuarters")
-        // let annualsMap = this.information(field, "metricGoalsAnnuals")
-
-        // this.setState((state) => {
-        //     state.currentCalc = area
-        //     state.currentCalcID = field
-        //     state.monthsYearsMap = monthsMap
-        //     state.quartersYearsMap = quartersMap
-        //     state.annualsYearsMap = annualsMap
-        //     state.selectEnable = false
-        //     return state
-        // })
+        this.informationMonth(area, field, "metricGoalsMonths")
+        this.informationQuarter(area, field, "metricGoalsQuarters")
+        this.informationAnnuals(area, field, "metricGoalsAnnuals")
     }
 
     // Accepts two parameters,
@@ -113,7 +105,7 @@ export class Metrics extends Component {
     // path is the path to the specified times.
     // Returns a map containing all information across years
     // for that specific calculation id
-    information(area, id, path) {
+    informationMonth(area, id, path) {
         let rootPath = firebase.database().ref(path + "/" + id)
         let infoMap =  new Map()
 
@@ -137,6 +129,48 @@ export class Metrics extends Component {
         return infoMap
     }
 
+    informationQuarter(area, id, path) {
+        let rootPath = firebase.database().ref(path + "/" + id)
+        let infoMap =  new Map()
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    infoMap.set(key, info[key])
+                })
+            }
+            this.setState((state) => {
+                state.quartersYearsMap = infoMap
+            return state
+            })
+        })
+        return infoMap
+    }
+
+    informationAnnuals(area, id, path) {
+        let rootPath = firebase.database().ref(path + "/" + id)
+        let infoMap =  new Map()
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    infoMap.set(key, info[key])
+                })
+            }
+            this.setState((state) => {
+                state.annualsYearsMap = infoMap
+            return state
+            })
+        })
+        return infoMap
+    }
+
     renderYears() {
         const test = Array.from(this.state.monthsYearsMap.entries()).map((key) => {
              return <YearElement
@@ -144,6 +178,24 @@ export class Metrics extends Component {
                 yearFunc={this.handleYearChange} />
         })
         return test
+    }
+
+   // When a year is selected,
+    // retrieves information for the month, quarter, and selected year
+    // and pushes changes to state
+    handleYearChange(event) {
+        let selectedYear = event.target.value
+        console.log(event.target.value)
+        let selectedYearMap = this.state.monthsYearsMap.get(selectedYear)
+        let selectedQuarterMap = this.state.quartersYearsMap.get(selectedYear)
+        let selectedAnnualMap = this.state.annualsYearsMap.get(selectedYear)
+        this.setState((state) => {
+            state.selectedYear = selectedYear
+            state.selectedYearMap = selectedYearMap
+            state.selectedQuarterMap = selectedQuarterMap
+            state.selectedAnnualMap = selectedAnnualMap
+            return state
+        })
     }
 
     render() {
@@ -159,6 +211,7 @@ export class Metrics extends Component {
                     <DashBoard
                         {...this.state}
                         handleCalChange={this.handleCalChange}
+                        handleYearChange={this.handleYearChange}
                         information={this.information}
                     />
                 </div>

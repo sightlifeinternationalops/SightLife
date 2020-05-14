@@ -13,7 +13,7 @@ export class DashBoard extends Component {
         let year = new Date()
         year = year.getFullYear().toString()
 
-        this.handleYearChange = this.handleYearChange.bind(this)
+        // this.handleYearChange = this.handleYearChange.bind(this)
 
         this.state = {
             currentYear: year,
@@ -59,26 +59,9 @@ export class DashBoard extends Component {
         const test = Array.from(this.props.monthsYearsMap.entries()).map((key) => {
              return <YearElement
                 year={key[0]}
-                yearFunc={this.handleYearChange} />
+                yearFunc={this.props.handleYearChange} />
         })
         return test
-    }
-
-
-    // When a year is selected,
-    // retrieves information for the month, quarter, and selected year
-    // and pushes changes to state
-    handleYearChange(event) {
-        let selectedYear = event.target.value
-        let selectedYearMap = this.state.monthsYearsMap.get(selectedYear)
-        let selectedQuarterMap = this.state.quartersYearsMap.get(selectedYear)
-        let selectedAnnualMap = this.state.annualsYearsMap.get(selectedYear)
-        this.setState((state) => {
-            state.selectedYear = selectedYear
-            state.selectedYearMap = selectedYearMap
-            state.selectedQuarterMap = selectedQuarterMap
-            state.selectedAnnualMap = selectedAnnualMap
-        })
     }
 
     // Renders information for months for
@@ -86,7 +69,7 @@ export class DashBoard extends Component {
     monthArrayElements() {
         const monthArrayInfo = []
         for (let i = 0; i <= 11; i++) {
-            let monthObj = this.state.selectedYearMap[i + 1]
+            let monthObj = this.props.selectedYearMap[i + 1]
 
             if (monthObj) {
                 monthArrayInfo[i] = (
@@ -273,7 +256,7 @@ export class DashBoard extends Component {
     quarterArrayElements() {
         const quarterArrayInfo = []
         for (let i = 0; i <= 3; i++) {
-            let quarterObj = this.state.selectedQuarterMap[i + 1]
+            let quarterObj = this.props.selectedQuarterMap[i + 1]
             if (quarterObj) {
                 quarterArrayInfo[i] = (
                     <MetricQuarterly
@@ -306,7 +289,7 @@ export class DashBoard extends Component {
     annualsArrayElements() {
         let annualArrayInfo = []
         for (let i = 0; i < 1; i++) {
-            let annualObj = this.state.selectedAnnualMap[i + 1]
+            let annualObj = this.props.selectedAnnualMap[i + 1]
             if (annualObj) {
                 annualArrayInfo[i] = (
                     <MetricAnnuals
@@ -321,7 +304,7 @@ export class DashBoard extends Component {
             } else {
                 annualArrayInfo[i] = (
                     <MetricAnnuals
-                    year={this.state.selectedYear}
+                    year={this.props.selectedYear}
                     actual=""
                     coe=""
                     highlights=""
@@ -364,7 +347,7 @@ export class DashBoard extends Component {
                     <select
                         disabled={this.state.selectEnable}
                         name="selectedYear"
-                        onChange={(e) => this.handleYearChange(e)}>
+                        onChange={(e) => this.props.handleYearChange(e)}>
                         <option value="" disabled selected>Select a Year</option>
                         {yearElements}
                     </select>
