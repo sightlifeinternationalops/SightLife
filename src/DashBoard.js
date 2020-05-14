@@ -16,15 +16,7 @@ export class DashBoard extends Component {
         this.handleYearChange = this.handleYearChange.bind(this)
 
         this.state = {
-            // Calculations should have the same array lengths...
-            // Work on centralizing the data so we aren't hoping
-            // everything is operating on the same index of the array
-            metricAreaCalculationsMonth: [],
-            metricAreaCalculationsQuarter: [],
-            metricAreaCalculationsAnnual: [],
-            currentCalculation: 0, // Will always default to the first value in an array
             currentYear: year,
-            selectEnable: true,
             monthsYearsMap: new Map(),
             quartersYearsMap: new Map(),
             annualsYearsMap: new Map(),
@@ -36,10 +28,7 @@ export class DashBoard extends Component {
 
     // Do any information retrieval here
     componentDidMount() {
-    }
-
-    componentDidUpdate() {
-        // console.log(this.state)
+        console.log(this.props)
     }
 
     arrayElements() {
@@ -54,56 +43,27 @@ export class DashBoard extends Component {
         return test
     }
 
-    handleChange = (event) => {
-        let area = event.target.value
-        const selected = event.target.options.selectedIndex
-        let field = (event.target.options[selected].getAttribute('id'))
-        let monthsMap = this.information(field, "metricGoalsMonths")
-        let quartersMap = this.information(field, "metricGoalsQuarters")
-        let annualsMap = this.information(field, "metricGoalsAnnuals")
+    // // Renders elements for the selected year for months
+    // yearElements() {
 
-        this.setState((state) => {
-            state.currentCalc = area
-            state.currentCalcID = field
-            state.monthsYearsMap = monthsMap
-            state.quartersYearsMap = quartersMap
-            state.annualsYearsMap = annualsMap
-            state.selectEnable = false
-        })
-    }
+    //     const yearElements = Array.from(this.props.monthsYearsMap.entries()).map((key) => {
+    //         // return <YearElement
+    //         //     year={key[0]}
+    //         //     yearFunc={this.handleYearChange} />
+    //         console.log(key)
+    //     })
+    //     return yearElements
+    // }
 
-    // Accepts two parameters,
-    // id and path, where id
-    // is the selected metric calculation id and
-    // path is the path to the specified times.
-    // Returns a map containing all information across years
-    // for that specific calculation id
-    information(id, path) {
-        let rootPath = firebase.database().ref(path + "/" + id)
-        let infoMap =  new Map()
-
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val()
-
-            if (info) {
-                let keys = Object.keys(info)
-                keys.map((key) => {
-                    infoMap.set(key, info[key])
-                })
-            }
-        })
-        return infoMap
-    }
-
-    // Renders elements for the selected year for months
     yearElements() {
-        const yearElements = Array.from(this.state.monthsYearsMap.entries()).map((key) => {
-            return <YearElement
+        const test = Array.from(this.props.monthsYearsMap.entries()).map((key) => {
+             return <YearElement
                 year={key[0]}
                 yearFunc={this.handleYearChange} />
         })
-        return yearElements
+        return test
     }
+
 
     // When a year is selected,
     // retrieves information for the month, quarter, and selected year
@@ -347,7 +307,6 @@ export class DashBoard extends Component {
         let annualArrayInfo = []
         for (let i = 0; i < 1; i++) {
             let annualObj = this.state.selectedAnnualMap[i + 1]
-            console.log(annualObj)
             if (annualObj) {
                 annualArrayInfo[i] = (
                     <MetricAnnuals
@@ -394,7 +353,7 @@ export class DashBoard extends Component {
                     <h2> Select A Metric Calculation </h2>
 
                     <select
-                        onChange={(e) => this.handleChange(e)}>
+                        onChange={(e) => this.props.handleCalChange(e)}>
                         <option value="None" disabled selected>None</option>
                         {metricElements}
                     </select>
@@ -444,7 +403,7 @@ export class DashBoard extends Component {
 
 // Represents a single year <option> element in the
 // select drop-down.
-class YearElement extends Component {
+export class YearElement extends Component {
     render() {
         return (
             <option value={this.props.year}>

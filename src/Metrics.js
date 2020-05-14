@@ -5,14 +5,20 @@ import { Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } fro
 import './css/Metrics.css';
 import './index.js';
 import firebase from 'firebase/app';
-import { DashBoard } from './DashBoard';
+import { DashBoard, YearElement } from './DashBoard';
 
 export class Metrics extends Component {
 
     constructor(props) {
         super(props);
 
+        let year = new Date()
+        year = year.getFullYear().toString()
+
+
         this.retrieveInfo = this.retrieveInfo.bind(this)
+        this.handleCalChange = this.handleCalChange.bind(this)
+        this.information = this.information.bind(this)
 
         this.state = {
             // Data to be passed into metric calculations
@@ -22,8 +28,34 @@ export class Metrics extends Component {
             metricAreaOwner: null,  // Contains metric area owner name
             metricAreaCalculations: new Map(), // Represents all calculations for a metric area
             metricAreaCalculationIDs: [],
-            dashboardEnabled: false
+            dashboardEnabled: false,
+
+            // Dashboard State Items
+            currentYear: year,
+            monthsYearsMap: new Map(),
+            quartersYearsMap: new Map(),
+            annualsYearsMap: new Map(),
+            selectedYearMap: new Map(),
+            selectedQuarterMap: new Map(),
+            selectedAnnualMap: new Map()
         }
+    }
+
+    componentDidUpdate() {
+        console.log(this.state.monthsYearsMap.entries())
+    }
+
+    // Renders metric area cards 
+    metricAreaElements() {
+        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
+            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+            return <MetricAreaCard
+                metricName={key[1].metricName}
+                metricID={key[1].metricID}
+                metricNameFunc={this.retrieveInfo}
+            />
+        })
+        return metricAreaElements
     }
 
     retrieveInfo(name, id) {
@@ -40,16 +72,9 @@ export class Metrics extends Component {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
             })
-            // // Set the state to the new values that were obtained
-            // this.setCalculations(owner, mapCalculations, metricAreaCalculationIDs)
             console.log(mapCalculations)
             this.setInfo(mapCalculations, name, id)
         });
-        // this.setState({
-        //     metricAreaInfo: name,
-        //     metricAreaID: id,
-        //     dashboardEnabled: true
-        // })
     }
     
     // Callback to render new information
@@ -63,21 +88,68 @@ export class Metrics extends Component {
         })
     }
 
-    // Renders metric area cards 
-    metricAreaElements() {
-        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
-            // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
-            return <MetricAreaCard
-                metricName={key[1].metricName}
-                metricID={key[1].metricID}
-                metricNameFunc={this.retrieveInfo}
-            />
+    handleCalChange = (event) => {
+        let area = event.target.value
+        const selected = event.target.options.selectedIndex
+        let field = (event.target.options[selected].getAttribute('id'))
+        this.information(area, field, "metricGoalsMonths")
+        // let quartersMap = this.information(field, "metricGoalsQuarters")
+        // let annualsMap = this.information(field, "metricGoalsAnnuals")
+
+        // this.setState((state) => {
+        //     state.currentCalc = area
+        //     state.currentCalcID = field
+        //     state.monthsYearsMap = monthsMap
+        //     state.quartersYearsMap = quartersMap
+        //     state.annualsYearsMap = annualsMap
+        //     state.selectEnable = false
+        //     return state
+        // })
+    }
+
+    // Accepts two parameters,
+    // id and path, where id
+    // is the selected metric calculation id and
+    // path is the path to the specified times.
+    // Returns a map containing all information across years
+    // for that specific calculation id
+    information(area, id, path) {
+        let rootPath = firebase.database().ref(path + "/" + id)
+        let infoMap =  new Map()
+
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    infoMap.set(key, info[key])
+                })
+            }
+            this.setState((state) => {
+                state.currentCalc = area
+                state.currentCalcID = id
+                state.monthsYearsMap = infoMap
+                state.selectEnable = false
+            return state
+            })
         })
-        return metricAreaElements
+        return infoMap
+    }
+
+    renderYears() {
+        const test = Array.from(this.state.monthsYearsMap.entries()).map((key) => {
+             return <YearElement
+                year={key[0]}
+                yearFunc={this.handleYearChange} />
+        })
+        return test
     }
 
     render() {
         const metricAreaElements = this.metricAreaElements()
+        const renderYears = this.renderYears()
+        console.log(renderYears)
 
         let content = null
 
@@ -86,11 +158,8 @@ export class Metrics extends Component {
                 <div>
                     <DashBoard
                         {...this.state}
-                        metricAreaInfo={this.state.metricAreaInfo}
-                        metricAreaID={this.state.metricAreaID}
-                        metricAreaOwner={this.state.metricAreaOwner}
-                        metricAreaCalculations={this.state.metricAreaCalculations}
-                        metricAreaCalculationIDs={this.state.metricAreaCalculationIDs}
+                        handleCalChange={this.handleCalChange}
+                        information={this.information}
                     />
                 </div>
             )
