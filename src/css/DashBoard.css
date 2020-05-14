@@ -3,3 +3,41 @@
     margin: 0 auto;
     text-align: center;
 }
+
+tbody.table {
+    margin: 20rem;
+}
+
+.table {
+    width:100%; 
+    text-align: center;
+}
+
+div.table-responsive {
+    margin-left: 0;
+}
+
+select.options {
+    margin-right: 1rem;
+}
+
+div.options{
+    width:100%; 
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+th.values {
+    width: 50px;
+
+}
+
+@media (min-width: 800px) {
+    .table {
+        width:60%; 
+        margin-left:20%; 
+        margin-right:20%;
+        text-align: center;
+    }
+}

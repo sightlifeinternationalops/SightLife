@@ -118,10 +118,9 @@ export class DashBoard extends Component {
             }
         }
     
-        var margin = {top: 20, right: 100, bottom: 70, left: 40},
-        width = 1000 - margin.left - margin.right,
+        var margin = {top: 20, right: 100, bottom: 70, left: 130},
+        width = 1200 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
-
 
         var svg = d3
       .select("body")
@@ -145,6 +144,9 @@ export class DashBoard extends Component {
       };
     }
 
+    var actualRange = d3.extent(dataset, d => d.values[0].value);
+    var targetRange = d3.extent(dataset, d => d.values[1].value);
+
         // X-Axis (Containing the months)
         var x0 = d3.scaleBand()
         .domain(dataset.map(function(d) { return d.date; }))
@@ -153,16 +155,11 @@ export class DashBoard extends Component {
       // A-Axis (The BARS)
       var x1 = d3.scaleBand()
         .domain(['Actuals', 'Target'])
-        .rangeRound([10, x0.bandwidth()]);
+        .rangeRound([15, x0.bandwidth()]);
   
       // Left Axis (Contains Left Ticks)
       var y0 = d3.scaleLinear()
-        .domain([0, d3.max(dataset, function(d) { return d.values[0].value; })])
-        .range([height, 0]);
-      
-      // Right Axis (Contains Right Ticks)
-      var y1 = d3.scaleLinear()
-        .domain([0, d3.max(dataset, function(d) { return d.values[1].value; })])
+        .domain([0, Math.max(actualRange[1], targetRange[1])])
         .range([height, 0]);
   
       var color = d3.scaleOrdinal()
@@ -173,10 +170,6 @@ export class DashBoard extends Component {
   
       var yAxisLeft = d3
           .axisLeft(y0)
-          .tickFormat(function(d) { return parseInt(d) });
-  
-      var yAxisRight = d3
-          .axisRight(y1)
           .tickFormat(function(d) { return parseInt(d) });
   
       // Ticks on x-axis and y-axis
@@ -196,7 +189,7 @@ export class DashBoard extends Component {
           .style("text-anchor", "end")
           .style("font-size", "12")
           .style("fill", "#9991C6")
-          .text("Actuals");
+          .text("Values");
   
       // Actuals TICKS
       svg.select('.y0.axis')
@@ -291,6 +284,200 @@ export class DashBoard extends Component {
         return quarterArrayInfo
     }
 
+    lineChart() {
+    var margin = {top: 20, right: 100, bottom: 70, left: 130},
+    width = 1200 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+    var svg = d3
+    .select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        const data = []
+        for (let i = 0; i <= 11; i++) {
+            let monthObj = this.props.selectedYearMap[i + 1]
+            if (monthObj) {
+                // Need to do some work based on the data type received for the metric
+                // cannot always assume it's an int
+                const actual = parseInt(monthObj.actual, 10)
+                const target = parseInt(monthObj.target, 10)
+                data[i] = ({
+                    month: i + 1,
+                    actual: actual,
+                    target: target
+                })
+            } else {
+                data[i] = ({
+                    month: i + 1,
+                    actual: undefined,
+                    target: undefined
+                })
+            }
+        }
+    
+    var dataset = [];
+
+    for(let i = 0; i < data.length; i++ ) {
+        var date = data[i].month;
+        dataset[i] = {
+          date: date,
+          values: [
+          {name: 'Actuals', value: data[i].actual},
+          {name: 'Target', value: data[i].target}
+          ]
+        };
+    }
+
+
+                var actualRange = d3.extent(dataset, d => d.values[0].value);
+                var targetRange = d3.extent(dataset, d => d.values[1].value);
+            
+                // SET RANGES (SCALES)
+                // What appears on the x-axis
+                var x0 = d3.scalePoint()
+                  .domain(dataset.map(function(d) { return d.date; }))
+                  .rangeRound([0, width], .4);
+                
+                // What appears on the y-axis
+                var y0 = d3.scaleLinear()
+                    .domain([0, Math.max(actualRange[1], targetRange[1])])
+                    .range([height, 0]);
+            
+                // X-AXIS (VISUALS)
+                var xAxis = d3
+                  .axisBottom(x0);
+            
+                // Y-AXIS (VISUALS)
+                var yAxisLeft = d3
+                    .axisLeft(y0)
+                    .tickFormat(function(d) { return parseInt(d) });
+            
+                // ACTUALS LINE
+                var actual_line = d3
+                .line()
+                .defined(d => !isNaN(d.values[0].value))
+                  .x(d => x0(d.date))
+                  .y(d => y0(d.values[0].value));
+            
+                // TARGET LINE
+                var target_line = d3
+                .line()
+                .defined(d => !isNaN(d.values[1].value))
+                  .x(d => x0(d.date))
+                  .y(d => y0(d.values[1].value));
+            
+                // Ticks on x-axis and y-axis
+                svg.append("g")
+                    .attr("class", "x0 axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+            
+                // (Left Side) Y Label (ACTUALS)
+                svg.append("g")
+                    .attr("class", "y0 axis")
+                    .call(yAxisLeft)
+                  .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .style("font-size", "12")
+                    .style("fill", "#D5D1E9")
+                    .text("Values");
+            
+                // Actuals TICKS
+                svg.select('.y0.axis')
+                  .selectAll('.tick')
+                    .style("fill", "black");
+            
+                // MONTHS LABELS 
+                svg.append("text")
+                  .style("text-anchor", "middle")
+                  .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
+                  .style("font-size", "12")
+                  .text("Months")
+            
+                // COLOR
+                var color = d3.scaleOrdinal()
+                  .range(["#D5D1E9", "#9991C6"]);
+            
+                // ACTUAL LINE LINE
+                svg
+                .append("path")
+                .datum(dataset)
+                .attr("fill", "none")
+                .attr("stroke", "#D5D1E9")
+                .attr("stroke-width", 3)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", actual_line);
+            
+                // TARGET LINE LINE
+                svg
+                .append("path")
+                .datum(dataset)
+                .attr("fill", "none")
+                .attr("stroke", "#9991C6")
+                .attr("stroke-width", 3)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", target_line);  
+            
+                svg
+                .selectAll("dot")
+                .data(dataset)
+                .enter()
+                .append("circle")
+                .attr("cx", d => x0(d.date))
+                .attr("cy", d => y0(d.values[0].value))
+                .attr("r", 3)
+                .attr("fill", "black")
+                .attr("opacity", 0.7)
+                .filter(d => isNaN(d.values[0].value)).remove();
+                
+                svg
+                .selectAll("dot")
+                .data(dataset)
+                .enter()
+                .append("circle")
+                .attr("cx", d => x0(d.date))
+                .attr("cy", d => y0(d.values[1].value))
+                .attr("r", 3)
+                .attr("fill", "black")
+                .attr("opacity", 0.7)
+                .filter(d => isNaN(d.values[1].value)).remove();
+
+                // LEGEND (Boxes)
+                var legend = svg
+                    .selectAll(".legend")
+                    .data(['Actuals', 'Target'].slice())
+                    .enter()
+                    .append("g")
+                      .attr("class", "legend")
+                      .attr("transform", function(d, i) { return "translate(90," + i * 20 + ")"; });
+            
+                legend.append("rect")
+                    .attr("x", width - 20)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", color);
+            
+                legend.append("text")
+                    .attr("x", width - 25)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) { return d; });
+    }
+
+    svgRenderLine() {
+        return <svg ref={this.lineChart()}
+              width={860} height={210}/>
+    }
     // Renders information for annuals for
     // the selected metric calculation and year
     annualsArrayElements() {
@@ -335,29 +522,33 @@ export class DashBoard extends Component {
         const annualElements = this.annualsArrayElements()
         let yearElements = this.yearElements()
         const barChart = this.svgRender()
+        const lineChart = this.svgRenderLine()
 
         return (
             <div className="body">
                 <h1> Metric Area: {this.props.metricAreaInfo} </h1>
                 <div>
                     <h2> Select A Metric Calculation </h2>
+                    <div className="options">
+                    <select className="options"
 
-                    <select
                         onChange={(e) => this.props.handleCalChange(e)}>
                         <option value="None" disabled selected>None</option>
                         {metricElements}
                     </select>
+                    
 
                     {/* Once a metric is selected,
                     fill in depending on how many keys
                     and enable */}
-                    <select
+                    <select 
                         disabled={this.state.selectEnable}
                         name="selectedYear"
                         onChange={(e) => this.props.handleYearChange(e)}>
                         <option value="" disabled selected>Select a Year</option>
                         {yearElements}
                     </select>
+                    </div>
                 </div>
 
                 {/* <Table bordered align="center">
@@ -385,6 +576,7 @@ export class DashBoard extends Component {
                     {/* Yearly Information */}
                     {annualElements}
                     {barChart}
+                    {lineChart}
                 </div>
             </div>
         )
@@ -449,7 +641,7 @@ class MetricMonthly extends Component {
         }
     }
 
-    // Determines the color of the actual field.
+ // Determines the color of the actual field.
     // If the actual is greater or equal to the target
     // change color to green.
     // If the actual is within 5% of the target, 
@@ -474,22 +666,22 @@ class MetricMonthly extends Component {
 
         return (
             <div>
-                <h2>{monthValue}</h2>
+                <h2 className="title">{monthValue}</h2>
                 <Table responsive>
-                    <tbody>
+                    <tbody className="table">
                         <tr>
-                            <th>Actual</th>
-                            <th>Target</th>
+                            <th className="values">Actual</th>
+                            <th className="values">Target</th>
                             <th>Highlights</th>
                             <th>Lowlights</th>
-                            <th>Correction of Error</th>
+                            <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
-                            <th>{actualValue}</th>
-                            <th>{this.props.target}</th>
+                            <th className="values">{actualValue}</th>
+                            <th className="values">{this.props.target}</th>
                             <th>{this.props.highlights}</th>
                             <th>{this.props.lowlights}</th>
-                            <th>{this.props.coe}</th>
+                            <th className="values">{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
@@ -498,6 +690,7 @@ class MetricMonthly extends Component {
     }
 }
 
+// QUARTER TABLES
 class MetricQuarterly extends Component {
     render() {
 
@@ -515,19 +708,19 @@ class MetricQuarterly extends Component {
                 <Table responsive>
                     <tbody>
                         <tr>
-                            <th>Actual</th>
-                            <th>Target</th>
+                            <th className="values">Actual</th>
+                            <th className="values">Target</th>
                             <th>Highlights</th>
                             <th>Lowlights</th>
-                            <th>Correction of Error</th>
+                            <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
                             {/* This should be auto-calculated based upon month values */}
-                            <th>{actualValue}</th>
-                            <th>{this.props.target}</th>
+                            <th className="values">{actualValue}</th>
+                            <th className="values">{this.props.target}</th>
                             <th>{this.props.highlights}</th>
                             <th>{this.props.lowlights}</th>
-                            <th>{this.props.coe}</th>
+                            <th className="values">{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
@@ -550,18 +743,18 @@ class MetricAnnuals extends Component {
                 <Table>
                     <tbody>
                         <tr>
-                            <th>Actual</th>
-                            <th>Target</th>
+                            <th className="values">Actual</th>
+                            <th className="values">Target</th>
                             <th>Highlights</th>
                             <th>Lowlights</th>
-                            <th>Correction of Error</th>
+                            <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
-                            <th>{actualValue}</th>
-                            <th>{this.props.target}</th>
+                            <th className="values">{actualValue}</th>
+                            <th className="values">{this.props.target}</th>
                             <th>{this.props.highlights}</th>
                             <th>{this.props.lowlights}</th>
-                            <th>{this.props.coe}</th>
+                            <th className="values">{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
