@@ -38,7 +38,7 @@ export class SignIn extends Component {
     render() {
         return (
             <div class='form'>
-                <h1>Sign Into Your Account </h1>
+                <h1>Sign in to ScoreCard</h1>
                 <div>
                     <label for='Email'>Email</label>
                     <input

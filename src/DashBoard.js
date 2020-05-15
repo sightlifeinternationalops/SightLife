@@ -78,7 +78,8 @@ export class DashBoard extends Component {
                         coe={monthObj.coe}
                         highlights={monthObj.highlights}
                         lowlights={monthObj.lowlights}
-                        target={monthObj.target}/>
+                        target={monthObj.target}
+                        datatype={monthObj.datatype}/>
                 )
             } else {
                 monthArrayInfo[i] = (
@@ -610,6 +611,7 @@ class MetricCalculationRow extends Component {
 
 class MetricMonthly extends Component {
     componentDidMount() {
+        console.log(this.props)
     }
 
     month(num) {

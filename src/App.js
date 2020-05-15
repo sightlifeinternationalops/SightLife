@@ -29,7 +29,11 @@ class App extends Component {
       uid: ""
     }
 
+    this.changeSignInStatus = this.changeSignInStatus.bind(this)
+    this.disableSignInStatus = this.disableSignInStatus.bind(this)
+
     this.state = {
+      signInStatus: false,
       email: '',
       password: '',
       metrics: metricAreas,
@@ -43,6 +47,7 @@ class App extends Component {
       if (firebaseUser) { // If user is logged in
         this.setState({
           user: firebaseUser,
+          checkingLogin: false,
           verified: firebaseUser.emailVerified
         })
         // Retrieve current user's metric areas
@@ -229,6 +234,21 @@ class App extends Component {
     })
   }
 
+  changeSignInStatus = () => {
+    console.log("test")
+    this.setState((state) => {
+      state.signInStatus = true
+      return state
+    })
+  }
+
+  disableSignInStatus = () => {
+    this.setState((state) => {
+      state.signInStatus = false
+      return state
+    })
+  }
+
 
   render() {
     let content = null
@@ -236,19 +256,22 @@ class App extends Component {
     // If user is not logged in and user is not verified
     if (!this.state.user || (this.state.user && !this.state.verified)) {
       content = (
-        <div>
-          <main>
             <Switch>
-              <Route exact path="/" render={() => <SignIn
+              <Route exact path="/" render={() => <About
+                {...this.state}
+                changeSignInStatus={this.changeSignInStatus}
+              />} />
+              <Route path="/signIn" render={() => <SignIn
+                changeSignInStatus={this.changeSignInStatus}
                 handleSignIn={this.handleSignIn}
               />} />
-              <Route path="/Createaccount" render={() => <CreateAccount
+              <Route path="/createaccount" render={() => <CreateAccount
+              disableSignInStatus={this.disableSignInStatus}
                 handleSignUp={this.handleSignUp}
               />}
               />
             </Switch>
-          </main>
-        </div>
+
       )
     } else if (this.state.user && !this.state.verified) {
       verify = (
@@ -259,18 +282,11 @@ class App extends Component {
     } else {
       content = (
         <div>
-          <header>
-            <nav id="nav-bar">
-              <NavBar signOut={this.handleSignOut} />
-            </nav>
-          </header>
-
-          <main>
             <Switch>
               <Route exact path="/" component={About} />
-              <Route path="/HistoricalData" component={HistoricalData} />
+              <Route path="/historicaldata" component={HistoricalData} />
               <Route
-                path="/Metrics"
+                path="/metrics"
                 render={() => <Metrics
                   // {...this.state}
                   metrics={this.state.metrics}
@@ -279,35 +295,35 @@ class App extends Component {
                 />}
               />
               <Route
-                exact path="/DataEntry"
+                exact path="/dataEntry"
                 render={() => <DataEntry
                   {...this.state}
                   usersMetrics={this.state.usersMetrics}
                   retMetricCalculations={this.retrieveMetricCalculations}
                 />}
               />
-              <Route path="/FAQ" component={FAQ} />
+              <Route path="/faq" component={FAQ} />
               <Route
-                path='/AdminPanel'
+                path='/adminpanel'
                 render={() => <AdminPanelUserPermissions
                   metrics={this.state.metrics}
                   users={this.state.users} />
                 }
               />
               <Route
-                path="/AdminPanelMetricCalcs"
+                path="/adminpanelmetriccalcs"
                 render={() => <AdminPanelMetricCalcs
                   metrics={this.state.metrics}
                 />}
               />
               {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
-              <Route path="/AdminSettings"
+              <Route path="/adminsettings"
                 render={() => <AdminSettings
                   users={this.state.users}
                   metrics={this.state.metrics} />}
               />
               <Route
-                path="/AdminPanelMetrics"
+                path="/adminpanelmetrics"
                 render={() => <AdminPanelMetrics
                   users={this.state.users}
                   metrics={this.state.metrics}
@@ -315,28 +331,93 @@ class App extends Component {
               />
               <Redirect to="/" />
             </Switch>
-          </main>
-
-          {/* <footer>
-            <div className="footer-container">
-              <p className="inSightful Footer"> This project is a part of the:<a className="Data" href="https://ischool.uw.edu/capstone">Capstone Project course at the University of Washington Information School </a></p>
-            </div>
-          </footer> */}
-        </div>
+          </div>
       )
     }
 
     return (
       <div>
+          <header>
+            <nav id="nav-bar">
+              <NavBar 
+              {...this.state}
+              changeSignInStatus={this.changeSignInStatus}
+              signOut={this.handleSignOut} />
+            </nav>
+          </header>
+        <main>
         {content}
         {verify}
+        </main>
       </div>
     );
   }
 }
 
-class NavBar extends Component {
+export class NavBar extends Component {
+  componentDidMount() {
+    console.log(this.props)
+  }
+
   render() {
+
+    let content = null
+
+    if (!this.props.user || (this.props.user && !this.props.verified)) {
+      if (this.props.signInStatus) {
+        content = (
+          <div></div>
+        )
+      } else {
+        content = (
+          <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+          <li className="nav-item">
+            <NavLink to='/signIn' 
+            onClick={() => this.props.changeSignInStatus()}
+            className="nav-link">SignIn</NavLink>
+          </li>
+        </ul>
+        )
+      }
+    } else {
+
+      content = (
+        <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li className="nav-item">
+          <NavLink to='/about' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>About</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to='/metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to='/dataentry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to='/fAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
+        </li>
+        <li className="nav-item">
+          <div className="dropdown" id="myForm">
+            <img className="profile" src={Profile} />
+            <div className="dropdown-content" id="sign">
+              {/* <image class='prof-pic'>User's Profile Picture</image> */}
+              <p className='user-name'>User's Name</p>
+              <button type="submit" className="btn">
+                <NavLink to='/metrics' className="nav-link"> DashBoard </NavLink>
+              </button>
+              <button type="submit" className="btn">
+                <NavLink to='/adminpanel' className="nav-link">Admin Panel</NavLink>
+              </button>
+              <button id="signOutButton"
+                onClick={() => this.props.signOut()}>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      )
+    }
+
     return (
       <div className="navbar navbar-expand-lg navbar-light">
         <a className="navbar-brand" href="/">
@@ -349,39 +430,7 @@ class NavBar extends Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li className="nav-item">
-              <NavLink to='/About' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>About</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to='/Metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to='/DataEntry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to='/FAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
-            </li>
-            <li className="nav-item">
-              <div className="dropdown" id="myForm">
-                <img className="profile" src={Profile} />
-                <div className="dropdown-content" id="sign">
-                  {/* <image class='prof-pic'>User's Profile Picture</image> */}
-                  <p className='user-name'>User's Name</p>
-                  <button type="submit" className="btn">
-                    <NavLink to='/Metrics' className="nav-link"> DashBoard </NavLink>
-                  </button>
-                  <button type="submit" className="btn">
-                    <NavLink to='/AdminPanel' className="nav-link">Admin Panel</NavLink>
-                  </button>
-                  <button id="signOutButton"
-                    onClick={() => this.props.signOut()}>
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            </li>
-          </ul>
+          {content}
         </div>
       </div>
     );

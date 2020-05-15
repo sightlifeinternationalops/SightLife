@@ -132,9 +132,10 @@ export class DataEntry extends Component {
 
     // Sets current state of metric area ID to button that was clicked
     setMetric(name, id) {
-        console.log(id.metricName)
+        console.log(name)
+        console.log(id)
         this.setState((state) => {
-            state.metricAreaID = id.metricName
+            state.metricAreaID = id
             state.metricAreaName = name
             return state
         })
@@ -160,7 +161,7 @@ export class DataEntry extends Component {
             let mapCalculations = new Map()
 
             databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricArea
+                let id = metricCalcInfo[key].metricAreaID
                 if (id === this.state.metricAreaID) {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
@@ -292,18 +293,6 @@ export class DataEntry extends Component {
                 <h2 id='month'> Month <span class="required">*</span></h2>
                 <select
                 onChange={(e) => this.updateSelectForm(e)}>
-                {/* <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option> */}
                 <option value={1}>January</option>
                 <option value={2}>February</option>
                 <option value={3}>March</option>

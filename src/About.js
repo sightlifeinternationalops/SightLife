@@ -3,20 +3,37 @@ import './css/About.css';
 import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } from 'reactstrap';
 import { SocialIcon } from 'react-social-icons';
+import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { Button, ButtonToolbar} from 'reactstrap';
 
 import Shruti from './img/shruti.png';
 import Alex from './img/alex.jpg';
 import Nathan from './img/nathan.jpg';
+import SightLife from './img/sightlife.png';
 import Rani from './img/rani.jpg';
+
+import firebase from 'firebase/app';
+import HomeDashBoard from './img/home-run.svg';
+import Manager from './img/manager.svg';
+import SignOut from './img/logout.svg';
+import Profile from './img/profile2.png'
 
 import Development from './img/development.png';
 import Policy from './img/policy.png';
 import Prevention from './img/prevention.png';
 import Training from './img/training.png';
+import { Link } from 'react-router-dom';
 
 export class About extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     render() {
+        let signInButton = (
+            <Nav/>
+        )
+
         return(
         <div> 
             <section class = "wave">
@@ -188,6 +205,59 @@ export class About extends Component {
             </footer>
         </div>
 
+        )
+    }
+}
+
+class Nav extends Component {
+    render() {
+        return(
+            <div className="navbar navbar-expand-lg navbar-light">
+            <a className="navbar-brand" href="/">
+              <img src={SightLife} alt="SightLife logo" />
+            </a>
+    
+            <button className="navbar-toggler" value="Show and Hide Navigation Bar" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+              aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+    
+            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li className="nav-item">
+                  <NavLink to='/about' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>About</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to='/metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to='/dataentry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to='/fAQ' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>FAQ</NavLink>
+                </li>
+                <li className="nav-item">
+                  <div className="dropdown" id="myForm">
+                    <img className="profile" src={Profile} />
+                    <div className="dropdown-content" id="sign">
+                      {/* <image class='prof-pic'>User's Profile Picture</image> */}
+                      <p className='user-name'>User's Name</p>
+                      <button type="submit" className="btn">
+                        <NavLink to='/metrics' className="nav-link"> DashBoard </NavLink>
+                      </button>
+                      <button type="submit" className="btn">
+                        <NavLink to='/adminpanel' className="nav-link">Admin Panel</NavLink>
+                      </button>
+                      <button id="signOutButton"
+                        onClick={() => this.props.signOut()}>
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         )
     }
 }
