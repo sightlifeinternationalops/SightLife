@@ -1,31 +1,39 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a72cf4df839f7b6688cdde73d75a550b",
+    "revision": "d04bf6d5081939021135061338c7aedf",
     "url": "/InSightful/index.html"
   },
   {
-    "revision": "f0bdfa731ebca6d3f604",
+    "revision": "5b18148858b262a3600e",
     "url": "/InSightful/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "6d3408c33f8714d04841",
-    "url": "/InSightful/static/css/main.542705ea.chunk.css"
+    "revision": "10ec9e4c6015c58b5aae",
+    "url": "/InSightful/static/css/main.95d9c0d6.chunk.css"
   },
   {
-    "revision": "f0bdfa731ebca6d3f604",
-    "url": "/InSightful/static/js/2.97938a93.chunk.js"
+    "revision": "5b18148858b262a3600e",
+    "url": "/InSightful/static/js/2.614cd054.chunk.js"
   },
   {
-    "revision": "1c7f0ad687308896ffe8c0ba36060daa",
-    "url": "/InSightful/static/js/2.97938a93.chunk.js.LICENSE.txt"
+    "revision": "eb752b9a1759016d6addc6e5310516bf",
+    "url": "/InSightful/static/js/2.614cd054.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "6d3408c33f8714d04841",
-    "url": "/InSightful/static/js/main.e52d4a23.chunk.js"
+    "revision": "10ec9e4c6015c58b5aae",
+    "url": "/InSightful/static/js/main.bdf17236.chunk.js"
   },
   {
     "revision": "f4210cf0359f87fbc914",
     "url": "/InSightful/static/js/runtime-main.07ce3d6f.js"
+  },
+  {
+    "revision": "edf710cf1f1afe881822f583f953860f",
+    "url": "/InSightful/static/media/FAQ1.edf710cf.png"
+  },
+  {
+    "revision": "44062380e4b9c58eb2d59be2b0820926",
+    "url": "/InSightful/static/media/FAQ2.44062380.png"
   },
   {
     "revision": "5b6cafaf0844f07debad3305c87e1388",
