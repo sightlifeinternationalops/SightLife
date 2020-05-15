@@ -6,6 +6,13 @@ div .metricsDeck{
     
 }
 
+/* .btn-secondary:hover {
+
+} */
+
+button.metrics.btn.btn-secondary {
+    color: white;
+}
 
 div.metricsDeck.card-deck {
     align-items: center;
@@ -20,18 +27,14 @@ div.metricsDeck.card-deck {
     border:10px solid rgb(153, 145, 198);
     background: rgb(153, 145, 198);
     border-radius: 20px;
+    margin: 1rem;
     text-align: center;
 }
 
-.card-deck .card {
-    flex: 0;
-    align-self: center;
-}
 
 div .metrics {
     padding-right: 10px;
     padding-left: 10px;
-    margin-bottom:5rem;
     height: 125px;
     width: 125px;
     align-self: center;    

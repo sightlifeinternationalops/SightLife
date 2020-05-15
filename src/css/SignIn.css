@@ -33,15 +33,43 @@ p {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-p.account {
+
+a.create {
+    font-size: 19px;
+}
+
+div.account {
     font-size: 16px;
     color: black;
-    font-weight: bold;
+    margin-top: 1rem;
     place-items: center;
     text-align: center;
 }
 
-a.create {
+p.account {
+    margin-bottom: 0;
+}
+
+.account2 {
+    font-size: 20px;
+    color: black;
+    place-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+label.sign {
+    margin-left: 0 auto;
+    align-content: center;
+    text-align: left;
+    display: block;
+}
+
+/* div.sign {
+    margin-left: 10rem;
+} */
+
+.create a {
     font-size: 16px;
     color: rgb(153, 145, 198);
 }

@@ -220,8 +220,17 @@ export class CreateAccount extends Component {
                             class='preview'> Create Account</button>
                         {/* <input type="submit" value="Submit"></input> */}
                     </p>
-                    <p class='account1'> Already have an account? <p class='account'>
-                        <Link to="/">Sign-In</Link></p> </p>
+
+  
+
+                <div class='account'>
+                    <p class="account"> Already have an account? </p>
+                </div>
+
+                <div class='account2'>
+                    <a class='create'> <Link to="/">Sign-In</Link></a>
+                </div>
+
                 </div>
             </div>
             ) 

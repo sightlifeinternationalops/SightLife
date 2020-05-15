@@ -24,14 +24,12 @@ h2 {
     color: rgb(100, 93, 155)
 }
 
-p {
-    color:rgb(109, 110, 113);
-    /* font-size: 1rem; */
+h2.team {
+    margin-top: 1.5rem;
 }
 
-.wave {
-    padding-bottom: 0;
-    padding: 0;
+p {
+    color:rgb(109, 110, 113);
 }
 
 nav {
@@ -39,10 +37,6 @@ nav {
     margin: 0;
     padding: 0;
     background-color: white;
-}
-
-nav h1 {
-    margin-left: rem;
 }
 
 nav div {
@@ -64,18 +58,33 @@ nav div {
     padding-bottom: 1.5rem;
 } */
 
-div .card-deck {
+div.card-deck.About {
     flex-direction: row; 
     display: flex;
-    flex-wrap: wrap;
-    align-content: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.card-deck .card.Dep {
+    flex: 0;
+    align-self: center;
 }
 
 div .card {
     margin: 0 auto;
     text-align: center;
     align-content: center;
+    align-items: center;
     float: none;
+}
+
+.card {
+    border-radius: 50%;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    display: inline;
+    min-width: 200px;
 }
 
 .sightlife {
@@ -114,7 +123,19 @@ section p {
         Need to change margins for team information
         separetely
     */
+}
 
+.para {
+    margin-top: 1rem;
+}
+
+Div.Departments.card-body {
+    padding: 0;
+    padding-top: 15px;
+}
+
+p.About {
+    margin: 0;
 }
 
 .learnMore a {
@@ -129,15 +150,6 @@ section p {
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-}
-
-.card {
-    border-radius: 50%;
-    position: relative;
-    background-color: transparent;
-    border: none;
-    display: inline;
-    min-width: 200px;
 }
 
 .column {
@@ -158,14 +170,9 @@ section p {
     
 }
 
-/* .column img {
-    width: 15rem;
-    height: 15rem;
-    border-radius: 50%;
-    border-style: solid;
-    border-color: white;
-    border-width: 0.5rem;
-} */
+.wave {
+    padding-bottom: 0;
+}
 
 #contact img {
     width: 13rem;
@@ -201,33 +208,24 @@ section p {
     width: 50px;
 }
 
-
-
 .logo {
     padding-left: 1em;
     padding-right: 0.25em;
     padding-bottom: 2em;
-    /*background-image: url('./img/logo.png');*/
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 4rem;
 }
 
-button:hover {
-    background-color: rgb(213,210,233); 
-}
+
 
 #title {
-    /* padding-top: 10rem;
-    padding-bottom: 6rem; */
     margin-top: 5rem;
     margin-bottom: 5rem;
     background-color: rgb(255,255,255);
     text-align: center;
-    /* background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f'); */
-	background-blend-mode: soft-light;
 	background-size: cover;
-	background-position: center center;
+	background-position: center;
 	padding: 2rem;
 }
 
@@ -238,11 +236,9 @@ button:hover {
 }
 
 #title p {
-    /* font-size: 2rem; */
     font-size: 1.25rem;
     font-weight: 400;
     margin-right: 15rem;
-    /* margin-left: 20rem; */
 }
 
 #title #me {
@@ -258,14 +254,6 @@ button:hover {
     height: 400px;
 }
 
-#contact {
-    text-align: none;
-}
-
-#contact p {
-    margin: 0;
-}
-
 #our-team, #documentation {
     text-align: center;
 }
@@ -279,6 +267,11 @@ button:hover {
     max-width: 100px;
 }
 
+.inSightful {
+    margin-left: 1rem;
+}
+
+
 @media (min-width: 300px) {
     #title h1 {
         margin-right: 0;
@@ -286,12 +279,6 @@ button:hover {
 
     #title p {
         margin-right: 0px;
-    }
-
-    div .card-deck {
-        flex-direction: row; 
-        display: flex;
-        align-content: center;
     }
 
     .section-content {
@@ -332,16 +319,9 @@ button:hover {
 
     #contact {
         margin-left: 5rem;
+        margin-right: 5rem;
+        padding-bottom: 1.5rem;
     }
-
-    /* #title h1 {
-        margin-right: 0;
-    }
-    
-
-    #title p {
-        margin-right: 10px;
-    } */
 
     .feature {
         margin-bottom: 3rem;
@@ -362,39 +342,22 @@ button:hover {
     }
 
     #title p {
-        /* font-size: 2rem; */
-        /* font-size: 1.25rem;
-        font-weight: 400; */
         margin-right: 60px;
-        /* margin-left: 20rem; */
     }
-
 }
 
 @media (min-width: 950px) {
     .flex-container {
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
     }
-
-    /* 
-    .button {
-        font-size: 1.5rem;
-        padding: 16px 24px;
-    } */
-
+    
     #title h1 {
         margin-right: 5rem;
     }
     
-
     #title p {
-        /* font-size: 2rem; */
-        /* font-size: 1.25rem;
-        font-weight: 400; */
         margin-right: 5rem;
-        /* margin-left: 20rem; */
     }
-
 }
 
 @media (min-width: 1200px) {

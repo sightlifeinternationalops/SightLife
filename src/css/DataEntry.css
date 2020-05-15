@@ -9,8 +9,12 @@ h2.InputOption {
 }
 
 h2#month {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     margin-top: 30px;
+}
+
+textarea#form {
+    margin-bottom: 1rem;
 }
 
 h2 {
@@ -20,25 +24,19 @@ h2 {
 
 h2.MetricTitles {
     margin-bottom: 0px;
+    margin-top: 1rem;
 }
 
 h1, h2, h3 {
-    color: #888888;
+    color: rgb(100, 93, 155);
     align-content: center;
     text-align: center;
 }
 
-h1 {
-    color: #6D6E70
-}
 
 p {
     color:rgb(109, 110, 113);
     /* font-size: 1rem; */
-}
-
-.textInput label {
-    color: #888888
 }
 
 #forms {
@@ -69,16 +67,12 @@ p {
 }
 
 .check, .textInput {
-    color:black;
+    color:rgb(109, 110, 113);
     font-size: 18px;
 }
 
 .check, .box {
     display: inline-block;
-}
-
-.check {
-    align-items: left;
 }
 
 label {
@@ -98,7 +92,7 @@ label {
     width: 275px;
 }
 
-.selection:hover, .preview:hover{
+.selection:hover, .preview:hover {
     background-color: rgb(153, 145, 198);
     color: white;
 }
@@ -186,14 +180,12 @@ section.entry {
     width: 100%;
   }
 
-  div .CheckBoxes {
-      padding-bottom: 1rem;
-  }
+ 
 
   input#Target.box {
-    width: 22px;
+    width: 20px;
     height: 40px;
-    padding-bottom: 10px;
+    margin-bottom: 0.2rem;
     margin-right: 5px;
     vertical-align: bottom;
     position: relative;
@@ -203,9 +195,18 @@ section.entry {
   input#Actual.box{
     width: 20px;
     height: 40px;
-    padding-bottom: 20px;
+    margin-bottom: 0.2rem;
     margin-right: 5px;
     vertical-align: bottom;
     position: relative;
     top: -1px;
+  }
+
+  h2.timeFrame {
+      margin: 0;
+      font-weight: bold;
+  }
+
+  div.textInput {
+      margin: 1rem;
   }

@@ -11,8 +11,7 @@ export class DashBoard extends Component {
     constructor(props) {
         super(props)
         let year = new Date()
-        year = year.getFullYear().toString()
-
+        year = year.getFullYear().toString()        
         // this.handleYearChange = this.handleYearChange.bind(this)
 
         this.state = {
@@ -29,8 +28,15 @@ export class DashBoard extends Component {
     // Do any information retrieval here
     componentDidMount() {
         console.log(this.props)
+        d3.select("svg").remove();
+        d3.select("svg").remove();
     }
 
+    componentWillUnmount() {
+        d3.select("svg").remove();
+        d3.select("svg").remove();
+    }
+    
     arrayElements() {
         const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
             //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
@@ -96,6 +102,7 @@ export class DashBoard extends Component {
     }
 
     barChart() {
+        if (this.props.selectedYearMap.length > 0) {
         const data = []
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
@@ -118,7 +125,7 @@ export class DashBoard extends Component {
             }
         }
     
-        var margin = {top: 20, right: 100, bottom: 70, left: 130},
+        var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 
@@ -203,6 +210,12 @@ export class DashBoard extends Component {
         .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
         .style("font-size", "12")
         .text("Months")
+
+        svg.append("text")
+        .style("text-anchor", "middle")
+        .attr("transform", "translate(" + width / 2 + " ," + (-15) + ")")
+        .style("font-size", "12")
+        .text("Actuals vs. Targets Monthly")
   
       var graph = svg
           .selectAll(".date")
@@ -244,11 +257,12 @@ export class DashBoard extends Component {
           .style("text-anchor", "end")
           .text(function(d) { return d; });
           return svg.node();
+        }
     }
 
 
     svgRender() {
-        return <svg ref={this.barChart()}
+        return <svg id="bar-chart"ref={this.barChart()}
               width={860} height={210}/>
     }
     // Renders information for quarters for the
@@ -285,7 +299,9 @@ export class DashBoard extends Component {
     }
 
     lineChart() {
-    var margin = {top: 20, right: 100, bottom: 70, left: 130},
+    
+    if (this.props.selectedYearMap.length > 0) {
+    var margin = {top: 30, right: 100, bottom: 70, left: 130},
     width = 1200 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -400,7 +416,12 @@ export class DashBoard extends Component {
                   .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
                   .style("font-size", "12")
                   .text("Months")
-            
+
+                svg.append("text")
+                  .style("text-anchor", "middle")
+                  .attr("transform", "translate(" + width / 2 + " ," + (-15) + ")")
+                  .style("font-size", "12")
+                  .text("Actuals vs. Targets Monthly")
                 // COLOR
                 var color = d3.scaleOrdinal()
                   .range(["#D5D1E9", "#9991C6"]);
@@ -473,9 +494,10 @@ export class DashBoard extends Component {
                     .style("text-anchor", "end")
                     .text(function(d) { return d; });
     }
+}
 
     svgRenderLine() {
-        return <svg ref={this.lineChart()}
+        return <svg id="line-chart" ref={this.lineChart()}
               width={860} height={210}/>
     }
     // Renders information for annuals for
@@ -575,6 +597,7 @@ export class DashBoard extends Component {
 
                     {/* Yearly Information */}
                     {annualElements}
+                    
                     {barChart}
                     {lineChart}
                 </div>
