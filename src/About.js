@@ -50,7 +50,7 @@ export class About extends Component {
 
             <section id="problem">
                 <div class="section-content">
-                    <h2 class = "problem">The Problem</h2>
+                    <h2 className = "team">The Problem</h2>
                     <p class="problem">
                         Right now, in this instance, there are more than <strong>12.7 million people in the world </strong> that are needlessly suffering from corneal blindness. 
                         Corneal blindness is the scarring of the cornea caused by an injury or disease. Damage to the cornea is more common than we think, 
@@ -71,7 +71,7 @@ export class About extends Component {
                 <div class="section-content">
                     <div class="flex-container">
                         <div class="flex-item">
-                            <h2>Sponsor Information</h2>
+                            <h2 className = "team">Sponsor Information</h2>
                             <p>
                                 This project is sponsored by SightLife, the only global health organization working relentlessly to eliminate corneal blindness worldwide. With
                                 partners in more than 30 countries, SightLife is increasing
@@ -89,14 +89,14 @@ export class About extends Component {
 
             <section id="departments">
                 <div class="section-content">
-                    <h2>
+                    <h2 className = "team">
                         Departments
                     </h2>
-                    <CardDeck> 
+                    <CardDeck className="About"> 
 
-                    <Card style={{ width: '18rem' }}>
+                    <Card className="Dep" style={{ width: '18rem' }}>
                         <CardImg top width="60%" src={ Development } alt='Development' />
-                            <CardBody>
+                            <CardBody className="Departments">
                             <CardTitle> <h3> Eye Bank Development </h3> </CardTitle>
                                 <CardText>
                                     <p> Bringing industry-leading best practices to eye banks worldwide. </p>
@@ -104,9 +104,9 @@ export class About extends Component {
                             </CardBody>
                         </Card>
 
-                        <Card style={{ width: '18rem' }}>
+                        <Card className="Dep" style={{ width: '18rem' }}>
                         <CardImg top width="64%" src={ Policy } alt='Policy' />
-                            <CardBody>
+                            <CardBody className="Departments">
                                 <CardTitle body className="text-center"> <h3> Advocacy & Policy  </h3> </CardTitle>
                                 <CardText>
                                 <p> Creating policies that allow for more access to corneal tissue. </p>
@@ -114,9 +114,9 @@ export class About extends Component {
                             </CardBody>
                         </Card>
 
-                        <Card style={{ width: '18rem' }}>
+                        <Card className="Dep" style={{ width: '18rem' }}>
                         <CardImg  top width="70%"src={ Prevention } alt='Prevention' />
-                            <CardBody>
+                            <CardBody className="Departments">
                                 <CardTitle body className="text-center"> <h3> Prevention </h3> </CardTitle>
                                 <CardText>
                                     <p> Preventing blindness and strengthening health systems with a simple intervention.</p>
@@ -124,9 +124,9 @@ export class About extends Component {
                             </CardBody>
                         </Card>
 
-                        <Card style={{ width: '18rem' }}>
+                        <Card className="Dep" style={{ width: '18rem' }}>
                         <CardImg top width="64%" src={ Training } alt='Training' />
-                            <CardBody>
+                            <CardBody className="Departments">
                                 <CardTitle body className="text-center"> <h3> Clinical Training </h3> </CardTitle>
                                 <CardText>
                                     <p> Training trasplant surgeons and care providers worldwide. </p>
@@ -139,20 +139,21 @@ export class About extends Component {
 
             <section id="contact">
                 <div class="section-content">
-                    <h2>
+                    <h2 className = "team">
                         Team Members & Contact Info
                     </h2>
                     
-                    <CardDeck> 
+                    <CardDeck className="About"> 
 
                     <Card style={{ width: '18rem' }}>
                         <CardImg class="card-img-top img-fluid" src={ Nathan } alt='Nathan' />
                             <CardBody>
                             <CardTitle> <h3> Nathan Magdalera <SocialIcon url="https://www.linkedin.com/in/nathanmagdalera/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                                 <CardText>
-                                    <p> Full-Stack Developer </p>
-                                    <p> Cybersecurity </p>
-                                    <p> nathanmagdalera@gmail.edu </p>
+                                    <p className="About"> Full-Stack Developer </p>
+                                    <p className="About"> Cybersecurity </p>
+                                    <p className="About"> nathanmagdalera </p>
+                                    <p className="About"> @gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -162,9 +163,10 @@ export class About extends Component {
                             <CardBody>
                                 <CardTitle body className="text-center"> <h3> Shruti Rajagopalan <SocialIcon url="https://www.linkedin.com/in/shrutira/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                                 <CardText>
-                                    <p> User Experience</p>
-                                    <p>Project Management </p>
-                                    <p> shrutirdesign@gmail.com </p>
+                                    <p className="About"> User Experience</p>
+                                    <p className="About"> Project Management </p>
+                                    <p className="About"> shrutirdesign </p>
+                                    <p className="About"> @gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -174,9 +176,10 @@ export class About extends Component {
                             <CardBody>
                                 <CardTitle body className="text-center"> <h3>  Alexander Escalera  <SocialIcon url="https://www.linkedin.com/in/alexander-escalera-503360176/" style={{ height: 30, width: 30 }}/> </h3> </CardTitle>
                                 <CardText>
-                                    <p> Back-End Developer</p>
-                                    <p> User Experience </p>
-                                    <p> alexander.e1918@gmail.com </p>
+                                    <p className="About"> Back-End Developer</p>
+                                    <p className="About"> User Experience </p>
+                                    <p className="About"> alexander.e1918 </p>
+                                    <p className="About"> @gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
@@ -186,19 +189,20 @@ export class About extends Component {
                             <CardBody>
                                 <CardTitle body className="text-center"> <h3> Rani Chang <SocialIcon url="https://www.linkedin.com/in/yungtc/" style={{ height: 30, width: 30 }} /> </h3> </CardTitle>
                                 <CardText>
-                                    <p> Data Science</p>
-                                    <p> Front-End Developer </p>
-                                    <p> yungtsye@gmail.com </p>
+                                    <p className="About"> Data Science</p>
+                                    <p className="About"> Front-End Developer </p>
+                                    <p className="About"> yungtsye@gmail.com </p>
                                 </CardText>
                             </CardBody>
                         </Card>
                     </CardDeck>
                 </div>
-                <p><b>This project is complete and ownership will be transferred to the (future) Global Operations Business Manager. In the meantime, ownership will be given to Nashrah Mazhar: Nashrah.Mazhar@sightlife.org. For pressing questions, feel free to contact any of the team members who worked on the project.</b></p>
+                <p className="para"><b>This project is complete and ownership will be transferred to the (future) Global Operations Business Manager. In the meantime, ownership will be given to 
+                    Nashrah Mazhar: Nashrah.Mazhar@sightlife.org. For pressing questions, feel free to contact any of the team members who worked on the project.</b></p>
             </section>
             <footer>
                 <div className="footer-container">
-                    <p className="inSightful Footer"> 
+                    <p className="inSightful"> 
                         This project is a part of the
                     <a className="Data" href="https://ischool.uw.edu/capstone"> Capstone Project course at the University of Washington Information School </a></p>
                 </div>

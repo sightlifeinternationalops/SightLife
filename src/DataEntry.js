@@ -675,7 +675,7 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                        <h2>Select a Time Frame <span class="required">*</span> </h2>
+                        <h2 className="MetricTitles">Select a Time Frame <span class="required">*</span> </h2>
                         <select
                             onChange={(e) => this.props.updateChange(e)} name="selectTF">
                             <option value="metricGoalsMonths">Month</option>
@@ -700,7 +700,7 @@ export class DataEntryForm extends Component {
                                 {this.props.invalidRadio}
                             </p>
                         </div>
-                        <h2>Select a data-type <span class="required">*</span> </h2>
+                        <h2 className = "MetricTitles">Select a Data-Type <span class="required">*</span> </h2>
                         <select
                             onChange={(e) => this.props.updateChange(e)} name="dataType">
                             <option value="number">Number</option>
