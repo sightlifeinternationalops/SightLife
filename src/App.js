@@ -2,7 +2,6 @@ import './css/App.css';
 import React, { Component } from 'react';
 import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { About } from './About';
-import { HistoricalData } from './HistoricalData';
 import { Metrics, MetricAreaCard } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
@@ -284,7 +283,6 @@ class App extends Component {
         <div>
             <Switch>
               <Route exact path="/" component={About} />
-              <Route path="/historicaldata" component={HistoricalData} />
               <Route
                 path="/metrics"
                 render={() => <Metrics

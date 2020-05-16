@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './css/AdminPanel.css';
 import { AdminPanelNav } from './AdminPanel'
 import firebase from 'firebase/app';
+import Switch from "react-switch";
 
 import { CardDeck, ListGroup, ListGroupItem } from 'reactstrap';
 
@@ -18,9 +19,10 @@ export class AdminPanelUserPermissions extends Component {
         this.removeMetricOwner = this.removeMetricOwner.bind(this)
 
         this.state = {
-            currentMetricA: "Choose a metric area",
+            currentMetricA: null,
             currentMetricAOwners: new Map(),
-            modalDisplay: "none"
+            modalDisplay: "none",
+            ownersDisplay: "none"
         }
     }
 
@@ -63,7 +65,7 @@ export class AdminPanelUserPermissions extends Component {
                     }
                 }
             })
-            this.setMetricOwner(userMap, mName,mID)
+            this.setMetricOwner(userMap, mName, mID)
         })
     }
 
@@ -74,6 +76,7 @@ export class AdminPanelUserPermissions extends Component {
             state.currentMetricID = mID
             state.currentMetricAOwners = userMap
             state.enableEdit = false
+            state.ownersDisplay = "block"
             return state
         })
     }
@@ -108,7 +111,7 @@ export class AdminPanelUserPermissions extends Component {
                             let refPath = 'metricAreas/' + this.state.currentMetricID + '/owners/' + item
 
                             firebase.database().ref(refPath).remove()
-                            
+
                             let usersInfo = this.state.currentMetricAOwners
                             usersInfo.delete(item)
                             this.setMetricOwners(usersInfo)
@@ -156,7 +159,7 @@ export class AdminPanelUserPermissions extends Component {
                                 onChange={(e) => this.handleChange(e)}
                                 type="text" name="addMetricOwner" /> */}
                             <select
-                            onChange={(e) => this.updateUser(e)}>
+                                onChange={(e) => this.updateUser(e)}>
                                 <option value="None">None</option>
                                 {usersElements}
                             </select>
@@ -191,11 +194,6 @@ export class AdminPanelUserPermissions extends Component {
             userName: this.state.currentUserName,
             userMetricID: id
         }
-        // firebase.database().ref('metricAreas/' + id.toString()).update({
-        //     userID: this.state.currentUserID,
-        //     userName: this.state.currentUserName,
-        //     userMetricID: id
-        // })
         firebase.database().ref('metricAreas/' + this.state.currentMetricID + '/owners/' + id.toString()).update({
             userID: this.state.currentUserID,
             userName: this.state.currentUserName,
@@ -267,15 +265,13 @@ export class AdminPanelUserPermissions extends Component {
                             </CardDeck>
                         </div>
                         <MetricAreaInfo
+                            {...this.state}
                             editMetricOwners={this.editMetricOwners}
                             addOwnerModal={this.addOwnerModal}
                             cancelMetricOwners={this.cancelMetricOwners}
-                            enableEdit={this.state.enableEdit}
-                            currentMetricA={this.state.currentMetricA}
-                            currentMetricAOwners={this.state.currentMetricAOwners}
                             setMetricOwner={this.setMetricOwner}
                             removeMetricOwner={this.removeMetricOwner}
-                            users={this.props.users}/>
+                        />
                         {form}
                     </div>
                 </main>
@@ -304,40 +300,45 @@ class MetricAreaInfo extends Component {
         if (!this.props.enableEdit) {
             content = (
                 <div>
-                    {/* <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p> */}
                     <button class='save'
                         type="Save"
                         value="Save"
-                        onClick={() => { this.props.editMetricOwners()}}> Edit </button>
+                        onClick={() => { this.props.editMetricOwners() }}> <strong>Edit</strong> </button>
                 </div>
             )
         } else {
             content = (
                 <div>
-                    <button
-                        onClick={() => { this.props.addOwnerModal() }}
-                        class='save'>Add Owner</button>
-                    <button
-                        onClick={() => { this.props.cancelMetricOwners() }}
-                        class='cancel'>Cancel</button>
+                    <label>
+                    <span> Data Entry for Actuals:</span>
+                    </label>
+                    <Switch/>
+                    <div>
+                        <button
+                            onClick={() => { this.props.addOwnerModal() }}
+                            class='save'><strong>Add Owner</strong></button>
+                        <button
+                            onClick={() => { this.props.cancelMetricOwners() }}
+                            class='cancel'><strong>Cancel</strong></button>
+                    </div>
                 </div>
             )
         }
 
         return (
-            <div class="column">
+            <div class="column"
+                style={{ display: this.props.ownersDisplay }}>
                 <div class="PermInfo">
                     <div class="PermissionBox">
                         <h3 class='PermissionText'> {this.props.currentMetricA} </h3>
                     </div>
                     <div class="PermissionInfo">
                         <p class="PermText">Owner(s):</p>
-                        <ul   id="owners">
-                            <div  id="listitem">
+                        <ul id="owners">
+                            <div id="listitem">
                                 <ListGroup>
                                     {metricAreaOwners}
                                 </ListGroup>
-                                {/* {metricAreaOwners} */}
                             </div>
                         </ul >
                         {content}
@@ -369,8 +370,8 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
-    let button = !this.props.enableEdit ? <div></div> : <button
-    onClick={() => {this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA)}}>-</button>
+        let button = !this.props.enableEdit ? <div></div> : <button
+            onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
         return (
             // <ListGroupItem>
@@ -385,7 +386,7 @@ class MetricAreaOwner extends Component {
     }
 }
 
-class UserItem extends Component { 
+class UserItem extends Component {
     render() {
         return (
             <option value={this.props.name} id={this.props.uid}>

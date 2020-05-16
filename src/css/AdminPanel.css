@@ -10,9 +10,17 @@
     clear: both;
   }
 
+.PermInfo {
+    box-shadow: 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1), 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1);
+    border-radius: 10px 10px 10px 10px;
+    margin: 0 auto;
+    padding: 0;
+}
+
 .PermissionBox {
-    background-color: #9991C6;;
+    background-color: #9991C6;
     height: 50;
+    border-radius: 10px 10px 0 0;
   }
 
 .column .PermissionText {
@@ -48,6 +56,11 @@ div.PermDatadeck {
 
 .right-submission {
     margin-left: 1rem;
+}
+
+button.cancel {
+    background-color: transparent;
+    color: rgb(153, 145, 198);
 }
 
 
