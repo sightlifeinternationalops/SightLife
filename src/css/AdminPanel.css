@@ -58,11 +58,30 @@ div.PermDatadeck {
     margin-left: 1rem;
 }
 
+.react-switch {
+    vertical-align: middle
+  }
+
 button.cancel {
     background-color: transparent;
     color: rgb(153, 145, 198);
 }
 
+#dataEntry {
+    margin-top: 1rem;
+    border-width: 0.5px;
+    border-color: gray;
+    /* border-top-style: solid; */
+}
+
+#dataEntry button {
+    margin: 0;
+    margin-top: 1rem;
+}
+
+#dataEntry label {
+    margin-top: 1rem;
+}
 
 #addUserForm {
     display: none;

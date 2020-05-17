@@ -17,6 +17,8 @@ export class AdminPanelUserPermissions extends Component {
         this.cancelMetricOwners = this.cancelMetricOwners.bind(this)
         this.setMetricOwner = this.setMetricOwner.bind(this)
         this.removeMetricOwner = this.removeMetricOwner.bind(this)
+        this.handleMAToggle = this.handleMAToggle.bind(this)
+        this.handleMTToggle = this.handleMTToggle.bind(this)
 
         this.state = {
             currentMetricA: null,
@@ -55,27 +57,34 @@ export class AdminPanelUserPermissions extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             let userMap = new Map()
+            let mAE = info.metricActualEnabled
+            let mTE = info.metricTargetEnabled
+
+            console.log(mAE)
+            console.log(mTE)
+
             // is this loop necessary?
             keys.map((key) => {
                 if (key === "owners") {
                     let objectMap = info[key]
                     for (var object in objectMap) {
-                        console.log(object)
                         userMap.set(object, objectMap[object].userName)
                     }
                 }
             })
-            this.setMetricOwner(userMap, mName, mID)
+            this.setMetricOwner(userMap, mName, mID, mAE, mTE)
         })
     }
 
 
-    setMetricOwner(userMap, name, mID) {
+    setMetricOwner(userMap, name, mID, mAE, mTE) {
         this.setState((state) => {
             state.currentMetricA = name
             state.currentMetricID = mID
             state.currentMetricAOwners = userMap
             state.enableEdit = false
+            state.metricActualEnabled = mAE
+            state.metricTargetEnabled = mTE
             state.ownersDisplay = "block"
             return state
         })
@@ -136,7 +145,6 @@ export class AdminPanelUserPermissions extends Component {
         const selected = event.target.options.selectedIndex
         let id = (event.target.options[selected].getAttribute('id'))
         let user = event.target.value
-        console.log(id)
         this.setState((state) => {
             state.currentUserID = id
             state.currentUserName = user
@@ -155,9 +163,6 @@ export class AdminPanelUserPermissions extends Component {
                     <div>
                         <h2>Enter Metric Owner</h2>
                         <label>
-                            {/* <input
-                                onChange={(e) => this.handleChange(e)}
-                                type="text" name="addMetricOwner" /> */}
                             <select
                                 onChange={(e) => this.updateUser(e)}>
                                 <option value="None">None</option>
@@ -223,6 +228,18 @@ export class AdminPanelUserPermissions extends Component {
         })
     }
 
+    handleMAToggle(metricActualEnabled) {
+        this.setState({
+            metricActualEnabled
+        })
+    }
+
+    handleMTToggle(metricTargetEnabled) {
+        this.setState({
+            metricTargetEnabled
+        })
+    }
+
     // Represents metric area elements to render on page.
     metricAreaElements() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
@@ -248,6 +265,16 @@ export class AdminPanelUserPermissions extends Component {
         return usersElements
     }
 
+    // Saves information
+    // for whether targets and actuals
+    // are enabled and sends it to Firebase
+    saveAT(target, actual, id) {
+        firebase.database().ref('metricAreas/' + id).update({
+            metricActualEnabled: actual,
+            metricTargetEnabled: target
+        })
+    }
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
@@ -271,6 +298,9 @@ export class AdminPanelUserPermissions extends Component {
                             cancelMetricOwners={this.cancelMetricOwners}
                             setMetricOwner={this.setMetricOwner}
                             removeMetricOwner={this.removeMetricOwner}
+                            handleMAToggle={this.handleMAToggle}
+                            handleMTToggle={this.handleMTToggle}
+                            saveAT={this.saveAT}
                         />
                         {form}
                     </div>
@@ -281,6 +311,10 @@ export class AdminPanelUserPermissions extends Component {
 }
 
 class MetricAreaInfo extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     // Represents metric area owners to render.
     metricAreaOwners() {
         const metricAreaOwners = Array.from(this.props.currentMetricAOwners.entries()).map((key) => {
@@ -296,6 +330,7 @@ class MetricAreaInfo extends Component {
     render() {
         const metricAreaOwners = this.metricAreaOwners()
         let content = null
+        let entryContent = null
 
         if (!this.props.enableEdit) {
             content = (
@@ -306,21 +341,43 @@ class MetricAreaInfo extends Component {
                         onClick={() => { this.props.editMetricOwners() }}> <strong>Edit</strong> </button>
                 </div>
             )
+            entryContent = null
         } else {
             content = (
-                <div>
+                <div id="dataEntry">
                     <label>
-                    <span> Data Entry for Actuals:</span>
+                        <span> Data Entry for Actuals:</span>
                     </label>
-                    <Switch/>
+                    <Switch
+                        onChange={this.props.handleMTToggle}
+                        className="react-switch"
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        checked={this.props.metricTargetEnabled} />
+                    <label>
+                        <span> Data Entry for Targets:</span>
+                    </label>
+                    <Switch
+                        className="react-switch"
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        checked={this.props.metricActualEnabled}
+                        onChange={this.props.handleMAToggle} />
                     <div>
                         <button
-                            onClick={() => { this.props.addOwnerModal() }}
-                            class='save'><strong>Add Owner</strong></button>
+                            onClick={() => { this.props.saveAT(this.props.metricTargetEnabled, this.props.metricActualEnabled, this.props.currentMetricID) }}
+                            class='save'><strong>Save</strong></button>
                         <button
                             onClick={() => { this.props.cancelMetricOwners() }}
-                            class='cancel'><strong>Cancel</strong></button>
+                            class='cancel'><strong>Close</strong></button>
                     </div>
+                </div>
+            )
+            entryContent = (
+                <div>
+                    <button
+                        onClick={() => { this.props.addOwnerModal() }}
+                        class='save'><strong>Add Owner</strong></button>
                 </div>
             )
         }
@@ -341,6 +398,7 @@ class MetricAreaInfo extends Component {
                                 </ListGroup>
                             </div>
                         </ul >
+                        {entryContent}
                         {content}
                     </div>
                 </div>
@@ -374,10 +432,6 @@ class MetricAreaOwner extends Component {
             onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
         return (
-            // <ListGroupItem>
-            //     {this.props.owner}
-            //     {button}
-            // </ListGroupItem>
             <li>
                 {this.props.owner}
                 {button}
