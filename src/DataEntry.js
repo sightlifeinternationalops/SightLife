@@ -606,7 +606,7 @@ class MetricAreaCalcButton extends Component {
         return (
             <button
                 onClick={() => this.props.metricCalcFunc(this.props.metricCalcID, typeString)}
-                class='selection' type={typeString} value={typeString}>{typeString}</button>
+                class='selection' type={typeString} value={this.props.metricCalcID}>{typeString}</button>
         )
     }
 }

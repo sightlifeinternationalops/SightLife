@@ -279,7 +279,6 @@ export class AdminSettings extends Component {
     }
 
     saveSettings(target, actual) {
-        console.log(this.state)
         firebase.database().ref('dataEntrySettings').update({
             actualEnabled: actual,
             targetEnabled: target
