@@ -589,8 +589,11 @@ export class DashBoard extends Component {
             <div className="body">
                 <h1> {this.props.metricAreaInfo} </h1>
                 <div>
-                    <h2> Select A Metric Calculation </h2>
+                    {/* <h2> Select A Metric Calculation </h2> */}
                     <div className="options">
+                        <div 
+                        className="dropTitle"
+                        ><strong>Metric Calculation: </strong></div>
                     <select className="options"
 
                         onChange={(e) => this.props.handleCalChange(e)}>
@@ -602,6 +605,7 @@ export class DashBoard extends Component {
                     {/* Once a metric is selected,
                     fill in depending on how many keys
                     and enable */}
+                       <div className="dropTitle"><strong>Year: </strong></div>
                     <select 
                         disabled={this.state.selectEnable}
                         name="selectedYear"

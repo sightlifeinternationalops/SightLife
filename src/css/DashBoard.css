@@ -4,6 +4,11 @@
     text-align: center;
 }
 
+.dropTitle {
+    display:inline-block;
+    margin-right: 5px;
+}
+
 #legend {
     text-align: center;
 }
@@ -12,21 +17,24 @@
     width: 25px;
     height: 25px;
     background-color: #50c53d;
-    margin-right: 5px
+    margin-right: 5px;
+    border-radius: 2px;
 }
 
 #inMargin {
     width: 25px;
     height: 25px;
     background-color:#f9a354;
-    margin-right: 5px
+    margin-right: 5px;
+    border-radius: 2px;
 }
 
 #outMargin {
     width: 25px;
     height: 25px;
     background-color: #fe0000;
-    margin-right: 5px
+    margin-right: 5px;
+    border-radius: 2px;
 }
 
 .test {
