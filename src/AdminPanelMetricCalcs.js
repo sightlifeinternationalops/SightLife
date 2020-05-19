@@ -62,14 +62,32 @@ export class AdminPanelMetricCalcs extends Component {
 
     addCalculation(e) {
         e.preventDefault()
-        let ref = firebase.database().ref('metricCalculations')
-        let id = ref.push().getKey()
-        firebase.database().ref('metricCalculations/' + id.toString()).update({
-            calcName: this.state.addCalcName,
-            calcMetric: this.state.addCalcName,
-            calcID: id,
-            metricAreaID: this.state.current
-        })
+        if (this.checkAddCalculation()) {
+            let ref = firebase.database().ref('metricCalculations')
+            let id = ref.push().getKey()
+            firebase.database().ref('metricCalculations/' + id.toString()).update({
+                calcName: this.state.addCalcName,
+                calcMetric: this.state.addCalcName,
+                calcID: id,
+                calcArchived: false,
+                metricAreaID: this.state.current,
+                dataType: this.state.dataType
+            })
+        }
+    }
+
+    checkAddOpenModal() {
+        if (this.state.current) {
+            return true
+        }
+        return false
+    }
+
+    checkAddCalculation() {
+        if (this.state.addCalcName && this.state.dataType && this.state.current) {
+            return true
+        }
+        return false
     }
 
     // Retrieves relevant metric calculations for a metric
@@ -80,7 +98,7 @@ export class AdminPanelMetricCalcs extends Component {
             let metricCalcInfo = snapshot.val();
             let databaseKeys = Object.keys(metricCalcInfo);
             let mapCalculations = new Map()
-            let archivedMap  = new Map()
+            let archivedMap = new Map()
 
             databaseKeys.map((key) => {
                 console.log(metricCalcInfo[key])
@@ -96,7 +114,7 @@ export class AdminPanelMetricCalcs extends Component {
             this.setCalculations(mapCalculations, archivedMap)
         })
     }
-        // Sets state to have current metric area calculations for
+    // Sets state to have current metric area calculations for
     // the selected metric area. 
     setCalculations(mapCalculations, archivedMap) {
         this.setState((state) => {
@@ -152,10 +170,12 @@ export class AdminPanelMetricCalcs extends Component {
     }
 
     openAddModal() {
-        this.setState((state) => {
-            state.addModalDisplay = "block"
-            return state
-        })
+        if (this.checkAddOpenModal()) {
+            this.setState((state) => {
+                state.addModalDisplay = "block"
+                return state
+            })
+        }
     }
 
     closeModal(e) {
@@ -192,17 +212,17 @@ export class AdminPanelMetricCalcs extends Component {
     }
 
     addForm() {
-        let form =(
+        let form = (
             <div className="modalForm"
-                style={{display: this.state.addModalDisplay}}>
-                    <div>
-                        <form className="modalBox">
-                            <button className="close-button"
-                                onClick={(e) => this.closeAddModal(e)}>
-                                X
+                style={{ display: this.state.addModalDisplay }}>
+                <div>
+                    <form className="modalBox">
+                        <button className="close-button"
+                            onClick={(e) => this.closeAddModal(e)}>
+                            X
                             </button>
-                            <h2>New Calculation Name</h2>
-                            <div>
+                        <h2>New Calculation Name</h2>
+                        <div>
                             <label>
                                 <input
                                     type="text"
@@ -210,15 +230,27 @@ export class AdminPanelMetricCalcs extends Component {
                                     onChange={(e) => this.handleChange(e)}
                                 />
                             </label>
-                            </div>
-                            <div>
-                                <button
-                                    onClick={(e) => this.addCalculation(e)}>
-                                        Submit
+                        </div>
+                        <h2>
+                            Data-Type
+                            </h2>
+                        <select
+                            name="dataType"
+                            onChange={(e) => this.handleChange(e)}>
+                                <option value="none" disabled selected>Select a data type</option>
+                            <option value="number">Number</option>
+                            <option value="percent">Percent</option>
+                            <option value="money">Money</option>
+                            <option value="text">Text</option>
+                        </select>
+                        <div>
+                            <button
+                                onClick={(e) => this.addCalculation(e)}>
+                                Submit
                                 </button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
         return form
@@ -227,22 +259,22 @@ export class AdminPanelMetricCalcs extends Component {
     archivedForm() {
         let form = (
             <div className="modalForm"
-                style={{display: this.state.archivedModalDisplay}}>
-                    <div>
-                        <form className="modalBox">
+                style={{ display: this.state.archivedModalDisplay }}>
+                <div>
+                    <form className="modalBox">
                         <button className="close-button"
                             onClick={(e) => this.closeArchiveModal(e)}>
-                                X
+                            X
                             </button>
-                            <h2> Current Calculation</h2>
-                            <div>
-                                <button
-                                    onClick={(e) => this.unarchiveMetricCalc(e)}>
-                                    Unarchive
+                        <h2> Current Calculation</h2>
+                        <div>
+                            <button
+                                onClick={(e) => this.unarchiveMetricCalc(e)}>
+                                Unarchive
                                 </button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
         return form
@@ -251,7 +283,7 @@ export class AdminPanelMetricCalcs extends Component {
     editForm() {
         let form = (
             <div className="modalForm"
-                style={{ display: this.state.modalDisplay}}>
+                style={{ display: this.state.modalDisplay }}>
                 <div>
                     <form className="modalBox">
                         <button className="close-button"
@@ -284,7 +316,7 @@ export class AdminPanelMetricCalcs extends Component {
         return form
     }
 
-    archiveMetricCalc(e) { 
+    archiveMetricCalc(e) {
         e.preventDefault()
         if (this.state.currentCalc) {
             let rootPath = firebase.database().ref('metricCalculations/' + this.state.currentCalc)
@@ -296,10 +328,10 @@ export class AdminPanelMetricCalcs extends Component {
 
     unarchiveMetricCalc(e) {
         e.preventDefault()
-            let rootPath = firebase.database().ref('metricCalculations/' + this.state.currentArchivedCalc)
-            rootPath.update({
-                calcArchived: false
-            })
+        let rootPath = firebase.database().ref('metricCalculations/' + this.state.currentArchivedCalc)
+        rootPath.update({
+            calcArchived: false
+        })
     }
 
     render() {
@@ -325,10 +357,10 @@ export class AdminPanelMetricCalcs extends Component {
                                 {metricAreaItemsList}
                             </select>
                             <div className="titleButton">
-                            <h2 style={{display: "inline-block"}}>Metric Calculations</h2>
-                            <button
-                                onClick={(e) => this.openAddModal(e)}
-                            >+</button>
+                                <h2 style={{ display: "inline-block" }}>Metric Calculations</h2>
+                                <button
+                                    onClick={(e) => this.openAddModal(e)}
+                                >+</button>
                             </div>
                             <div id="metricAreaCalcElements">
                                 {metricAreaCalculationElements}
@@ -364,7 +396,7 @@ class MetricAreaCalcButton extends Component {
     componentDidMount() {
         console.log(this.props)
     }
-    
+
     render() {
         let typeString = this.props.metricCalcID
         return (

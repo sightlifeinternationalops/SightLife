@@ -70,6 +70,42 @@ export class DashBoard extends Component {
         return test
     }
 
+    // Determines the color of the actual field.
+    // If the actual is greater or equal to the target
+    // change color to green.
+    // If the actual is within 5% of the target, 
+    // change color to orange.
+    // If the actual is neither of the above,
+    // change color to red. 
+    actualColor(actual, target, dataType) {
+        let actualFloat = parseFloat(actual)
+        let targetFloat = parseFloat(target)
+        switch (dataType) {
+            case "number":
+                if (actualFloat >= targetFloat) {
+                    return "#50c53d"
+                } else {
+                    let subtractNum = targetFloat * 0.05
+                    let marginNum = targetFloat - subtractNum
+                    if (actualFloat >= marginNum) {
+                        return "#f9a354"
+                    } else {
+                        return "#fe0000"
+                    }
+                }
+            case "percent":
+                if (actualFloat >= targetFloat) {
+                    return "#50c53d"
+                } else {
+                    if (actualFloat >= targetFloat - 5) {
+                        return "#f9a354"
+                    } else {
+                        return "#fe0000"
+                    }
+                }
+        }
+    }
+
     // Renders information for months for
     // the selected metric calculation and year
     monthArrayElements() {
@@ -77,6 +113,7 @@ export class DashBoard extends Component {
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
             if (monthObj) {
+                let color = this.actualColor(monthObj.actual, monthObj.target, monthObj.dataType)
                 monthArrayInfo[i] = (
                     <MetricMonthly
                         month={i + 1}
@@ -85,7 +122,8 @@ export class DashBoard extends Component {
                         highlights={monthObj.highlights}
                         lowlights={monthObj.lowlights}
                         target={monthObj.target}
-                        datatype={monthObj.datatype}/>
+                        datatype={monthObj.dataType}
+                        color={color}/>
                 )
             } else {
                 monthArrayInfo[i] = (
@@ -549,7 +587,7 @@ export class DashBoard extends Component {
 
         return (
             <div className="body">
-                <h1> Metric Area: {this.props.metricAreaInfo} </h1>
+                <h1> {this.props.metricAreaInfo} </h1>
                 <div>
                     <h2> Select A Metric Calculation </h2>
                     <div className="options">
@@ -571,6 +609,31 @@ export class DashBoard extends Component {
                         <option value="" disabled selected>Select a Year</option>
                         {yearElements}
                     </select>
+                    </div>
+
+
+                    <div id="legend">
+                        <div className="test">
+                            <div id="onTarget"className="targets">
+                            </div>
+                            <div className="targets">
+                                On Target
+                            </div>
+                        </div>
+                        <div className="test">
+                        <div id="inMargin"className="targets">
+                            </div>
+                            <div className="targets">
+                            &lt;5% variation to target
+                            </div>
+                        </div>
+                        <div className="test">
+                        <div id="outMargin"className="targets">
+                            </div>
+                            <div className="targets">
+                            &gt;5% variation to target
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -666,24 +729,13 @@ class MetricMonthly extends Component {
         }
     }
 
- // Determines the color of the actual field.
-    // If the actual is greater or equal to the target
-    // change color to green.
-    // If the actual is within 5% of the target, 
-    // change color to orange.
-    // If the actual is neither of the above,
-    // change color to red. 
-    actualColor(actual, target) {
-        if (actual >= target) {
-            console.log("Good to go!")
-        } else {
-            console.log("Actuals not met and not within 5%")
-        }
-    }
-
     render() {
         let actualValue = this.props.actual
         let monthValue = this.month(this.props.month)
+        // let color = this.actualColor(this.props.actual, this.props.target, this.props.datatype)
+        // console.log(color)
+        let color = "green"
+
         // If there is no value existing for the actual yet
         if (!actualValue) {
             actualValue = "N/A"
@@ -702,7 +754,7 @@ class MetricMonthly extends Component {
                             <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
-                            <th className="values">{actualValue}</th>
+                            <th style={{backgroundColor: this.props.color}} className="values">{actualValue}</th>
                             <th className="values">{this.props.target}</th>
                             <th>{this.props.highlights}</th>
                             <th>{this.props.lowlights}</th>
@@ -787,179 +839,3 @@ class MetricAnnuals extends Component {
         )
     }
 }
-
-    // class BarChart extends Component {
-    //     constructor(props){
-    //         super(props)
-    //         this.barChart = this.barChart.bind(this)
-    //      }
-
-    //      componentDidMount() {
-    //         this.barChart()
-    //      }
-
-    //      componentDidUpdate() {
-    //         this.barChart()
-    //      }
-
-    //     barChart() {
-    //         const data = []
-    //         for (let i = 0; i <= 11; i++) {
-    //             let monthObj = this.state.selectedYearMap[i + 1]
-    //             const month = [i + 1]
-    //             if (monthObj) {
-    //                 const actual = monthObj.actual
-    //                 const target = monthObj.target
-    //                 data[i] = ({
-    //                     month: month,
-    //                     actual: actual, 
-    //                     target: target
-    //                 })
-                
-    //             } else {
-    //                 data[i] = ({
-    //                         month:month,
-    //                         actual:"",
-    //                         target:"",
-    //                 })
-    //             }
-    //         }
-        
-    //         var margin = {top: 20, right: 100, bottom: 70, left: 40},
-    //         width = 1000 - margin.left - margin.right,
-    //         height = 300 - margin.top - margin.bottom;
-    
-    
-    //     var svg = d3
-    //       .select("body")
-    //       .append("svg")
-    //           .attr("width", width + margin.left + margin.right)
-    //           .attr("height", height + margin.top + margin.bottom)
-    //       .append("g")
-    //         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-        
-    //     var dataset = [];
-    
-    //     for(let i = 0; i < data.length; i++ ) {
-    //       var date = data[i].month;
-    //       dataset[i] = {
-    //         date: date,
-    //         values: [
-    //         {name: 'Actuals', value: data[i].actual},
-    //         {name: 'Target', value: data[i].target}
-    //         ]
-    //       };
-    //     }
-    
-    //         // X-Axis (Containing the months)
-    //         var x0 = d3.scaleBand()
-    //         .domain(dataset.map(function(d) { return d.date; }))
-    //         .rangeRound([0, width], .4);
-          
-    //       // A-Axis (The BARS)
-    //       var x1 = d3.scaleBand()
-    //         .domain(['Actuals', 'Target'])
-    //         .rangeRound([10, x0.bandwidth()]);
-      
-    //       // Left Axis (Contains Left Ticks)
-    //       var y0 = d3.scaleLinear()
-    //         .domain([0, d3.max(dataset, function(d) { return d.values[0].value; })])
-    //         .range([height, 0]);
-          
-    //       // Right Axis (Contains Right Ticks)
-    //       var y1 = d3.scaleLinear()
-    //         .domain([0, d3.max(dataset, function(d) { return d.values[1].value; })])
-    //         .range([height, 0]);
-      
-    //       var color = d3.scaleOrdinal()
-    //         .range(["#D5D1E9", "#9991C6"]);
-      
-    //       var xAxis = d3
-    //         .axisBottom(x0)
-      
-    //       var yAxisLeft = d3
-    //           .axisLeft(y0)
-    //           .tickFormat(function(d) { return parseInt(d) });
-      
-    //       var yAxisRight = d3
-    //           .axisRight(y1)
-    //           .tickFormat(function(d) { return parseInt(d) });
-      
-    //       // Ticks on x-axis and y-axis
-    //       svg.append("g")
-    //           .attr("class", "x axis")
-    //           .attr("transform", "translate(0," + height + ")")
-    //           .call(xAxis);
-      
-    //       // (Left Side) Y Label (ACTUALS)
-    //       svg.append("g")
-    //           .attr("class", "y0 axis")
-    //           .call(yAxisLeft)
-    //         .append("text")
-    //           .attr("transform", "rotate(-90)")
-    //           .attr("y", 6)
-    //           .attr("dy", ".71em")
-    //           .style("text-anchor", "end")
-    //           .style("font-size", "12")
-    //           .style("fill", "#9991C6")
-    //           .text("Actuals");
-      
-    //       // Actuals TICKS
-    //       svg.select('.y0.axis')
-    //         .selectAll('.tick')
-    //           .style("fill", "black");
-      
-        
-    //       // MONTHS LABELS 
-    //       svg.append("text")
-    //         .style("text-anchor", "middle")
-    //         .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
-    //         .style("font-size", "12")
-    //         .text("Months")
-      
-    //       var graph = svg
-    //           .selectAll(".date")
-    //           .data(dataset)
-    //           .enter()
-    //           .append("g")
-    //             .attr("class", "g")
-    //             .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; });
-      
-    //       graph.selectAll("rect")
-    //           .data(function(d) { return d.values; })
-    //           .enter()
-    //           .append("rect")
-    //             .attr("width", x1.bandwidth())
-    //             .attr("x", function(d) { return x1(d.name); })
-    //             .attr("y", function(d) { return y0(d.value); })
-    //             .attr("height", function(d) { return height - y0(d.value); })
-    //             .style("fill", function(d) { return color(d.name); });
-      
-    //       // Legend
-    //       var legend = svg
-    //           .selectAll(".legend")
-    //           .data(['Actuals', 'Target'].slice())
-    //           .enter()
-    //           .append("g")
-    //             .attr("class", "legend")
-    //             .attr("transform", function(d, i) { return "translate(90," + i * 20 + ")"; });
-      
-    //       legend.append("rect")
-    //           .attr("x", width - 20)
-    //           .attr("width", 18)
-    //           .attr("height", 18)
-    //           .style("fill", color);
-      
-    //       legend.append("text")
-    //           .attr("x", width - 25)
-    //           .attr("y", 9)
-    //           .attr("dy", ".35em")
-    //           .style("text-anchor", "end")
-    //           .text(function(d) { return d; });
-    //     }
-
-    //     render() {
-    //         return 
-    //      }
-    // }

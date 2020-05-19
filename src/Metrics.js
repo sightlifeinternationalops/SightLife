@@ -236,7 +236,7 @@ class MetricAreaCard extends Component {
         return (
             <Button className='metrics'
                 onClick={() => this.props.metricNameFunc(this.props.metricName, this.props.metricID)}>
-                {this.props.metricName}
+                <strong>{this.props.metricName}</strong>
             </Button>
         )
     }

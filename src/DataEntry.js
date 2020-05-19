@@ -24,6 +24,7 @@ export class DataEntry extends Component {
 
         this.state = {
             currentMetricAreaCalculations: new Map(), // Represents all calculations
+            currentArchivedCalculations: new Map(),
             selectedMetricAreaCalculations: null, // Represents the chosen metric area calculation to populate
             metricAreaID: null, // Holds metric area ID
             metricAreaName: null, // Holds metric area name
@@ -163,18 +164,21 @@ export class DataEntry extends Component {
             databaseKeys.map((key) => {
                 let id = metricCalcInfo[key].metricAreaID
                 if (id === this.state.metricAreaID) {
-                    mapCalculations.set(key, metricCalcInfo[key])
+                    if (!metricCalcInfo[key].calcArchived) {
+                        mapCalculations.set(key, metricCalcInfo[key])
+                    }
                 }
             })
             this.setCalculations(mapCalculations)
         })
     }
 
-    updateSelectedMetricAreaCalculation(calc, name) {
-        console.log(calc)
+    updateSelectedMetricAreaCalculation(calc, name, type) {
+        console.log(type)
         this.setState((state) => {
             state.selectedMetricAreaCalculations = calc
             state.selectedMetricAreaCalculationName = name
+            state.selectedMetricAreaCalculationDataType = type
             return state
         })
     }
@@ -210,15 +214,27 @@ export class DataEntry extends Component {
     // Represents metric area calculation elements to render after
     // a metric area is chosen. 
     metricAreaCalculations() {
-        const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
-            entries()).map((key) => {
-                let calculation = key[1]
-                return <MetricAreaCalcButton
-                    metricCalcName={calculation.calcName}
-                    metricCalcID={calculation.calcID}
-                    metricCalcFunc={this.updateSelectedMetricAreaCalculation}
-                />
-            })
+        let metricCalcElements = null
+        if (this.state.currentMetricAreaCalculations.size >= 1 ) {
+            metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
+                entries()).map((key) => {
+                    let calculation = key[1]
+                    return <MetricAreaCalcButton
+                        metricCalcName={calculation.calcName}
+                        metricCalcID={calculation.calcID}
+                        metricCalcDataType={calculation.dataType}
+                        metricCalcFunc={this.updateSelectedMetricAreaCalculation}
+                    />
+                })
+        } else {
+            metricCalcElements = (
+                <div>
+                    <h3>
+                        Choose a metric area
+                    </h3>
+                </div>
+            )
+        }
         return metricCalcElements
     }
 
@@ -547,33 +563,46 @@ export class DataEntry extends Component {
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         const dataEntryForm = this.renderDataEntryForm()
 
+        let content = null
+
+        if (this.state.selectedMetricAreaCalculations) {
+            content = (
+                <div>
+                      <section id="forms">
+                        {dataEntryForm}
+                    </section>
+                </div>
+            )
+        } else {
+            content = (
+                <div>
+                <section class="entry">
+                {/* Populate based on whether metric owner owns metric */}
+                <h2 class='MetricTitles'> Your Metric Areas <span class="required">*</span> </h2>
+                <CardDeck className="datadeck">
+                    {metricAreaElements}
+                </CardDeck>
+                <div class="errorMsg">
+                    <p>{this.state.invalidMetricArea}</p>
+                </div>
+                {/* Populate based on metric chosen */}
+                <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
+                <CardDeck className="datadeck">
+                    {metricAreaCalculationsElements}
+                </CardDeck>
+                <div class="errorMsg">
+                    <p>{this.state.invalidMetricCalc}</p>
+                </div>
+            </section>    
+            </div>
+            )
+        }
+
         return (
             <div className="body">
                 <main>
-                    <section class="entry">
-                        <h1> Data Entry Form </h1>
-
-                        {/* Populate based on whether metric owner owns metric */}
-                        <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
-                        <CardDeck className="datadeck">
-                            {metricAreaElements}
-                        </CardDeck>
-                        <div class="errorMsg">
-                            <p>{this.state.invalidMetricArea}</p>
-                        </div>
-                        {/* Populate based on metric chosen */}
-                        <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
-                        <CardDeck className="datadeck">
-                            {metricAreaCalculationsElements}
-                        </CardDeck>
-                        <div class="errorMsg">
-                            <p>{this.state.invalidMetricCalc}</p>
-                        </div>
-                    </section>
-
-                    <section id="forms">
-                        {dataEntryForm}
-                    </section>
+                <h1> Data Entry Form </h1>
+                    {content}
                 </main>
             </div>
         )
@@ -583,6 +612,10 @@ export class DataEntry extends Component {
 // Represents a single metric area to render. Clicking a button
 // will render that metric area's calculations
 class MetricAreaButton extends Component {
+    componentDidUpdate() {
+        console.log(this.props)
+    }
+
     render() {
         let typeString = this.props.metricName
         return (
@@ -605,7 +638,7 @@ class MetricAreaCalcButton extends Component {
         let typeString = this.props.metricCalcName
         return (
             <button
-                onClick={() => this.props.metricCalcFunc(this.props.metricCalcID, typeString)}
+                onClick={() => this.props.metricCalcFunc(this.props.metricCalcID, typeString, this.props.metricCalcDataType)}
                 class='selection' type={typeString} value={this.props.metricCalcID}>{typeString}</button>
         )
     }
@@ -642,7 +675,7 @@ export class DataEntryForm extends Component {
     render() {
         let content = null
         let timeDisplay = this.props.timeDisplay(this.props.selectTF)
-        let dataDisplay = this.props.dataDisplay(this.props.dataType)
+        let dataDisplay = this.props.dataDisplay(this.props.selectedMetricAreaCalculationDataType)
         let timeDisplayType = this.timeDisplayType(this.props.selectTF)
 
         // Will switch content to be the preview
@@ -700,14 +733,6 @@ export class DataEntryForm extends Component {
                                 {this.props.invalidRadio}
                             </p>
                         </div>
-                        <h2 className = "MetricTitles">Select a Data-Type <span class="required">*</span> </h2>
-                        <select
-                            onChange={(e) => this.props.updateChange(e)} name="dataType">
-                            <option value="number">Number</option>
-                            <option value="percent">Percent</option>
-                            <option value="money">Money</option>
-                            <option value="text">Text</option>
-                        </select>
                         {dataDisplay}
                         <div>
                             <p>

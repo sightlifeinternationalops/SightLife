@@ -4,6 +4,42 @@
     text-align: center;
 }
 
+#legend {
+    text-align: center;
+}
+
+#onTarget {
+    width: 25px;
+    height: 25px;
+    background-color: #50c53d;
+    margin-right: 5px
+}
+
+#inMargin {
+    width: 25px;
+    height: 25px;
+    background-color:#f9a354;
+    margin-right: 5px
+}
+
+#outMargin {
+    width: 25px;
+    height: 25px;
+    background-color: #fe0000;
+    margin-right: 5px
+}
+
+.test {
+    display: inline-block;
+    margin-left: 2rem;
+}
+
+.targets {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
 tbody.table {
     margin: 20rem;
 }
