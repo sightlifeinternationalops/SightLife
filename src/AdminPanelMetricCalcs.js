@@ -242,7 +242,7 @@ export class AdminPanelMetricCalcs extends Component {
                             <option value="text">Text</option>
                         </select>
                         <div>
-                            <button
+                            <button className="submit"
                                 onClick={(e) => this.addCalculation(e)}>
                                 Submit
                                 </button>
@@ -266,7 +266,7 @@ export class AdminPanelMetricCalcs extends Component {
                             </button>
                         <h2> Current Calculation</h2>
                         <div>
-                            <button
+                            <button className="unarchive"
                                 onClick={(e) => this.unarchiveMetricCalc(e)}>
                                 Unarchive
                                 </button>
@@ -299,11 +299,11 @@ export class AdminPanelMetricCalcs extends Component {
                                 />
                             </label>
                         </div>
-                        <button
+                        <button className="submit"
                             onClick={(e) => this.submitEditInfo(e)}>
                             Submit
                         </button>
-                        <button
+                        <button class="archive"
                             onClick={(e) => this.archiveMetricCalc(e)}>
                             Archive
                         </button>

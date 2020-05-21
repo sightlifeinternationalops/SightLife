@@ -428,7 +428,8 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> : <button
+        let button = !this.props.enableEdit ? <div></div> : 
+        <button className = "remove"
             onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
         return (

@@ -175,21 +175,22 @@ export class CreateAccount extends Component {
             content = (
                 <div className="body">
                 <h1> Create Account </h1>
-                <div class="form">
+                <div className="form">
+                    <div className="SignBox">
                     <p>
-                        <label for='First Name'> First Name </label>
+                        <label className = "sign" for='First Name'> First Name </label>
                         <input
                             onChange={(e) => this.updateFname(e)}
                             type='text' name="firstName" required />
                     </p>
                     <p>
-                        <label for='Last Name'> Last Name </label>
+                        <label className = "sign" for='Last Name'> Last Name </label>
                         <input
                             onChange={(e) => this.updateLname(e)}
                             type='text' name="lastName" required />
                     </p>
                     <p>
-                        <label for='Email'> Email </label>
+                        <label className = "sign" for='Email'> Email </label>
                         <input
                             onChange={(e) => this.updateEmail(e)}
                             type='text' name='Email' required
@@ -197,7 +198,7 @@ export class CreateAccount extends Component {
                     </p>
 
                     <p>
-                        <label for='Password'> Password </label>
+                        <label className = "sign" for='Password'> Password </label>
                         <input
                             onChange={(e) => this.updatePassword(e)}
                             type='password' name='Password' required/>
@@ -208,12 +209,12 @@ export class CreateAccount extends Component {
                         <li>A password requires one number</li>
                     </ul>
                     <p>
-                        <label for='Re-Enter Password'> Re-enter Password </label>
+                        <label className = "sign" for='Re-Enter Password'> Re-enter Password </label>
                         <input
                             onChange={(e) => this.updateRePassword(e)}
                             type='password' name='Re-Password' required />
                     </p>
-
+                </div>
                     <p>
                         <button
                             onClick={() => this.submitAccount()}
@@ -226,7 +227,7 @@ export class CreateAccount extends Component {
                 </div>
 
                 <div class='account2'>
-                    <a class='create'> <Link to="/" onClick={() => this.props.disableSignInStatus()}>Sign-In</Link></a>
+                    <a class='create'> <Link to="/signIn" onClick={() => this.props.disableSignInStatus()}>Sign In</Link></a>
                 </div>
 
                 </div>

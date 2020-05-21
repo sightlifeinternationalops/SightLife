@@ -378,7 +378,7 @@ export class NavBar extends Component {
           <li className="nav-item">
             <NavLink to='/signIn' 
             onClick={() => this.props.changeSignInStatus()}
-            className="nav-link">SignIn</NavLink>
+            className="nav-link">Sign In</NavLink>
           </li>
         </ul>
         )
