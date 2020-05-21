@@ -221,14 +221,12 @@ export class CreateAccount extends Component {
                         {/* <input type="submit" value="Submit"></input> */}
                     </p>
 
-  
-
                 <div class='account'>
                     <p class="account"> Already have an account? </p>
                 </div>
 
                 <div class='account2'>
-                    <a class='create'> <Link to="/">Sign-In</Link></a>
+                    <a class='create'> <Link to="/" onClick={() => this.props.disableSignInStatus()}>Sign-In</Link></a>
                 </div>
 
                 </div>

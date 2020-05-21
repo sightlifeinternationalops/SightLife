@@ -240,18 +240,12 @@ export class AdminSettings extends Component {
     }
 
     handleAToggle(actualToggle) {
-        // firebase.database().ref('dataEntrySettings').update({
-        //     actualEnabled: actualToggle
-        // })
         this.setState({
             actualToggle
         })
     }
 
     handleTToggle(targetToggle) {
-        // firebase.database().ref('dataEntrySettings').update({
-        //     targetEnabled: targetToggle
-        // })
         this.setState({
             targetToggle
         })
@@ -284,8 +278,12 @@ export class AdminSettings extends Component {
         })
     }
 
-    saveSettings() {
-
+    saveSettings(target, actual) {
+        console.log(this.state)
+        firebase.database().ref('dataEntrySettings').update({
+            actualEnabled: actual,
+            targetEnabled: target
+        })
     }
 
     render() {
@@ -309,11 +307,11 @@ export class AdminSettings extends Component {
         } else {
             content = (
                 <div class="adminButtons">
-                <button
-                    value="test"
-                    class="edit"
-                    onClick={() => this.editAdminInfo()}>
-                    Edit Owners
+                    <button
+                        value="test"
+                        class="edit"
+                        onClick={() => this.editAdminInfo()}>
+                        Edit Owners
                 </button>
                 </div>
             )
@@ -324,7 +322,7 @@ export class AdminSettings extends Component {
                 <main>
                     <AdminPanelNav />
 
-                    <h1 class="ASettingsTitle"> Admin Setting </h1>
+                    <h1 class="ASettingsTitle"> Settings </h1>
 
                     <div class="main_content2">
                         <div class="columnSettings">
@@ -335,11 +333,11 @@ export class AdminSettings extends Component {
                                 <div class="PermissionInfo">
                                     <p class="PermText2"> Owner(s) </p>
                                     <div id="ownerElements">
-                                    <ul>
-                                        <div id="test">
-                                        {adminElements}
-                                        </div>
-                                    </ul>
+                                        <ul>
+                                            <div id="test">
+                                                {adminElements}
+                                            </div>
+                                        </ul>
                                     </div>
                                     {content}
                                 </div>
@@ -356,8 +354,8 @@ export class AdminSettings extends Component {
 
                                 <div class="PermissionInfo">
                                     <div id="entryFormSettings">
-                                    <label>
-                                        <span>Data Entry for Actuals:</span></label>
+                                        <label>
+                                            <span>Data Entry for Actuals:</span></label>
                                         <Switch
                                             uncheckedIcon={false}
                                             checkedIcon={false}
@@ -365,8 +363,8 @@ export class AdminSettings extends Component {
                                             checked={this.state.actualToggle}
                                             className="react-switch"
                                         />
-                                    <label>
-                                        <span>Data Entry for Targets:</span></label>
+                                        <label>
+                                            <span>Data Entry for Targets:</span></label>
                                         <Switch
                                             className="react-switch"
                                             uncheckedIcon={false}
@@ -374,7 +372,7 @@ export class AdminSettings extends Component {
                                             onChange={this.handleTToggle}
                                             checked={this.state.targetToggle}
                                         />
-                                        </div>
+                                    </div>
                                 </div>
 
                             </section>
@@ -382,7 +380,7 @@ export class AdminSettings extends Component {
 
                         <div class='Save2Button'>
                             <button
-                                onClick={this.saveSettings}
+                                onClick={() => this.saveSettings(this.state.targetToggle, this.state.actualToggle)}
                                 class='save2' type="Save" value="Save"> Save </button>
                         </div>
                     </div>

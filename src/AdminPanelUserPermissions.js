@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './css/AdminPanel.css';
 import { AdminPanelNav } from './AdminPanel'
 import firebase from 'firebase/app';
+import Switch from "react-switch";
 
 import { CardDeck, ListGroup, ListGroupItem } from 'reactstrap';
 
@@ -16,11 +17,14 @@ export class AdminPanelUserPermissions extends Component {
         this.cancelMetricOwners = this.cancelMetricOwners.bind(this)
         this.setMetricOwner = this.setMetricOwner.bind(this)
         this.removeMetricOwner = this.removeMetricOwner.bind(this)
+        this.handleMAToggle = this.handleMAToggle.bind(this)
+        this.handleMTToggle = this.handleMTToggle.bind(this)
 
         this.state = {
-            currentMetricA: "Choose a metric area",
+            currentMetricA: null,
             currentMetricAOwners: new Map(),
-            modalDisplay: "none"
+            modalDisplay: "none",
+            ownersDisplay: "none"
         }
     }
 
@@ -53,27 +57,35 @@ export class AdminPanelUserPermissions extends Component {
             let info = snapshot.val();
             let keys = Object.keys(info);
             let userMap = new Map()
+            let mAE = info.metricActualEnabled
+            let mTE = info.metricTargetEnabled
+
+            console.log(mAE)
+            console.log(mTE)
+
             // is this loop necessary?
             keys.map((key) => {
                 if (key === "owners") {
                     let objectMap = info[key]
                     for (var object in objectMap) {
-                        console.log(object)
                         userMap.set(object, objectMap[object].userName)
                     }
                 }
             })
-            this.setMetricOwner(userMap, mName,mID)
+            this.setMetricOwner(userMap, mName, mID, mAE, mTE)
         })
     }
 
 
-    setMetricOwner(userMap, name, mID) {
+    setMetricOwner(userMap, name, mID, mAE, mTE) {
         this.setState((state) => {
             state.currentMetricA = name
             state.currentMetricID = mID
             state.currentMetricAOwners = userMap
             state.enableEdit = false
+            state.metricActualEnabled = mAE
+            state.metricTargetEnabled = mTE
+            state.ownersDisplay = "block"
             return state
         })
     }
@@ -108,7 +120,7 @@ export class AdminPanelUserPermissions extends Component {
                             let refPath = 'metricAreas/' + this.state.currentMetricID + '/owners/' + item
 
                             firebase.database().ref(refPath).remove()
-                            
+
                             let usersInfo = this.state.currentMetricAOwners
                             usersInfo.delete(item)
                             this.setMetricOwners(usersInfo)
@@ -133,7 +145,6 @@ export class AdminPanelUserPermissions extends Component {
         const selected = event.target.options.selectedIndex
         let id = (event.target.options[selected].getAttribute('id'))
         let user = event.target.value
-        console.log(id)
         this.setState((state) => {
             state.currentUserID = id
             state.currentUserName = user
@@ -152,11 +163,8 @@ export class AdminPanelUserPermissions extends Component {
                     <div>
                         <h2>Enter Metric Owner</h2>
                         <label>
-                            {/* <input
-                                onChange={(e) => this.handleChange(e)}
-                                type="text" name="addMetricOwner" /> */}
                             <select
-                            onChange={(e) => this.updateUser(e)}>
+                                onChange={(e) => this.updateUser(e)}>
                                 <option value="None">None</option>
                                 {usersElements}
                             </select>
@@ -191,11 +199,6 @@ export class AdminPanelUserPermissions extends Component {
             userName: this.state.currentUserName,
             userMetricID: id
         }
-        // firebase.database().ref('metricAreas/' + id.toString()).update({
-        //     userID: this.state.currentUserID,
-        //     userName: this.state.currentUserName,
-        //     userMetricID: id
-        // })
         firebase.database().ref('metricAreas/' + this.state.currentMetricID + '/owners/' + id.toString()).update({
             userID: this.state.currentUserID,
             userName: this.state.currentUserName,
@@ -225,6 +228,18 @@ export class AdminPanelUserPermissions extends Component {
         })
     }
 
+    handleMAToggle(metricActualEnabled) {
+        this.setState({
+            metricActualEnabled
+        })
+    }
+
+    handleMTToggle(metricTargetEnabled) {
+        this.setState({
+            metricTargetEnabled
+        })
+    }
+
     // Represents metric area elements to render on page.
     metricAreaElements() {
         const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
@@ -250,6 +265,16 @@ export class AdminPanelUserPermissions extends Component {
         return usersElements
     }
 
+    // Saves information
+    // for whether targets and actuals
+    // are enabled and sends it to Firebase
+    saveAT(target, actual, id) {
+        firebase.database().ref('metricAreas/' + id).update({
+            metricActualEnabled: actual,
+            metricTargetEnabled: target
+        })
+    }
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
@@ -267,15 +292,16 @@ export class AdminPanelUserPermissions extends Component {
                             </CardDeck>
                         </div>
                         <MetricAreaInfo
+                            {...this.state}
                             editMetricOwners={this.editMetricOwners}
                             addOwnerModal={this.addOwnerModal}
                             cancelMetricOwners={this.cancelMetricOwners}
-                            enableEdit={this.state.enableEdit}
-                            currentMetricA={this.state.currentMetricA}
-                            currentMetricAOwners={this.state.currentMetricAOwners}
                             setMetricOwner={this.setMetricOwner}
                             removeMetricOwner={this.removeMetricOwner}
-                            users={this.props.users}/>
+                            handleMAToggle={this.handleMAToggle}
+                            handleMTToggle={this.handleMTToggle}
+                            saveAT={this.saveAT}
+                        />
                         {form}
                     </div>
                 </main>
@@ -285,6 +311,10 @@ export class AdminPanelUserPermissions extends Component {
 }
 
 class MetricAreaInfo extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     // Represents metric area owners to render.
     metricAreaOwners() {
         const metricAreaOwners = Array.from(this.props.currentMetricAOwners.entries()).map((key) => {
@@ -300,46 +330,75 @@ class MetricAreaInfo extends Component {
     render() {
         const metricAreaOwners = this.metricAreaOwners()
         let content = null
+        let entryContent = null
 
         if (!this.props.enableEdit) {
             content = (
                 <div>
-                    {/* <p class="PermText"> Data Entry For Target:  TOGGLE SWITCH HERE </p> */}
                     <button class='save'
                         type="Save"
                         value="Save"
-                        onClick={() => { this.props.editMetricOwners()}}> Edit </button>
+                        onClick={() => { this.props.editMetricOwners() }}> <strong>Edit</strong> </button>
                 </div>
             )
+            entryContent = null
         } else {
             content = (
+                <div id="dataEntry">
+                    <label>
+                        <span> Data Entry for Actuals:</span>
+                    </label>
+                    <Switch
+                        onChange={this.props.handleMTToggle}
+                        className="react-switch"
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        checked={this.props.metricTargetEnabled} />
+                    <label>
+                        <span> Data Entry for Targets:</span>
+                    </label>
+                    <Switch
+                        className="react-switch"
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        checked={this.props.metricActualEnabled}
+                        onChange={this.props.handleMAToggle} />
+                    <div>
+                        <button
+                            onClick={() => { this.props.saveAT(this.props.metricTargetEnabled, this.props.metricActualEnabled, this.props.currentMetricID) }}
+                            class='save'><strong>Save</strong></button>
+                        <button
+                            onClick={() => { this.props.cancelMetricOwners() }}
+                            class='cancel'><strong>Close</strong></button>
+                    </div>
+                </div>
+            )
+            entryContent = (
                 <div>
                     <button
                         onClick={() => { this.props.addOwnerModal() }}
-                        class='save'>Add Owner</button>
-                    <button
-                        onClick={() => { this.props.cancelMetricOwners() }}
-                        class='cancel'>Cancel</button>
+                        class='save'><strong>Add Owner</strong></button>
                 </div>
             )
         }
 
         return (
-            <div class="column">
+            <div class="column"
+                style={{ display: this.props.ownersDisplay }}>
                 <div class="PermInfo">
                     <div class="PermissionBox">
                         <h3 class='PermissionText'> {this.props.currentMetricA} </h3>
                     </div>
                     <div class="PermissionInfo">
                         <p class="PermText">Owner(s):</p>
-                        <ul   id="owners">
-                            <div  id="listitem">
+                        <ul id="owners">
+                            <div id="listitem">
                                 <ListGroup>
                                     {metricAreaOwners}
                                 </ListGroup>
-                                {/* {metricAreaOwners} */}
                             </div>
                         </ul >
+                        {entryContent}
                         {content}
                     </div>
                 </div>
@@ -369,14 +428,10 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
-    let button = !this.props.enableEdit ? <div></div> : <button
-    onClick={() => {this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA)}}>-</button>
+        let button = !this.props.enableEdit ? <div></div> : <button
+            onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
         return (
-            // <ListGroupItem>
-            //     {this.props.owner}
-            //     {button}
-            // </ListGroupItem>
             <li>
                 {this.props.owner}
                 {button}
@@ -385,7 +440,7 @@ class MetricAreaOwner extends Component {
     }
 }
 
-class UserItem extends Component { 
+class UserItem extends Component {
     render() {
         return (
             <option value={this.props.name} id={this.props.uid}>
