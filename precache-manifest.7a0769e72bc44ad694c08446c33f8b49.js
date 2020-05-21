@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6ae28cea622a5a40bc20a7d5b4a7da27",
+    "revision": "c46041190425911cf6fd66295cfa2efe",
     "url": "/SightLife/index.html"
   },
   {
-    "revision": "85becb2b7fbcb80ad651",
+    "revision": "266f39fa63faaf52df87",
     "url": "/SightLife/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "10e1414daba81c289180",
-    "url": "/SightLife/static/css/main.95d9c0d6.chunk.css"
+    "revision": "2b8dce1b9a1e7a26eb70",
+    "url": "/SightLife/static/css/main.bdcd242d.chunk.css"
   },
   {
-    "revision": "85becb2b7fbcb80ad651",
-    "url": "/SightLife/static/js/2.dd2037eb.chunk.js"
+    "revision": "266f39fa63faaf52df87",
+    "url": "/SightLife/static/js/2.00e0d20a.chunk.js"
   },
   {
-    "revision": "eb752b9a1759016d6addc6e5310516bf",
-    "url": "/SightLife/static/js/2.dd2037eb.chunk.js.LICENSE.txt"
+    "revision": "1e9f144860348fdb90f8bd02c06b275b",
+    "url": "/SightLife/static/js/2.00e0d20a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "10e1414daba81c289180",
-    "url": "/SightLife/static/js/main.0e3030e5.chunk.js"
+    "revision": "2b8dce1b9a1e7a26eb70",
+    "url": "/SightLife/static/js/main.9a0668e2.chunk.js"
   },
   {
     "revision": "da4f19d41dc6ec0d2d72",
@@ -40,20 +40,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SightLife/static/media/alex.5b6cafaf.jpg"
   },
   {
+    "revision": "4f523f560b6679d0cf9cc7b8c1638ede",
+    "url": "/SightLife/static/media/calculations.4f523f56.svg"
+  },
+  {
+    "revision": "469df0340d0263297ee7c93f965543c9",
+    "url": "/SightLife/static/media/data-collection.469df034.svg"
+  },
+  {
     "revision": "b5edeee87ed422eef2f81e43984ffa17",
     "url": "/SightLife/static/media/development.b5edeee8.png"
   },
   {
-    "revision": "6f087f95ffc4946f72d8d4e7513ca13e",
-    "url": "/SightLife/static/media/home-run.6f087f95.svg"
-  },
-  {
-    "revision": "5f117edd8baf75131d28dfa00aa33ace",
-    "url": "/SightLife/static/media/logout.5f117edd.svg"
-  },
-  {
-    "revision": "42a0bbb736a17d589bb207f3e523d425",
-    "url": "/SightLife/static/media/manager.42a0bbb7.svg"
+    "revision": "62aadad08594d8f8da8d09289e161b4f",
+    "url": "/SightLife/static/media/metrics.62aadad0.svg"
   },
   {
     "revision": "497264f9d8fea5eafe33ffc9423fa707",
@@ -76,6 +76,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SightLife/static/media/rani.fbc96678.jpg"
   },
   {
+    "revision": "c7c83d36f7ba5d32966831531a40d8da",
+    "url": "/SightLife/static/media/settings.c7c83d36.svg"
+  },
+  {
     "revision": "1f9d62960a72e71b61d95e1f736da73f",
     "url": "/SightLife/static/media/shruti.1f9d6296.png"
   },
@@ -86,6 +90,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "dc3ba28566c9678a77b740feef2b9e75",
     "url": "/SightLife/static/media/switch.dc3ba285.svg"
+  },
+  {
+    "revision": "46b613d71cda66c2bfff70ade62c0a10",
+    "url": "/SightLife/static/media/team.46b613d7.svg"
   },
   {
     "revision": "cda0c0c82523170dd54505b0fc7185c0",
