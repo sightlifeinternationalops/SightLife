@@ -27,16 +27,13 @@ export class DashBoard extends Component {
 
     // Do any information retrieval here
     componentDidMount() {
-        console.log(this.props)
-        d3.select("svg").remove();
-        d3.select("svg").remove();
+        d3.selectAll("svg").remove();
     }
 
     componentWillUnmount() {
-        d3.select("svg").remove();
-        d3.select("svg").remove();
+        d3.selectAll("svg").remove();
     }
-    
+
     arrayElements() {
         const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
             //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
@@ -110,11 +107,13 @@ export class DashBoard extends Component {
                 // Need to do some work based on the data type received for the metric
                 // cannot always assume it's an int
                 const actual = parseInt(monthObj.actual, 10)
+                console.log(actual)
+
                 const target = parseInt(monthObj.target, 10)
                 data[i] = ({
                     month: i + 1,
-                    actual: actual,
-                    target: target
+                    actual: actual || 0,
+                    target: target || 0
                 })
             } else {
                 data[i] = ({
@@ -132,24 +131,32 @@ export class DashBoard extends Component {
         var svg = d3
       .select("body")
       .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
+      .attr("width", '100%')
+      .attr("height", '100%')
+      .attr('viewBox','0 0 970 200')
+      .attr('preserveAspectRatio','xMinYMin')
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     
-    var dataset = [];
-
-    for(let i = 0; i < data.length; i++ ) {
-      var date = data[i].month;
-      dataset[i] = {
-        date: date,
-        values: [
-        {name: 'Actuals', value: data[i].actual},
-        {name: 'Target', value: data[i].target}
-        ]
-      };
-    }
+        var dataset = [];
+        for(let i = 0; i <= 3; i++ ) {
+         var actual = data[i * 3].actual
+         actual += data[i * 3 + 1].actual
+         actual += data[i * 3 + 2].actual
+            console.log(actual)
+         var target = data[i * 3].target
+         target += data[i * 3 + 1].target
+         target += data[i * 3 + 2].target
+    
+          dataset[i] = {
+            date: "Quarter " + (i + 1),
+            values: [
+            {name: 'Actuals', value:actual},
+            {name: 'Target', value:target}
+            ]
+          };
+        }
 
     var actualRange = d3.extent(dataset, d => d.values[0].value);
     var targetRange = d3.extent(dataset, d => d.values[1].value);
@@ -167,6 +174,7 @@ export class DashBoard extends Component {
       // Left Axis (Contains Left Ticks)
       var y0 = d3.scaleLinear()
         .domain([0, Math.max(actualRange[1], targetRange[1])])
+        .nice()
         .range([height, 0]);
   
       var color = d3.scaleOrdinal()
@@ -209,14 +217,14 @@ export class DashBoard extends Component {
         .style("text-anchor", "middle")
         .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
         .style("font-size", "12")
-        .text("Months")
+        .text("Quarters");
 
         svg.append("text")
         .style("text-anchor", "middle")
         .attr("transform", "translate(" + width / 2 + " ," + (-15) + ")")
         .style("font-size", "12")
-        .text("Actuals vs. Targets Monthly")
-  
+        .text("Actuals vs. Targets Quarterly");
+        
       var graph = svg
           .selectAll(".date")
           .data(dataset)
@@ -229,11 +237,45 @@ export class DashBoard extends Component {
           .data(function(d) { return d.values; })
           .enter()
           .append("rect")
-            .attr("width", x1.bandwidth())
-            .attr("x", function(d) { return x1(d.name); })
+            .attr("width", x0.bandwidth())
+            .attr("x", function(d) { return x0(d.name); })
             .attr("y", function(d) { return y0(d.value); })
             .attr("height", function(d) { return height - y0(d.value); })
             .style("fill", function(d) { return color(d.name); });
+
+        const tip = svg
+            .append("g")
+            .style("pointer-events", "none");
+        
+        const tipText = tip
+            .append("text")
+            .style("text-anchor", "middle");
+
+            var drawRect = ele => {
+                ele
+                    .attr("width", x1.bandwidth())
+                    .attr("x", function(d) { return x1(d.name); })
+                    .attr("y", function(d) { return y0(d.value); })
+                    .attr("height", function(d) { return height - y0(d.value); })
+                    .style("fill", function(d) { return color(d.name); })
+                };
+
+            graph
+            .selectAll("rect")
+            .data(function(d) { return d.values; })
+            .join("rect")
+                .on("mouseenter", function(d) {
+                    let text = "";
+                    const pos = d3.mouse(this);
+                    tip.attr("transform", `translate(${pos[0]}, ${pos[1] - 10})`);
+                    tipText.text(d.name + " " + d.value);
+                })
+    
+                .on("mousemove", function(d) {
+                    const pos = d3.mouse(this);
+                    tip.attr("transform", `translate(${pos[0]}, ${pos[1] - 10})`);
+                })
+            .call(drawRect)
   
       // Legend
       var legend = svg
@@ -256,7 +298,7 @@ export class DashBoard extends Component {
           .attr("dy", ".35em")
           .style("text-anchor", "end")
           .text(function(d) { return d; });
-          return svg.node();
+          
         }
     }
 
@@ -270,30 +312,34 @@ export class DashBoard extends Component {
     quarterArrayElements() {
         const quarterArrayInfo = []
         for (let i = 0; i <= 3; i++) {
-            let quarterObj = this.props.selectedQuarterMap[i + 1]
-            if (quarterObj) {
+            let actual = 0;
+            let target = 0;
+
+            let monthObj1 = this.props.selectedYearMap[i * 3 + 1]
+        if (monthObj1){
+            actual += parseInt(monthObj1.actual, 10) || 0
+            target += parseInt(monthObj1.target, 10) || 0
+        }
+
+        let monthObj2 = this.props.selectedYearMap[i * 3 + 2]
+        if (monthObj2){
+            actual += parseInt(monthObj2.actual, 10) || 0
+            target += parseInt(monthObj2.target, 10) || 0
+        }
+
+        let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
+        if (monthObj3){
+            actual += parseInt(monthObj3.actual, 10) || 0
+            target += parseInt(monthObj3.target, 10) || 0
+        }
                 quarterArrayInfo[i] = (
                     <MetricQuarterly
                         quarter={i + 1}
-                        actual={quarterObj.actual}
-                        coe={quarterObj.coe}
-                        highlights={quarterObj.highlights}
-                        lowlights={quarterObj.lowlights}
-                        target={quarterObj.target}
+                        actual={actual}
+                        target={target}
                     />
                 )
-            } else {
-                quarterArrayInfo[i] = (
-                <MetricQuarterly
-                quarter={i + 1}
-                actual=""
-                coe=""
-                highlights=""
-                lowlights=""
-                target=""
-                
-            />)
-            }
+            
         }
         return quarterArrayInfo
     }
@@ -320,6 +366,7 @@ export class DashBoard extends Component {
                 // Need to do some work based on the data type received for the metric
                 // cannot always assume it's an int
                 const actual = parseInt(monthObj.actual, 10)
+                console.log(actual)
                 const target = parseInt(monthObj.target, 10)
                 data[i] = ({
                     month: i + 1,
@@ -337,10 +384,12 @@ export class DashBoard extends Component {
     
     var dataset = [];
 
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", 
+                    "September", "October", "November", "December"]
+
     for(let i = 0; i < data.length; i++ ) {
-        var date = data[i].month;
         dataset[i] = {
-          date: date,
+          date: months[i],
           values: [
           {name: 'Actuals', value: data[i].actual},
           {name: 'Target', value: data[i].target}
@@ -361,6 +410,7 @@ export class DashBoard extends Component {
                 // What appears on the y-axis
                 var y0 = d3.scaleLinear()
                     .domain([0, Math.max(actualRange[1], targetRange[1])])
+                    .nice()
                     .range([height, 0]);
             
                 // X-AXIS (VISUALS)
@@ -470,8 +520,14 @@ export class DashBoard extends Component {
                 .attr("r", 3)
                 .attr("fill", "black")
                 .attr("opacity", 0.7)
-                .filter(d => isNaN(d.values[1].value)).remove();
+                .filter(d => isNaN(d.values[1].value)).remove()
+                .append("svg:title")
+  .text("This is working now");
 
+                // svg.selectAll("dot")
+                // .data(dataset).enter().append("svg:dot")
+                // .append("svg:title")
+                // .text(function(d) { return d.values[0].name + ': ' + d.values[0].value; })
                 // LEGEND (Boxes)
                 var legend = svg
                     .selectAll(".legend")
@@ -504,32 +560,24 @@ export class DashBoard extends Component {
     // the selected metric calculation and year
     annualsArrayElements() {
         let annualArrayInfo = []
-        for (let i = 0; i < 1; i++) {
-            let annualObj = this.props.selectedAnnualMap[i + 1]
-            if (annualObj) {
-                annualArrayInfo[i] = (
+        let actual = 0
+        let target = 0
+        for(let i = 0; i < 11; i++) {
+            let monthObj = this.props.selectedYearMap[i + 1]
+            if (monthObj) {
+                const monthActual = parseInt(monthObj.actual, 10) || 0
+                const monthTarget = parseInt(monthObj.target, 10) || 0
+                actual += monthActual
+                target += monthTarget
+            } 
+        }
+                annualArrayInfo[0] = (
                     <MetricAnnuals
                         year={this.state.selectedYear}
-                        actual={annualObj.actual}
-                        coe={annualObj.coe}
-                        highlights={annualObj.highlights}
-                        lowlights={annualObj.lowlights}
-                        target={annualObj.target}
+                        actual={actual}
+                        target={target}
                     />
                 )
-            } else {
-                annualArrayInfo[i] = (
-                    <MetricAnnuals
-                    year={this.props.selectedYear}
-                    actual=""
-                    coe=""
-                    highlights=""
-                    lowlights=""
-                    target=""
-                    />
-                )
-            }
-        }
         return annualArrayInfo
     }
 
@@ -672,12 +720,21 @@ class MetricMonthly extends Component {
     // If the actual is neither of the above,
     // change color to red. 
     actualColor(actual, target) {
+        window.addEventListener('load', (event) => {
+            var element = document.getElementsByClassName("actual-value");
         if (actual >= target) {
-            console.log("Good to go!")
-        } else {
-            console.log("Actuals not met and not within 5%")
-        }
+            console.log("Good to go!");
+            element.style.backgroundColor = "green";
+            element.classList.toggle("green");            
+        } else if (actual < target) {
+            element.classList.toggle("red");  
+            element.style.backgroundColor = "red";          
+            console.log("Actuals not met and not within 5%");
+        };
+        })
     }
+
+
 
     render() {
         let actualValue = this.props.actual
@@ -700,8 +757,9 @@ class MetricMonthly extends Component {
                             <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
-                            <th className="values">{actualValue}</th>
-                            <th className="values">{this.props.target}</th>
+                            <th id="actual-value" className="values" 
+                            onLoad={this.actualColor(actualValue, this.props.target)}>{actualValue}</th>
+                            <th id="target-value" className="values">{this.props.target}</th>
                             <th>{this.props.highlights}</th>
                             <th>{this.props.lowlights}</th>
                             <th className="values">{this.props.coe}</th>
@@ -727,23 +785,17 @@ class MetricQuarterly extends Component {
 
         return (
             <div>
-                <h2>{quarterValue}</h2>
+                <h2 className="title">{quarterValue}</h2>
                 <Table responsive>
                     <tbody>
                         <tr>
                             <th className="values">Actual</th>
                             <th className="values">Target</th>
-                            <th>Highlights</th>
-                            <th>Lowlights</th>
-                            <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
                             {/* This should be auto-calculated based upon month values */}
-                            <th className="values">{actualValue}</th>
+                            <th className="values" id="actual-value">{actualValue}</th>
                             <th className="values">{this.props.target}</th>
-                            <th>{this.props.highlights}</th>
-                            <th>{this.props.lowlights}</th>
-                            <th className="values">{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
@@ -762,22 +814,16 @@ class MetricAnnuals extends Component {
                 }
         return (
             <div>
-                <h2>Annual Information {this.props.year} </h2>
+                <h2 className="title">Annual Information {this.props.year} </h2>
                 <Table>
                     <tbody>
                         <tr>
                             <th className="values">Actual</th>
                             <th className="values">Target</th>
-                            <th>Highlights</th>
-                            <th>Lowlights</th>
-                            <th className="values">Correction of Error</th>
                         </tr>
                         <tr>
-                            <th className="values">{actualValue}</th>
+                            <th className="values" id= "actual-value">{actualValue}</th>
                             <th className="values">{this.props.target}</th>
-                            <th>{this.props.highlights}</th>
-                            <th>{this.props.lowlights}</th>
-                            <th className="values">{this.props.coe}</th>
                         </tr>
                     </tbody>
                 </Table>
@@ -785,179 +831,3 @@ class MetricAnnuals extends Component {
         )
     }
 }
-
-    // class BarChart extends Component {
-    //     constructor(props){
-    //         super(props)
-    //         this.barChart = this.barChart.bind(this)
-    //      }
-
-    //      componentDidMount() {
-    //         this.barChart()
-    //      }
-
-    //      componentDidUpdate() {
-    //         this.barChart()
-    //      }
-
-    //     barChart() {
-    //         const data = []
-    //         for (let i = 0; i <= 11; i++) {
-    //             let monthObj = this.state.selectedYearMap[i + 1]
-    //             const month = [i + 1]
-    //             if (monthObj) {
-    //                 const actual = monthObj.actual
-    //                 const target = monthObj.target
-    //                 data[i] = ({
-    //                     month: month,
-    //                     actual: actual, 
-    //                     target: target
-    //                 })
-                
-    //             } else {
-    //                 data[i] = ({
-    //                         month:month,
-    //                         actual:"",
-    //                         target:"",
-    //                 })
-    //             }
-    //         }
-        
-    //         var margin = {top: 20, right: 100, bottom: 70, left: 40},
-    //         width = 1000 - margin.left - margin.right,
-    //         height = 300 - margin.top - margin.bottom;
-    
-    
-    //     var svg = d3
-    //       .select("body")
-    //       .append("svg")
-    //           .attr("width", width + margin.left + margin.right)
-    //           .attr("height", height + margin.top + margin.bottom)
-    //       .append("g")
-    //         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-        
-    //     var dataset = [];
-    
-    //     for(let i = 0; i < data.length; i++ ) {
-    //       var date = data[i].month;
-    //       dataset[i] = {
-    //         date: date,
-    //         values: [
-    //         {name: 'Actuals', value: data[i].actual},
-    //         {name: 'Target', value: data[i].target}
-    //         ]
-    //       };
-    //     }
-    
-    //         // X-Axis (Containing the months)
-    //         var x0 = d3.scaleBand()
-    //         .domain(dataset.map(function(d) { return d.date; }))
-    //         .rangeRound([0, width], .4);
-          
-    //       // A-Axis (The BARS)
-    //       var x1 = d3.scaleBand()
-    //         .domain(['Actuals', 'Target'])
-    //         .rangeRound([10, x0.bandwidth()]);
-      
-    //       // Left Axis (Contains Left Ticks)
-    //       var y0 = d3.scaleLinear()
-    //         .domain([0, d3.max(dataset, function(d) { return d.values[0].value; })])
-    //         .range([height, 0]);
-          
-    //       // Right Axis (Contains Right Ticks)
-    //       var y1 = d3.scaleLinear()
-    //         .domain([0, d3.max(dataset, function(d) { return d.values[1].value; })])
-    //         .range([height, 0]);
-      
-    //       var color = d3.scaleOrdinal()
-    //         .range(["#D5D1E9", "#9991C6"]);
-      
-    //       var xAxis = d3
-    //         .axisBottom(x0)
-      
-    //       var yAxisLeft = d3
-    //           .axisLeft(y0)
-    //           .tickFormat(function(d) { return parseInt(d) });
-      
-    //       var yAxisRight = d3
-    //           .axisRight(y1)
-    //           .tickFormat(function(d) { return parseInt(d) });
-      
-    //       // Ticks on x-axis and y-axis
-    //       svg.append("g")
-    //           .attr("class", "x axis")
-    //           .attr("transform", "translate(0," + height + ")")
-    //           .call(xAxis);
-      
-    //       // (Left Side) Y Label (ACTUALS)
-    //       svg.append("g")
-    //           .attr("class", "y0 axis")
-    //           .call(yAxisLeft)
-    //         .append("text")
-    //           .attr("transform", "rotate(-90)")
-    //           .attr("y", 6)
-    //           .attr("dy", ".71em")
-    //           .style("text-anchor", "end")
-    //           .style("font-size", "12")
-    //           .style("fill", "#9991C6")
-    //           .text("Actuals");
-      
-    //       // Actuals TICKS
-    //       svg.select('.y0.axis')
-    //         .selectAll('.tick')
-    //           .style("fill", "black");
-      
-        
-    //       // MONTHS LABELS 
-    //       svg.append("text")
-    //         .style("text-anchor", "middle")
-    //         .attr("transform", "translate(" + width / 2 + " ," + 250 + ")")
-    //         .style("font-size", "12")
-    //         .text("Months")
-      
-    //       var graph = svg
-    //           .selectAll(".date")
-    //           .data(dataset)
-    //           .enter()
-    //           .append("g")
-    //             .attr("class", "g")
-    //             .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; });
-      
-    //       graph.selectAll("rect")
-    //           .data(function(d) { return d.values; })
-    //           .enter()
-    //           .append("rect")
-    //             .attr("width", x1.bandwidth())
-    //             .attr("x", function(d) { return x1(d.name); })
-    //             .attr("y", function(d) { return y0(d.value); })
-    //             .attr("height", function(d) { return height - y0(d.value); })
-    //             .style("fill", function(d) { return color(d.name); });
-      
-    //       // Legend
-    //       var legend = svg
-    //           .selectAll(".legend")
-    //           .data(['Actuals', 'Target'].slice())
-    //           .enter()
-    //           .append("g")
-    //             .attr("class", "legend")
-    //             .attr("transform", function(d, i) { return "translate(90," + i * 20 + ")"; });
-      
-    //       legend.append("rect")
-    //           .attr("x", width - 20)
-    //           .attr("width", 18)
-    //           .attr("height", 18)
-    //           .style("fill", color);
-      
-    //       legend.append("text")
-    //           .attr("x", width - 25)
-    //           .attr("y", 9)
-    //           .attr("dy", ".35em")
-    //           .style("text-anchor", "end")
-    //           .text(function(d) { return d; });
-    //     }
-
-    //     render() {
-    //         return 
-    //      }
-    // }

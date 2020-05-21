@@ -674,7 +674,7 @@ export class DataEntryForm extends Component {
                     </div>
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
-                    <button class="preview"
+                    <button class="preview" 
                         onClick={() => this.props.submitForm(this.props.dataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
                             this.props.radio, this.props.data, this.props.highlight,
                             this.props.lowlight, this.props.mitigation)}>
@@ -686,13 +686,6 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                        <h2 className="MetricTitles">Select a Time Frame <span class="required">*</span> </h2>
-                        <select
-                            onChange={(e) => this.props.updateChange(e)} name="selectTF">
-                            <option value="metricGoalsMonths">Month</option>
-                            <option value="metricGoalsQuarters">Quarter</option>
-                            <option value="metricGoalsAnnuals">Annual</option>
-                        </select>
                         {timeDisplay}
                         <h2 class='InputOption'> Input Data For: <span class="required">*</span> </h2>
                         <div class='CheckBoxes'> 
