@@ -11,6 +11,7 @@ import { AdminSettings } from './AdminSettings'
 import { AdminPanelMetrics } from './AdminPanelMetrics'
 import { AdminPanelUserPermissions } from './AdminPanelUserPermissions'
 import { AdminPanelMetricCalcs } from './AdminPanelMetricCalcs'
+import {AdminDataEntry} from './AdminDataEntry'
 import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
@@ -319,6 +320,12 @@ class App extends Component {
                 render={() => <AdminPanelMetricCalcs
                   metrics={this.state.metrics}
                 />}
+              />
+              <Route
+                path="/admindataentry"
+                render={() => <AdminDataEntry
+                  {...this.state}
+                  />}
               />
               {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
               <Route path="/adminsettings"

@@ -603,45 +603,9 @@ export class DashBoard extends Component {
                     </div>
 
 
-                    <div id="legend">
-                        <div className="test">
-                            <div id="onTarget" className="targets">
-                            </div>
-                            <div className="targets">
-                                On Target
-                            </div>
-                        </div>
-                        <div className="test">
-                            <div id="inMargin" className="targets">
-                            </div>
-                            <div className="targets">
-                                &lt;5% variation to target
-                            </div>
-                        </div>
-                        <div className="test">
-                            <div id="outMargin" className="targets">
-                            </div>
-                            <div className="targets">
-                                &gt;5% variation to target
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                {/* <Table bordered align="center">
-                <thead>
-                    <tr>
-                    <th> Metric Calculations </th>
-                    <th> Metric Calculations </th>
-                    </tr>
-                </thead>
 
-
-                Table representing metric and metric caluclation
-                <tbody>
-                    {metricElements}
-                </tbody>
-            </Table> */}
 
                 {/* Container for current  */}
                 <div>
