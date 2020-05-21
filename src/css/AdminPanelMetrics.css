@@ -1,3 +1,9 @@
+input {
+  margin: 0 auto;
+  width: 250px;
+  padding: 10px;
+}
+
 /* Clear floats after the columns */
 .body:after {
   content: "";
@@ -8,28 +14,6 @@
 .PermissionBox {
   background-color: #9991C6;;
   height: 50;
-}
-
-h2.selectMetric {
-  font-weight: 900;
-}
-
-h2.metricC {
-  margin-top: 1rem;
-}
-
-.unarchive, .archive, .submit{
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-style: inherit;
-  border-radius: 5px;
-  color: white;
-  font-size: 20px;
-  height: 50px;
-  width: 100px;
-  background-color: #9991C6;
 }
 
 .column .PermissionText {
@@ -51,13 +35,91 @@ h2.metricC {
   font-size: 18px
 }
 
-.main_content select {
-  display: block;
+.main-content select {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+#addMetricAreaButton {
+  position: absolute;
+  height: 4rem;
+  width: 4rem;
   margin: 0 auto;
+  margin-left: 1rem;
+  background-color: transparent;
+  border: transparent;
+}
+
+#met-areas {
+  background-color: rgb(153, 145, 198);
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.metricForm {
+  display: none;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  /* overflow: auto; */
+  background-color: rgba(0,0,0,0.4);
+}
+
+div.metricElements {
+  justify-content: center;
+  display: inline-block;
   text-align: center;
 }
 
-.close-button {
+button.selection {
+  width: 200px;
+}
+
+.PermDatadeck.card-deck {
+  margin-left: 1rem; 
+  margin-right: 1rem;
+  display: block;
+  align-items: center;
+}
+
+.metricBox {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+  position: relative;
+}
+
+.metricBox h2, input {
+  margin-bottom: 1rem
+}
+
+.metricBox button {
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-style: inherit;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  height: 50px;
+  width: 100px;
+  background-color: #9991C6;
+}
+
+#close-button {
   padding: 0;
   margin: 0;
   width: 50px;
@@ -69,34 +131,11 @@ h2.metricC {
   position: absolute;
 }
 
-.modalForm {
-  display: none;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4)
-}
-
-.modalBox {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  position: relative;
-  border-radius: 10px;
-  width: 90%; /* Could be more or less, depending on screen size */
-}
-
 /* need to fix later */
 #calcForm {
-  display: block;
+  display: inline-block;
   margin: 0 auto;
-  text-align: center;
+  margin-left: 40rem;
 }
 
 .more {
@@ -125,123 +164,36 @@ h2.metricC {
 }
 
 .save:focus {
-    background-color: rgb(153, 145, 198);
-    color: white;
-}
-
-.titleButton {
-  text-align: center;
-}
-
-.titleButton button {
-  margin-left: 2rem;
-}
-
-#metricAreaCalcElements {
-  text-align: center;
-}
-
-#archivedAreaElements {
-  text-align: center;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
-}
-
-.wrapper .sidebar h2{
-  color: #fff;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.body .sidebar ul li{
-  padding: 15px;
-  border-bottom: 1px solid #E6E7E8;
-  border-bottom: 1px solid white;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}    
-
-.body .sidebar ul li a{
-  color: white;
-  display: block;
-}
-
-.body .sidebar ul li a .fas{
-  width: 25px;
-}
-
-.body .sidebar ul li:hover{
   background-color: rgb(153, 145, 198);
-}
-    
-.body .sidebar ul li:hover a{
-  color: #fff;
-}
-
-.body .main_content{
-  margin-left: 100px;
-}
-
-.body .main_content .header{
-  padding: 20px;
-  background: #fff;
-  color: #717171;
-  border-bottom: 1px solid #e0e4e8;
-}
-
-.body .main_content .info{
-  margin: 20px;
-  color: #717171;
-  line-height: 25px;
-}
-
-a.Admin {
-  font-size: 18px;
-  font-weight: bold;
-}
-  
-  /* background-color: rgb(153, 145, 198);
   color: white;
-} */
-
-.body .main-content .header{
-  padding: 20px;
-  background: #fff;
-  color: #717171;
-  border-bottom: 1px solid #e0e4e8;
-}
-
-.body .main-content .info {
-  margin: 20px;
-  color: #717171;
-  line-height: 25px;
-}
-
-a.Admin {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-@media (min-width: 400px) {
-  .modalBox {
-    width: 70%; /* Could be more or less, depending on screen size */
-  }
 }
 
 @media (min-width: 600px) {
-  .modalBox {
+  div.metricElements {
+    justify-content: center;
+    display: flex;
+    text-align: center;
+  }
+
+  #met-areas {
+    font-size: 24px;
+  }
+
+  button.selection {
+    width: 275px;
+  }
+
+  .metricBox {
     width: 50%; /* Could be more or less, depending on screen size */
   }
+
 }
 
-@media (min-width: 1000px) {
-  .modalBox {
-    width: 40%; /* Could be more or less, depending on screen size */
+@media (min-width: 900px) {
+  #met-areas {
+    font-size: 32px;
+  }
+  .metricBox {
+    width: 30%; /* Could be more or less, depending on screen size */
   }
 }

@@ -71,13 +71,14 @@ export class DashBoard extends Component {
         height = 300 - margin.top - margin.bottom;
 
         var svg = d3
-        var svg = d3
-      .select("body")
-      .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .select("body")
+            .append("svg")
+            .attr("width", '100%')
+            .attr("height", '100%')
+            .attr('viewBox', '-100 0 1500 350')
+            .attr('preserveAspectRatio', 'xMinYMin')
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     
         var dataset = [];
@@ -271,10 +272,12 @@ export class DashBoard extends Component {
         var svg = d3
         .select("body")
         .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("width", '100%')
+        .attr("height", '100%')
+        .attr('viewBox', '-100 0 1500 350')
+        .attr('preserveAspectRatio', 'xMinYMin')
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
             const data = []
             var datatype
