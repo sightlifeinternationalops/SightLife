@@ -5,6 +5,7 @@ import './index.js';
 import './css/DashBoard.css';
 import * as d3 from 'd3';
 import firebase from 'firebase/app';
+import { act } from 'react-dom/test-utils';
 
 export class DashBoard extends Component {
 
@@ -77,8 +78,10 @@ export class DashBoard extends Component {
                     let marginNum = targetFloat - subtractNum
                     if (actualFloat >= marginNum) {
                         return "#f9a354"
-                    } else {
+                    } else if (actualFloat < targetFloat - 5) {
                         return "#fe0000"
+                    } else {
+                        return "FFFFFF"
                     }
                 }
             case "percent":
@@ -87,8 +90,10 @@ export class DashBoard extends Component {
                 } else {
                     if (actualFloat >= targetFloat - 5) {
                         return "#f9a354"
-                    } else {
+                    } else if (actualFloat < targetFloat - 5) {
                         return "#fe0000"
+                    } else {
+                        return "FFFFFF"
                     }
                 }
             case "text":
@@ -103,15 +108,29 @@ export class DashBoard extends Component {
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
             if (monthObj) {
+                let actual = parseInt(monthObj.actual, 10)
+                let target = parseInt(monthObj.target, 10)
                 let color = this.actualColor(monthObj.actual, monthObj.target, monthObj.dataType)
+                if (monthObj.dataType == "percent") {
+                    actual += "%"
+                    target += "%"
+                } else if (monthObj.dataType == "money") {
+                    actual = "$" + actual 
+                    target = "$" + target 
+                }
+
+                if (!parseInt(monthObj.actual, 10)) {
+                    actual = "N/A"
+                }
+        
                 monthArrayInfo[i] = (
                     <MetricMonthly
                         month={i + 1}
-                        actual={monthObj.actual}
+                        actual={actual}
                         coe={monthObj.coe}
                         highlights={monthObj.highlights}
                         lowlights={monthObj.lowlights}
-                        target={monthObj.target}
+                        target={target}
                         datatype={monthObj.dataType}
                         color={color}/>
                 )
@@ -131,17 +150,17 @@ export class DashBoard extends Component {
     }
 
     barChart() {
-        if (this.props.selectedYearMap.length > 0) {
+        if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
         const data = []
+        var datatype
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
             if (monthObj) {
                 // Need to do some work based on the data type received for the metric
                 // cannot always assume it's an int
                 const actual = parseInt(monthObj.actual, 10)
-                console.log(actual)
-
                 const target = parseInt(monthObj.target, 10)
+                datatype = monthObj.dataType
                 data[i] = ({
                     month: i + 1,
                     actual: actual || 0,
@@ -155,7 +174,7 @@ export class DashBoard extends Component {
                 })
             }
         }
-    
+
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
@@ -208,6 +227,10 @@ export class DashBoard extends Component {
         .domain([0, Math.max(actualRange[1], targetRange[1])])
         .nice()
         .range([height, 0]);
+
+        if (datatype == "percent") {
+            y0.domain ([0, 100])
+        }
   
       var color = d3.scaleOrdinal()
         .range(["#D5D1E9", "#9991C6"]);
@@ -242,6 +265,13 @@ export class DashBoard extends Component {
       svg.select('.y0.axis')
         .selectAll('.tick')
           .style("fill", "black");
+
+      // FORMAT TICKS FOR MONEY AND PERCENT
+      if (datatype == "percent") {
+          d3.axisLeft().tickFormat(d => d + "%")
+      } else if (datatype == "money") {
+          d3.axisLeft().tickFormat(d => "$" + d )
+      }
   
     
       // MONTHS LABELS 
@@ -343,15 +373,23 @@ export class DashBoard extends Component {
     // selected metric calculation and year
     quarterArrayElements() {
         const quarterArrayInfo = []
-        let monthObjColor
-        let color
+        var dataType
 
+        if (this.props.selectedYearMap[1]) {
+            dataType = this.props.selectedYearMap[1].dataType
+        }
         for (let i = 0; i <= 3; i++) {
+            let actualExists = false
+            let monthObjColor
+            let color    
             let actual = 0;
             let target = 0;
 
             let monthObj1 = this.props.selectedYearMap[i * 3 + 1]
         if (monthObj1){
+            if (!actualExists && parseInt(monthObj1.actual, 10)) {
+                actualExists = true
+            }
             actual += parseInt(monthObj1.actual, 10) || 0
             target += parseInt(monthObj1.target, 10) || 0
             monthObjColor = monthObj1
@@ -359,6 +397,9 @@ export class DashBoard extends Component {
 
         let monthObj2 = this.props.selectedYearMap[i * 3 + 2]
         if (monthObj2){
+            if (!actualExists && parseInt(monthObj2.actual, 10)) {
+                actualExists = true
+            }
             actual += parseInt(monthObj2.actual, 10) || 0
             target += parseInt(monthObj2.target, 10) || 0
             monthObjColor = monthObj1
@@ -366,13 +407,28 @@ export class DashBoard extends Component {
 
         let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
         if (monthObj3){
+            if (!actualExists && parseInt(monthObj3.actual, 10)) {
+                actualExists = true
+            }
             actual += parseInt(monthObj3.actual, 10) || 0
             target += parseInt(monthObj3.target, 10) || 0
             monthObjColor = monthObj1
         }
 
+        if (!actualExists) {
+            actual = "N/A"
+        }
+
         if (monthObjColor) {
             color = this.actualColor(actual, target, monthObjColor.dataType)
+        }
+
+        if (dataType == "percent" && actualExists) {
+            actual += "%"
+            target += "%"
+        } else if (dataType == "money" && actualExists) {
+            actual = "$" + actual 
+            target = "$" + target 
         }
 
                 quarterArrayInfo[i] = (
@@ -390,7 +446,7 @@ export class DashBoard extends Component {
 
     lineChart() {
     
-    if (this.props.selectedYearMap.length > 0) {
+    if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
     var margin = {top: 30, right: 100, bottom: 70, left: 130},
     width = 1200 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
@@ -404,11 +460,13 @@ export class DashBoard extends Component {
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         const data = []
+        var datatype
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
             if (monthObj) {
                 // Need to do some work based on the data type received for the metric
                 // cannot always assume it's an int
+                datatype = monthObj.dataType
                 const actual = parseInt(monthObj.actual, 10)
                 console.log(actual)
                 const target = parseInt(monthObj.target, 10)
@@ -441,7 +499,6 @@ export class DashBoard extends Component {
         };
     }
 
-
                 var actualRange = d3.extent(dataset, d => d.values[0].value);
                 var targetRange = d3.extent(dataset, d => d.values[1].value);
             
@@ -456,6 +513,9 @@ export class DashBoard extends Component {
         .domain([0, Math.max(actualRange[1], targetRange[1])])
         .range([height, 0]);
 
+    if (datatype == "percent") {
+        y0.domain ([0, 100])
+    }
     // X-AXIS (VISUALS)
     var xAxis = d3
         .axisBottom(x0);
@@ -515,7 +575,7 @@ export class DashBoard extends Component {
         .attr("transform", "translate(" + width / 2 + " ," + (-15) + ")")
         .style("font-size", "12")
         .text("Actuals vs. Targets Monthly")
-    
+    console.log(datatype)
     // COLOR
     var color = d3.scaleOrdinal()
         .range(["#D5D1E9", "#9991C6"]);
@@ -613,6 +673,13 @@ export class DashBoard extends Component {
     })
     .filter(d => isNaN(d.values[1].value)).remove();
 
+    // FORMAT TICKS FOR MONEY AND PERCENT
+    if (datatype == "percent") {
+        d3.axisLeft().tickFormat(d => d + "%")
+    } else if (datatype == "money") {
+        d3.axisLeft().tickFormat(d => "$" + d )
+    }
+
     // LEGEND (BOXES)
     var legend = svg
         .selectAll(".legend")
@@ -649,20 +716,42 @@ svgRenderLine() {
         let target = 0
         let monthObjColor
         let color
+        let actualExists = false
+        let dataType
 
         for(let i = 0; i < 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
             if (monthObj) {
+                if (!actualExists && parseInt(monthObj.actual, 10)) {
+                    actualExists = true
+                }
                 const monthActual = parseInt(monthObj.actual, 10) || 0
                 const monthTarget = parseInt(monthObj.target, 10) || 0
                 actual += monthActual
                 target += monthTarget
+                dataType = monthObj.dataType
                 monthObjColor = monthObj
             } 
         }
 
+        if (!actualExists) {
+            actual = "N/A"
+        }
+
         if (monthObjColor) {
             color = this.actualColor(actual, target, monthObjColor.dataType)
+        }
+
+        if (dataType == "percent") {
+            actual += "%"
+            target += "%"
+        } else if (dataType == "money") {
+            actual = "$" + actual 
+            target = "$" + target 
+        }
+
+        if (!actualExists) {
+            actual = "N/A"
         }
 
                 annualArrayInfo[0] = (
