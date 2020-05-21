@@ -3,8 +3,6 @@ import './css/AdminPanelMetricCalcs.css';
 import './index.js';
 
 import { AdminPanelNav } from './AdminPanel'
-import { CardDeck } from 'reactstrap';
-import More from './img/more.svg';
 import firebase from 'firebase/app';
 
 // Not sure if AdminPanelNav is redundant. It is in the Admin panel js file
@@ -345,11 +343,12 @@ export class AdminPanelMetricCalcs extends Component {
 
         return (
             <div className="body">
+                <AdminPanelNav />
                 <main>
-                    <AdminPanelNav />
-                    <div class="main_content">
+                <h1 class="ASettingsTitle"> Metric Calculations </h1>
+                    <div class="main-content">
                         <div>
-                            <h2>Select a Metric Area</h2>
+                            <h2 className= "selectMetric">Select a Metric Area</h2>
 
                             <select id="select-dropdown"
                                 onChange={(e) => this.updateME(e)}>
@@ -368,6 +367,15 @@ export class AdminPanelMetricCalcs extends Component {
                             <h2>Archived Metric Calculations</h2>
                             <div id="archivedAreaElements">
                                 {archivedAreaCalculationElements}
+                            {/* <h2 className="metricC">Metric Calculations</h2>
+                            <div id="calcForm">
+                                <form>
+                                    <label for="fname">Enter a Calculation Name </label>
+                                    <textarea
+                                        onChange={(e) => this.handleChange(e)}
+                                        type="text" id="form" name="calcName" />
+                                </form>
+                                <button className="save2" onClick={() => this.addCalculation()}>Add Calculation</button> */}
                             </div>
                         </div>
                         {editForm}

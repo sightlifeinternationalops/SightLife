@@ -10,8 +10,16 @@
   width: 150px;
 }
 
-.nav-link {
+a.nav-link {
   font-size: 20px;
+}
+
+a.nav-link.active {
+  color: rgb(153, 145, 198);
+}
+
+.nav-link2 {
+  font-size: 16px;
 }
 
 #nav-bar {
@@ -75,6 +83,10 @@ p.user-name {
   color: black;
 }
 
+p.user-name:hover {
+  background-color: white;
+}
+
 .prof-pic {
   display: block;
   margin-left: auto;
@@ -84,45 +96,47 @@ p.user-name {
   height: 50px;
 }
 
-.dropdown-content button {
-  text-align: left;
-}
-
-a.nav-link {
+.nav-link2 {
   position: relative;
   display: inline;
   text-align: center;
   color: black;
+  padding: 1.5rem;
+}
+
+.nav-link2:hover {
+  color: rgb(153, 145, 198);
+  text-decoration: none;
 }
 
 #signOutButton {
   background-color: transparent;
+  padding-top: 5px;
   border: none;
+  font-size: 18px;
+}
+
+#signOutButton:hover {
+  color: rgb(153, 145, 198);
 }
 
 #sign {
     position: absolute;
-    /* align-items: left; */
-    right: 0;
     box-shadow: 1px 1px 5px;
     border-radius: 10px;
     border: none;
     text-align: left;
     margin: 0 auto;
-}
+} 
 
-.btn {
+.btn2 {
   color: black;
-  display: block;
-  padding-right: 150px;
-  padding-left: 20px;
+  border: white;
   text-align: center;
 }
 
-strong:hover {
-  display: inline;
-  /*text-decoration:underline; */
-  color: rgb(100, 93, 155);
+div.btn2 {
+  align-content: center;
 }
 
 /* a .link {
@@ -138,22 +152,20 @@ strong:hover {
   padding-bottom: 20px;
 }
 
-@media (min-width: 375px)  {
+@media (min-width: 600px)  {
     .link {
       font-size: 19px;
   }
 
-  /* img .logo {
-    padding-right: 890;
-  } */
-
-  a { 
-    padding-top:10px;
-
-    color: rgb(100, 93, 155);
-    font-size: 10px;
-    text-decoration: none;
-  }
-
+  #sign {
+    position: absolute;
+    /* align-items: left; */
+    right: 0;
+    box-shadow: 1px 1px 5px;
+    border-radius: 10px;
+    border: none;
+    text-align: left;
+    margin: 0 auto;
 }
 
+}

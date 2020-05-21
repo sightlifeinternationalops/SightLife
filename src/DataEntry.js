@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './css/DataEntry.css';
 import './index.js';
 
-import { CardDeck, FormGroup, Input } from 'reactstrap';
+import { CardDeck } from 'reactstrap';
 import firebase from 'firebase/app';
 import { createPortal } from 'react-dom';
 
@@ -565,13 +565,12 @@ export class DataEntry extends Component {
         const metricAreaElements = this.metricAreaElements()
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         const dataEntryForm = this.renderDataEntryForm()
-
         let content = null
 
         if (this.state.selectedMetricAreaCalculations) {
             content = (
                 <div>
-                      <section id="forms">
+                    <section id="forms">
                         {dataEntryForm}
                     </section>
                 </div>
@@ -579,24 +578,25 @@ export class DataEntry extends Component {
         } else {
             content = (
                 <div>
-                <section class="entry">
-                {/* Populate based on whether metric owner owns metric */}
-                <h2 class='MetricTitles'> Your Metric Areas <span class="required">*</span> </h2>
-                <CardDeck className="datadeck">
-                    {metricAreaElements}
-                </CardDeck>
-                <div class="errorMsg">
-                    <p>{this.state.invalidMetricArea}</p>
-                </div>
-                {/* Populate based on metric chosen */}
-                <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
-                <CardDeck className="datadeck">
-                    {metricAreaCalculationsElements}
-                </CardDeck>
-                <div class="errorMsg">
-                    <p>{this.state.invalidMetricCalc}</p>
-                </div>
-            </section>    
+                  <section class="entry">
+                        <h1 className="DataEn"> Data Entry Form </h1>
+                        {/* Populate based on whether metric owner owns metric */}
+                        <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
+                        <CardDeck className="datadeck">
+                            {metricAreaElements}
+                        </CardDeck>
+                        <div class="errorMsg">
+                            <p>{this.state.invalidMetricArea}</p>
+                        </div>
+                        {/* Populate based on metric chosen */}
+                        <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
+                        <CardDeck className="datadeck">
+                            {metricAreaCalculationsElements}
+                        </CardDeck>
+                        <div class="errorMsg">
+                            <p>{this.state.invalidMetricCalc}</p>
+                        </div>
+                    </section>
             </div>
             )
         }
@@ -604,7 +604,6 @@ export class DataEntry extends Component {
         return (
             <div className="body">
                 <main>
-                <h1> Data Entry Form </h1>
                     {content}
                 </main>
             </div>
@@ -723,7 +722,7 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                        <h2 className="MetricTitles">Select a Time Frame <span class="required">*</span> </h2>
+                        <h2 className = "timeFrame">Select a Time Frame <span class="required">*</span> </h2>
                         <select
                             onChange={(e) => this.props.updateChange(e)} name="selectTF">
                             <option value="metricGoalsMonths">Month</option>
@@ -748,6 +747,14 @@ export class DataEntryForm extends Component {
                                 {this.props.invalidRadio}
                             </p>
                         </div>
+                        {/* <h2 className = "timeFrame">Select a data-type <span class="required">*</span> </h2>
+                        <select
+                            onChange={(e) => this.props.updateChange(e)} name="dataType">
+                            <option value="number">Number</option>
+                            <option value="percent">Percent</option>
+                            <option value="money">Money</option>
+                            <option value="text">Text</option>
+                        </select> */}
                         {dataDisplay}
                         <div>
                             <p>
@@ -775,11 +782,13 @@ export class DataEntryForm extends Component {
                                 value={this.props.mitigation} type="text" id="form" name="mitigation" />
                         </p>
                     </form>
+                    
                     <div>
                         <p>
                             {this.props.errorMsg}
                         </p>
                     </div>
+                    
                     <button
                         onClick={() => this.props.previewForm(this.props.check())}
                         class="preview">Preview</button>

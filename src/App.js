@@ -2,7 +2,7 @@ import './css/App.css';
 import React, { Component } from 'react';
 import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { About } from './About';
-import { Metrics, MetricAreaCard } from './Metrics';
+import { Metrics } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
 import { Visualizations } from './Visualizations.js'
@@ -15,9 +15,6 @@ import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
-import HomeDashBoard from './img/home-run.svg';
-import Manager from './img/manager.svg';
-import SignOut from './img/logout.svg';
 import Profile from './img/profile2.png'
 
 class App extends Component {
@@ -411,16 +408,25 @@ export class NavBar extends Component {
             <div className="dropdown-content" id="sign">
               {/* <image class='prof-pic'>User's Profile Picture</image> */}
               <p className='user-name'>User's Name</p>
-              <button type="submit" className="btn">
+              
+              <div className="btn2">
+              <button type="submit" className="btn2">
                 <NavLink to='/metrics' className="nav-link"> DashBoard </NavLink>
               </button>
-              <button type="submit" className="btn">
+              </div>    
+              
+              <div className="btn2">
+              <button type="submit" className="btn2">
                 <NavLink to='/adminpanel' className="nav-link">Admin Panel</NavLink>
               </button>
-              <button id="signOutButton"
+              </div>
+
+              <div className="btn2">
+              <button id="signOutButton" className="btn2"
                 onClick={() => this.props.signOut()}>
                 Sign Out
               </button>
+              </div>    
             </div>
           </div>
         </li>

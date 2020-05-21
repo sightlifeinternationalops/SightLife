@@ -1,203 +1,180 @@
-
 .PermissionBox {
-    background-color: #9991C6;;
-    height: 50;
-  }
-
-  #toggle-actuals, #toggle-targets {
-    height: 36px;
-  }
-
-.columnSettings .PermissionText {
-    color: white;
-    padding: 5px;
-    margin-bottom: 0;
-    margin-block-start: 0;
-    margin-top: 18px;
+  background-color: #9991C6;;
+  height: 50;
 }
 
-div.PermDatadeck {
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
+#toggle-actuals, #toggle-targets {
+height: 36px;
+}
+
+.columnSettings .PermissionText {
+color: white;
+padding: 5px;
+margin-bottom: 0;
+margin-block-start: 0;
+margin-top: 18px;
 }
 
 .ASettingsTitle {
-    margin-left: 12.5rem;
-}
-
-.PermInfo {
-    margin-right: 6rem;
-    padding-top: 0;
-
+margin-left: 6.5rem;
 }
 
 .PermissionInfo {
-    background-color: #E6E7E8;
+background-color: #E6E7E8;
 }
 
 .columnSettings {
-    margin-left: 20rem;
+margin-left: 0rem;
 }
 
 .columnSettings .PermText2 {
-    padding-top: 3px;
-    margin-bottom: 0;
-    line-height: 2rem;
-    font-size: 18px;
-    text-align: center;
+padding-top: 3px;
+margin-bottom: 0;
+line-height: 2rem;
+font-size: 18px;
+text-align: center;
 }
 
 .adminButtons {
-  text-align: center;
+text-align: center;
 }
 
 .react-switch {
-  vertical-align: middle
+vertical-align: middle;
+padding-bottom: 13px;
 }
 
 #entryFormSettings {
-  text-align: center;
+text-align: center;
+margin-bottom: 1rem;
 }
-  
+
 #formOne {
-  display: none;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4)
+display: none;
+width: 100%;
+height: 100%;
+text-align: center;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+overflow: auto;
+background-color: rgba(0,0,0,0.4)
 }
 
 #formBox{
-  background-color:white;
-  margin: 15% 42.5%; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 30%; /* Could be more or less, depending on screen size */
+background-color:white;
+margin: 15% 10%; /* 15% from the top and centered */
+padding: 20px;
+border: 1px solid #888;
+width: 80%; /* Could be more or less, depending on screen size */
 }
 
 #ownerElements ul {
-  text-align: center;
+text-align: center;
 }
 
+input:checked + .slider {
+background-color: #2196F3;
+}
 
+input:focus + .slider {
+box-shadow: 0 0 1px #2196F3;
+}
 
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
 
 .Save2Button {
-    align-items: center;
-    text-align: center;
-    margin-left: 12rem;
+  align-items: center;
+  text-align: center;
+  margin-left: 0.5rem;
 }
 
 button.save2 {
-    text-align: center;
-    line-height: 50px;
-    background-color: rgb(153, 145, 198);
-    font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    border-style: inherit;
-    border-radius: 10px;
-    color: white;
-    width: 150px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    align-content: center;
+  text-align: center;
+  line-height: 50px;
+  background-color: rgb(153, 145, 198);
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-style: inherit;
+  border-radius: 10px;
+  color: white;
+  width: 150px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  align-content: center;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
-  }
+button.addAdmin {
+text-align: center;
+line-height: 50px;
+background-color: rgb(153, 145, 198);
+font-size: 18px;
+font-family: Arial, Helvetica, sans-serif;
+border-style: inherit;
+border-radius: 10px;
+color: white;
+width: 150px;
+margin-bottom: 20px;
+margin-top: 10px;
+margin-right: 0.5rem;
+align-content: center;
+}
+
+button.remove {
+margin-left: 0.5rem;
+text-align: center;
+line-height: 15px;
+font-size: 18px;
+font-family: Arial, Helvetica, sans-serif;
+width: 15px;
+margin-top: 10px;
+}
 
 a.Admin {
-      font-size: 18px;
-      font-weight: bold;
-}
-  
-.body .sidebar{
-    background: #6D6E70;
-}
-  
-.wrapper .sidebar h2{
-    color: #fff;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 30px;
-}
-  
-.body .sidebar ul li{
-    padding: 15px;
-    border-bottom: 1px solid #E6E7E8;
-    border-bottom: 1px solid white;
-    border-top: 1px solid rgba(255,255,255,0.05);
-}    
-  
-.body .sidebar ul li a{
-    color: white;
-    display: block;
-}
-  
-.body .sidebar ul li a .fas{
-    width: 25px;
-}
-  
-.body .sidebar ul li:hover{
-    background-color: rgb(153, 145, 198);
-}
-      
-.body .sidebar ul li:hover a{
-    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.PermissionInfo {
-  text-align: center;
-  align-content: center;
-  padding-bottom: 20px;
+@media (min-width: 600px) {
+.columnSettings {
+  margin-left: 1rem;
 }
 
-.edit {
-  background: rgb(153, 145, 198);
-  border: transparent;
-  color: white;
-  border-radius: 10px;
-  padding: 0 10px;
-  font-size: 18px;
-  margin-bottom: 10px;
-  padding-bottom: center;
+div.Save2Button {
+  margin-left: 0.5rem;
 }
 
-.toggle {
-  margin-top: 10px;
+#formBox{
+  width: 50%; /* Could be more or less, depending on screen size */
+  margin: 15% 35%;
+}
+}
+
+@media (min-width: 900px) {
+.columnSettings {
+  margin-left: 10rem;
+  margin-right: 10rem;
+}
+
+div.Save2Button {
+  margin-left: 0.5rem;
+}
+#formBox{
+  width: 40%; /* Could be more or less, depending on screen size */
+  margin: 15% 35%;
+}
 }

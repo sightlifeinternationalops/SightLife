@@ -133,23 +133,29 @@ export class AdminPanelMetrics extends Component {
 
     addForm() {
         let form = (
-            <div className="metricForm" style={
-             {display: this.state.display}
-            }>
+            <div className="metricForm" style={ {display: this.state.display} }>
+                
                 <form className="metricBox">
                     <div>
                         <h2>Adding New Metric Area</h2>
+                        
                         <label>
                             <input 
                             onChange={(e) => this.handleChange(e)}
                             type="text" name="MetricName"/>
                         </label>
                     </div>
+
                     <button
-                        onClick={(e) => this.submitForm(e)}
-                    >Submit</button>
+                        onClick={(e) => this.submitForm(e)}>
+                        Submit
+                    </button>
+
                     <button 
-                        onClick={(e) => this.closeModal(e)}>Cancel</button>
+                        onClick={(e) => this.closeModal(e)}>
+                        Cancel
+                    </button>
+
                 </form>
             </div>
         )
@@ -159,14 +165,15 @@ export class AdminPanelMetrics extends Component {
     editMetricArea() {
         let editForm = (
             <div 
-                className="metricForm"
-                style={{display: this.state.modalDisplay}}>
+                className="metricForm" style={ {display: this.state.modalDisplay} }>
+                
                 <form className="metricBox">
-                <button 
-                    onClick={(e) => this.closeModalE(e)}
-                    id="close-button">
-                        X
+                    <button 
+                        onClick={(e) => this.closeModalE(e)}
+                        id="close-button">
+                            X
                     </button>
+
                     <div>
                         <h2>Current Metric: {this.state.currentmName} </h2>
                         <label>
@@ -175,10 +182,12 @@ export class AdminPanelMetrics extends Component {
                             type="text" name="editMetricName"/>
                         </label>
                     </div>  
+                    
                     <button
                         onClick={(e) => this.submitMetricInfo(e)}>
                         Save
                     </button>
+                    
                     <button
                         onClick={(e) => this.archiveMetricAreaElement(e)}>
                         Archive
@@ -225,21 +234,25 @@ export class AdminPanelMetrics extends Component {
             <div className="body">
                 <main>
                     <AdminPanelNav />
-                    <div class="main_content">
+                    <div class="main-content">
                         <div>
-                        <h1 class='selection' id='met-areas'> Metric Areas
+                            <CardDeck className="PermDatadeck">
+                                <h1 class='selection' id='met-areas'> Metric Areas 
+                                
                                 <button
                                     id="addMetricAreaButton" 
                                     onClick={() => this.renderModal()}>
-                                    <img class='more' src={More} /></button> </h1>
-                            <CardDeck className="PermDatadeck">
+                                    <img class='more' src={More} />
+                                    </button> </h1>
+                                <div className="metricElements">
                                 {metricAreaElements}
+                                </div>
                             </CardDeck>
                         </div>
                         <div>
                             {/* Archived Metric Areas */}
-                            <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             <CardDeck className="PermDatadeck">
+                                <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             </CardDeck>
                         </div>
                         {form}

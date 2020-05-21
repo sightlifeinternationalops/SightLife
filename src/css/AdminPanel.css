@@ -1,29 +1,32 @@
 .column {
-    float: left;
-    width: 50%;
-  }
-  
-  /* Clear floats after the columns */
-  .body:after {
+    float: none;
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+}
+
+/* Clear floats after the columns */
+.body:after {
     content: "";
     display: table;
     clear: both;
-  }
+}
 
 .PermInfo {
     box-shadow: 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1), 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1);
     border-radius: 10px 10px 10px 10px;
     margin: 0 auto;
     padding: 0;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 .PermissionBox {
-    background-color: #9991C6;
+    background-color: #9991C6;;
     height: 50;
-    border-radius: 10px 10px 0 0;
-  }
+}
 
-.column .PermissionText {
+.PermissionText {
     color: white;
     padding: 5px;
     margin-bottom: 0;
@@ -39,7 +42,17 @@ div.PermDatadeck {
     flex-direction: row;
 }
 
-.column .PermText {
+div.PermDatadeckPermission {
+    margin-left: 0rem;
+    margin-right: 0rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    flex-direction: row;
+}
+
+.PermText {
     padding-top: 3px;
     margin-bottom: 0;
     line-height: 2rem;
@@ -60,28 +73,27 @@ div.PermDatadeck {
 
 .react-switch {
     vertical-align: middle
-  }
-
-button.cancel {
-    background-color: transparent;
-    color: rgb(153, 145, 198);
 }
 
+/* button.cancel {
+    background-color: transparent;
+    color: rgb(153, 145, 198);
+} */
+
 #dataEntry {
-    margin-top: 1rem;
     border-width: 0.5px;
     border-color: gray;
     /* border-top-style: solid; */
 }
 
-#dataEntry button {
+/* #dataEntry button {
     margin: 0;
     margin-top: 1rem;
 }
 
 #dataEntry label {
     margin-top: 1rem;
-}
+} */
 
 #addUserForm {
     display: none;
@@ -101,7 +113,7 @@ button.cancel {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 30%; /* Could be more or less, depending on screen size */
+    width: 80%; /* Could be more or less, depending on screen size */
 }
 
 #addUserBox h2 {
@@ -134,13 +146,12 @@ button.cancel {
     width: 150px;
     margin-bottom: 20px;
     margin-top: 10px;
-    margin-right: 1rem;
 }
 
 .cancel {
     text-align: center;
     line-height: 50px;
-    background-color: rgb(153, 145, 198); 
+    background-color: #6D6E70;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
     border-style: inherit;
@@ -149,8 +160,8 @@ button.cancel {
     width: 150px; 
     margin-bottom: 20px;
     margin-top: 10px;
-    margin-left: 1rem;
 }
+
 
 .save:hover {
     background-color: rgb(153, 145, 198);
@@ -163,7 +174,7 @@ button.cancel {
 }
 
 .main-content {
-  margin-left: 15rem;
+  margin-left: 80px;
 }
 
 * {
@@ -179,21 +190,36 @@ a.Admin {
       font-weight: bold;
 }
 
-.body .sidebar{
-    width: 200px;
+img.settings {
+   width: 50px;
+}
+
+li.svg {
+    display: block;
+}
+
+li.textz {
+    display: none; 
+}
+
+.sidebar {
+    width: 80px;
     height: 100%;
     background: #6D6E70;
     position: absolute;
+    z-index: 1;
+    left: 0;
+    overflow-x: hidden;
 }
   
-.wrapper .sidebar h2{
+.sidebar h2{
     color: #fff;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 30px;
 }
   
-.body .sidebar ul li{
+.sidebar ul li{
     padding: 15px;
     border-bottom: 1px solid #E6E7E8;
     border-bottom: 1px solid white;
@@ -208,9 +234,100 @@ a.Admin {
 .body .sidebar ul li:hover{
     background-color: rgb(153, 145, 198);
 }
-      
-  
 
-  
+@media (min-width: 430px) {
+    .cancel {
+        margin-left: 0.5rem;
+    }
+}
 
-  
+@media (min-width: 630px) {
+    .column {
+        width: 90%;
+    }
+
+    div.PermDatadeckPermission {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    li.svg {
+        display: none;
+    }
+
+    li.textz {
+        display: block; 
+    }
+
+    .sidebar {
+        width: 200px;  
+    }
+
+    .main-content {
+        margin-left: 200px;
+    }
+
+    div.PermInfo {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    .ASettingsTitle {
+        margin-left: 200px;
+    }
+
+    .cancel {
+        margin-left: 1rem;
+    }
+
+    #addUserBox {
+        width: 60%; /* Could be more or less, depending on screen size */
+    }
+}
+
+@media (min-width: 900px) {
+    .column {
+        float: left;
+        width: 50%;
+    }
+
+    div.PermDatadeckPermission {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    li.svg {
+        display: none;
+    }
+
+    li.textz {
+        display: block; 
+    }
+
+    .sidebar {
+        width: 200px;  
+    }
+
+    .main-content {
+        margin-left: 200px;
+    }
+
+    div.PermInfo {
+        margin-right: 3rem;
+        margin-left: 0;
+    }
+
+    #addUserBox {
+        width: 40%; /* Could be more or less, depending on screen size */
+    }
+
+    .cancel {
+        margin-left: 0.5rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .cancel {
+        margin-left: 1rem;
+    }
+}

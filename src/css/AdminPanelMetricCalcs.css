@@ -1,51 +1,40 @@
-.column {
-    float: left;
-    width: 50%;
-  }
-  
-  /* Clear floats after the columns */
-  .body:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+/* Clear floats after the columns */
+.body:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 .PermissionBox {
-    background-color: #9991C6;;
-    height: 50;
-  }
+  background-color: #9991C6;;
+  height: 50;
+}
+
+h2.selectMetric {
+  font-weight: 900;
+}
+
+h2.metricC {
+  margin-top: 1rem;
+}
 
 .column .PermissionText {
-    color: white;
-    padding: 5px;
-    margin-bottom: 0;
-    margin-block-start: 0;
-    margin-top: 18px;
-}
-
-div.PermDatadeck {
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-}
-
-.PermInfo {
-    margin-right: 6rem;
-    padding-top: 0;
-
+  color: white;
+  padding: 5px;
+  margin-bottom: 0;
+  margin-block-start: 0;
+  margin-top: 18px;
 }
 
 .PermissionInfo {
-    background-color: #E6E7E8;
+  background-color: #E6E7E8;
 }
 
 .column .PermText {
-    padding-top: 3px;
-    margin-bottom: 0;
-    line-height: 2rem;
-    font-size: 18px
+  padding-top: 3px;
+  margin-bottom: 0;
+  line-height: 2rem;
+  font-size: 18px
 }
 
 .main_content select {
@@ -91,9 +80,9 @@ div.PermDatadeck {
 
 /* need to fix later */
 #calcForm {
-    display: block;
-    margin: 0 auto;
-    text-align: center;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .more {
@@ -103,22 +92,22 @@ div.PermDatadeck {
 }
 
 .save {
-    text-align: center;
-    line-height: 50px;
-    background-color: rgb(153, 145, 198);
-    font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    border-style: inherit;
-    border-radius: 10px;
-    color: white;
-    width: 150px;
-    margin-bottom: 20px;
-    margin-top: 10px
+  text-align: center;
+  line-height: 50px;
+  background-color: rgb(153, 145, 198);
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-style: inherit;
+  border-radius: 10px;
+  color: white;
+  width: 150px;
+  margin-bottom: 20px;
+  margin-top: 10px
 }
 
 .save:hover {
-    background-color: rgb(153, 145, 198);
-    color: white;
+  background-color: rgb(153, 145, 198);
+  color: white;
 }
 
 .save:focus {
@@ -213,3 +202,24 @@ div.PermDatadeck {
   
 
   
+  /* background-color: rgb(153, 145, 198);
+  color: white;
+} */
+
+.body .main-content .header{
+  padding: 20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #e0e4e8;
+}
+
+.body .main-content .info {
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+}
+
+a.Admin {
+  font-size: 18px;
+  font-weight: bold;
+}

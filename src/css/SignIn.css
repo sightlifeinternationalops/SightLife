@@ -1,16 +1,17 @@
 .form {
-    margin: auto;
-    width: 40%;
-    padding: 16px;
+
+    margin-right: 2rem;
+    margin-left: 2rem;
 }
 
 .form p {
     text-align: center;
+    justify-content: center;
 }
 
 .form label {
-    text-align: left;
-    margin-left: 10rem;
+    text-align: center;
+
 }
 
 input, label {
@@ -23,7 +24,7 @@ label {
 }
 
 input {
-    width: 100%;
+
     border-style: solid;
     border-color: rgb(153, 145, 198);
 }
@@ -31,6 +32,13 @@ input {
 p {
     font-size: 19px;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.SignBox {
+    justify-content: center;
+    margin-right: 3rem;
+    margin-left: 3rem;
+    /* width: 60%; */
 }
 
 
@@ -59,7 +67,7 @@ p.account {
 }
 
 label.sign {
-    margin-left: 0 auto;
+    margin: auto;
     align-content: center;
     text-align: left;
     display: block;
@@ -75,7 +83,7 @@ label.sign {
 }
 
 .sign-in {
-    width: 25%;
+    width: 50%;
     margin: 0 auto;
     display: block;
     border-style: none;
@@ -83,7 +91,7 @@ label.sign {
     border-radius: 10px;
     background-color: rgb(153, 145, 198);
     line-height: 65px;
-    margin-top: 4rem;
+    margin-top: 1.5rem;
 }
 
 .sign-in:hover {
@@ -91,6 +99,113 @@ label.sign {
     color: white;
 }
 
-#pList { 
-    margin-left: 8rem;
+
+@media (min-width: 450px)  {
+    .form {
+        margin: auto;
+        padding: 16px;
+    }
+
+    .form label {
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .SignBox {
+        margin-left: auto;
+        margin-right: auto;
+        width: 250px;
+    }
+
+    .sign-in {
+        width: 40%;
+        display: block;
+        border-style: none;
+        color: white;
+        border-radius: 10px;
+        background-color: rgb(153, 145, 198);
+        line-height: 65px;
+        margin-top: 1.5rem;
+    }
+}
+
+@media (min-width: 600px)  {
+    .form {
+        margin: auto;
+        padding: 16px;
+    }
+
+    .form label {
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    label.sign {
+        margin: 0 auto;
+    }
+
+    .SignBox {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .sign-in {
+        width: 30%;
+        display: block;
+        border-style: none;
+        color: white;
+        border-radius: 10px;
+        background-color: rgb(153, 145, 198);
+        line-height: 65px;
+        margin-top: 1.5rem;
+    }
+}
+
+@media (min-width: 700px)  {
+    .form {
+        margin: auto;
+        width: 50%;
+        padding: 18px;
+    }
+
+    .form label {
+        text-align: left;
+        margin-left: auto;
+    }
+
+    .SignBox {
+        margin-right: 3rem;
+        margin-left: 3rem;
+
+    }
+
+    button.sign-in {
+        width: 40%;
+        display: block;
+        border-style: none;
+        color: white;
+        border-radius: 10px;
+        background-color: rgb(153, 145, 198);
+        margin-top: 1.5rem;
+    }
+}
+
+@media (min-width: 900px)  {
+    .form {
+        margin: auto;
+        width: 50%;
+        padding: 18px;
+    }
+
+    .form label {
+        text-align: left;
+        margin-left: auto;
+    }
+
+    .SignBox {
+        margin: auto;
+        width: 250px;
+    }
 }

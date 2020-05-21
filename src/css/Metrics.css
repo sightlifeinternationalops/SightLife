@@ -1,15 +1,3 @@
-div .metricsDeck{
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    padding-right: 15rem;
-    padding-left: 15rem;
-    
-}
-
-/* .btn-secondary:hover {
-
-} */
-
 button.metrics.btn.btn-secondary {
     color: white;
 }
