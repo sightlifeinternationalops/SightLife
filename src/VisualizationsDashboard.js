@@ -539,7 +539,26 @@ export class DashBoard extends Component {
         return annualArrayInfo
     }
 
-    //
+    arrayElements() {
+        const test = Array.from(this.props.metricAreaCalculations.entries()).map((key) => {
+            //Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
+            return <MetricCalculationRow
+                metrics={key[1].calcMetric}
+                metricCalc={key[1].calcName}
+                metricCalcID={key[1].calcID}
+            />
+        })
+        return test
+    }
+
+    yearElements() {
+        const test = Array.from(this.props.monthsYearsMap.entries()).map((key) => {
+             return <YearElement
+                year={key[0]}
+                yearFunc={this.props.handleYearChange} />
+        })
+        return test
+    }
 
     render() {
         const metricElements = this.arrayElements()
