@@ -18,6 +18,7 @@ export class Visualizations extends Component {
         this.retrieveInfo = this.retrieveInfo.bind(this)
         this.handleCalChange = this.handleCalChange.bind(this)
         this.handleYearChange = this.handleYearChange.bind(this)
+        this.goBack = this.goBack.bind(this)
 
         this.state = {
             // Data to be passed into metric calculations
@@ -82,6 +83,20 @@ export class Visualizations extends Component {
             state.dashboardEnabled = true
             state.metricAreaID = id
             state.metricAreaInfo = name
+            return state
+        })
+    }
+
+    goBack(e) {
+        e.preventDefault()
+        this.setState((state) => {
+            state.dashboardEnabled = false
+            state.monthsYearsMap = new Map()
+            state.quartersYearsMap = new Map()
+            state.annualsYearsMap = new Map()
+            state.selectedYearMap = new Map()
+            state.selectedQuarterMap = new Map()
+            state.selectedAnnualMap = new Map()
             return state
         })
     }
@@ -312,6 +327,7 @@ export class Visualizations extends Component {
                         handleCalChange={this.handleCalChange}
                         handleYearChange={this.handleYearChange}
                         information={this.information}
+                        goBack={this.goBack}
                     />
                 </div>
             )
