@@ -38,19 +38,24 @@ export class SignIn extends Component {
     render() {
         return (
             <div class='form'>
-                <h1>Sign in to ScoreCard</h1>
-                <div>
-                    <label className = "sign" for='Email'>Email</label>
-                    <input
-                        onChange={(e) => this.updateEmail(e)}
-                        type='email' name='Email' required />
+                <h1>Sign Into Your Account </h1>
+
+                <div className="SignBox">
+                    <div>
+                        <label className = "sign" for='Email'>Email</label>
+                        <input
+                            onChange={(e) => this.updateEmail(e)}
+                            type='email' name='Email' required />
+                    </div>
+                    <div>
+                        <label className = "sign" for='Password'> Password</label>
+                        <input
+                            onChange={(e) => this.updatePassword(e)}
+                            type='password' name='Password' required />
+                    </div>
                 </div>
-                <div>
-                    <label className = "sign" for='Password'> Password</label>
-                    <input
-                        onChange={(e) => this.updatePassword(e)}
-                        type='password' name='Password' required />
-                </div>
+
+
                 <div>
                     <p>
                         Forgot password?

@@ -5,7 +5,6 @@
 
 body {
     background-color: rgb(255,255,255);
-    /* text-align: center; */
 }
 
 h2 {
@@ -60,9 +59,9 @@ nav div {
 
 div.card-deck.About {
     flex-direction: row; 
-    display: flex;
     justify-content: center;
     margin: 0;
+    text-align: center;
 }
 
 .card-deck .card.Dep {
@@ -118,15 +117,12 @@ section h2 {
 section p {
     line-height: 2rem;
     font-size: 1.2rem;
-
-    /* 
-        Need to change margins for team information
-        separetely
-    */
 }
 
 .para {
     margin-top: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 Div.Departments.card-body {
@@ -166,8 +162,7 @@ p.About {
 .column p {
     max-width: 100rem;
     font-size: 1rem;
-    line-height: 2rem;
-    
+    line-height: 2rem; 
 }
 
 .wave {
@@ -181,6 +176,7 @@ p.About {
     border-style: solid;
     border-color: white;
     border-width: 0.5rem;
+    justify-content: center;
 }
 
 .feature {
@@ -344,6 +340,7 @@ p.About {
     #title p {
         margin-right: 60px;
     }
+
 }
 
 @media (min-width: 950px) {
@@ -357,6 +354,10 @@ p.About {
     
     #title p {
         margin-right: 5rem;
+    }
+
+    div.card-deck.About {
+        display: flex;
     }
 }
 

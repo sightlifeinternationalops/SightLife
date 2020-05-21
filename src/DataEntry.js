@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './css/DataEntry.css';
 import './index.js';
 
-import { CardDeck, FormGroup, Input } from 'reactstrap';
+import { CardDeck } from 'reactstrap';
 import firebase from 'firebase/app';
 import { createPortal } from 'react-dom';
 
@@ -132,10 +132,9 @@ export class DataEntry extends Component {
 
     // Sets current state of metric area ID to button that was clicked
     setMetric(name, id) {
-        console.log(name)
-        console.log(id)
+        console.log(id.metricName)
         this.setState((state) => {
-            state.metricAreaID = id
+            state.metricAreaID = id.metricName
             state.metricAreaName = name
             return state
         })
@@ -161,7 +160,7 @@ export class DataEntry extends Component {
             let mapCalculations = new Map()
 
             databaseKeys.map((key) => {
-                let id = metricCalcInfo[key].metricAreaID
+                let id = metricCalcInfo[key].metricArea
                 if (id === this.state.metricAreaID) {
                     mapCalculations.set(key, metricCalcInfo[key])
                 }
@@ -293,6 +292,18 @@ export class DataEntry extends Component {
                 <h2 id='month'> Month <span class="required">*</span></h2>
                 <select
                 onChange={(e) => this.updateSelectForm(e)}>
+                {/* <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option> */}
                 <option value={1}>January</option>
                 <option value={2}>February</option>
                 <option value={3}>March</option>
@@ -551,7 +562,7 @@ export class DataEntry extends Component {
             <div className="body">
                 <main>
                     <section class="entry">
-                        <h1> Data Entry Form </h1>
+                        <h1 className="DataEn"> Data Entry Form </h1>
 
                         {/* Populate based on whether metric owner owns metric */}
                         <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
@@ -663,10 +674,17 @@ export class DataEntryForm extends Component {
                     </div>
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
-                    <button class="preview" 
-                        onClick={() => this.props.submitForm(this.props.dataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
-                            this.props.radio, this.props.data, this.props.highlight,
-                            this.props.lowlight, this.props.mitigation)}>
+                    <button class="preview"
+                        onClick={() => this.props.submitForm(
+                            this.props.dataType, 
+                            this.props.selectTF, 
+                            this.props.tfValue, 
+                            this.props.selectedMetricAreaCalculations,
+                            this.props.radio, 
+                            this.props.data, 
+                            this.props.highlight,
+                            this.props.lowlight, 
+                            this.props.mitigation)}>
                         Submit
                     </button>
                 </div>
@@ -675,6 +693,13 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
+                        <h2 className = "timeFrame">Select a Time Frame <span class="required">*</span> </h2>
+                        <select
+                            onChange={(e) => this.props.updateChange(e)} name="selectTF">
+                            <option value="metricGoalsMonths">Month</option>
+                            <option value="metricGoalsQuarters">Quarter</option>
+                            <option value="metricGoalsAnnuals">Annual</option>
+                        </select>
                         {timeDisplay}
                         <h2 class='InputOption'> Input Data For: <span class="required">*</span> </h2>
                         <div class='CheckBoxes'> 
@@ -693,7 +718,7 @@ export class DataEntryForm extends Component {
                                 {this.props.invalidRadio}
                             </p>
                         </div>
-                        <h2 className = "MetricTitles">Select a Data-Type <span class="required">*</span> </h2>
+                        <h2 className = "timeFrame">Select a data-type <span class="required">*</span> </h2>
                         <select
                             onChange={(e) => this.props.updateChange(e)} name="dataType">
                             <option value="number">Number</option>
@@ -728,11 +753,13 @@ export class DataEntryForm extends Component {
                                 value={this.props.mitigation} type="text" id="form" name="mitigation" />
                         </p>
                     </form>
+                    
                     <div>
                         <p>
                             {this.props.errorMsg}
                         </p>
                     </div>
+                    
                     <button
                         onClick={() => this.props.previewForm(this.props.check())}
                         class="preview">Preview</button>

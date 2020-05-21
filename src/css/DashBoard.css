@@ -4,13 +4,76 @@
     text-align: center;
 }
 
-tbody.table {
-    margin: 20rem;
+.dropTitle {
+    display:inline-block;
+    margin-right: 5px;
 }
 
-.table {
-    width:100%; 
+#legend {
     text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+#onTarget {
+    width: 25px;
+    height: 25px;
+    background-color: #50c53d;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+#inMargin {
+    width: 25px;
+    height: 25px;
+    background-color:#f9a354;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+#outMargin {
+    width: 25px;
+    height: 25px;
+    background-color: #fe0000;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+.test {
+    display: inline-block;
+    margin-left: 2rem;
+}
+
+.targets {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* tbody.table {
+    margin: 20rem;
+} */
+
+.table {
+    width:60%; 
+    margin-left:auto; 
+    margin-right:auto;
+    text-align: center;
+}
+
+
+
+.table th {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(222, 226, 230);
+
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: rgb(222, 226, 230);
+
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgb(222, 226, 230);
 }
 
 div.table-responsive {
@@ -30,7 +93,159 @@ div.options{
 
 th.values {
     width: 50px;
+}
 
+th.lowHigh {
+    display: none;
+}
+
+div .metricsDeck{
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    padding-right: 5rem;
+    padding-left: 5rem;
+    flex-wrap: wrap;
+}
+
+button.metrics.btn.btn-secondary {
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 100px;
+    width: 100px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+div.metricsDeck.card-deck {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+}
+
+
+.metrics {
+    border:10px solid rgb(153, 145, 198);
+    background: rgb(153, 145, 198);
+    border-radius: 20px;
+    margin: 1rem;
+    text-align: center;
+}
+
+div .metrics {
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 125px;
+    width: 125px;
+    align-self: center;    
+}
+
+a {
+    padding: 0;
+}
+
+div.metrics.card {
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    /* margin-right: 2rem; */
+}
+
+div.metricsBody.card-body a  {
+    font-weight: 700;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+/* div.table-responsive {
+    margin-left: 20px;
+} */
+
+table, th, td {
+    padding: 10px;
+    width: 60%;
+    border-top: none;
+}
+
+/*After a certain smaller width, the tables width increases and the title ends up smaller*/
+h2.title { 
+    margin-bottom: 0;
+    padding-bottom: 3px;
+    color: white;
+    background-color: #9991c6;
+    width: 60%;
+    align-content: center;
+    border: 1px solid #9991c6;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2.Qtitle { 
+    margin-bottom: 0;
+    padding-bottom: 3px;
+    color: white;
+    background-color: rgb(213,210,233);
+    width: 60%;
+    align-content: center;
+    border: 1px solid rgb(213,210,233);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2.Atitle { 
+    margin-bottom: 0;
+    padding-bottom: 3px;
+    color: white;
+    background-color: #9991c6;
+    width: 60%;
+    align-content: center;
+    border: 1px solid #9991c6;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 570px) {
+    button.metrics.btn.btn-secondary {
+        color: white;
+        padding-right: 10px;
+        padding-left: 10px;
+        height: 125px;
+        width: 125px;
+    }
+
+    div.metricsDeck.card-deck {
+        display: flex;
+    }
+}
+
+@media (min-width: 760px) {
+    .table {
+        width:50%; 
+        margin-left: auto; 
+        margin-right: auto;
+        text-align: center;
+    }
+
+    th.lowHigh {
+        display: table-cell;
+    }
+
+    h2.title {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
 }
 
 @media (min-width: 800px) {

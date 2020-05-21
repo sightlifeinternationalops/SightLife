@@ -1,15 +1,3 @@
-div .metricsDeck{
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    padding-right: 15rem;
-    padding-left: 15rem;
-    
-}
-
-/* .btn-secondary:hover {
-
-} */
-
 button.metrics.btn.btn-secondary {
     color: white;
 }
@@ -63,24 +51,4 @@ div.metricsBody.card-body a  {
 
 div.table-responsive {
     margin-left: 20px;
-}
-
-table, th, td {
-    border: 1.5px solid rgb(100, 93, 155);
-    padding: 10px;
-    width: 60%;
-    border-top: none;
-}
-
-/*After a certain smaller width, the tables width increases and the title ends up smaller*/
-h2.title {
-    margin-bottom: 0;
-    padding-bottom: 3px;
-    color: white;
-    background-color: #9991c6;
-    width: 60%;
-    align-content: center;
-    border: 1px solid rgb(100, 93, 155);
-    margin-left: auto;
-    margin-right: auto;
 }

@@ -13,10 +13,6 @@ h2#month {
     margin-top: 30px;
 }
 
-textarea#form {
-    margin-bottom: 1rem;
-}
-
 h2 {
     font-size: 1.75rem;
     font-weight: 600;
@@ -33,6 +29,14 @@ h1, h2, h3 {
     text-align: center;
 }
 
+h1.DataEn {
+    font-size: 35px;
+}
+
+textarea#form {
+    margin-bottom: 1rem;
+}
+
 
 p {
     color:rgb(109, 110, 113);
@@ -45,6 +49,11 @@ p {
     background-color: white;
     text-align: center;
     align-content: center; 
+}
+
+h2#quarter {
+    margin-bottom: 5px;
+    margin-top: 30px;
 }
 
 .required {
@@ -89,7 +98,7 @@ label {
     border-style: inherit;
     border-radius: 10px;
     color: black;
-    width: 275px;
+    width: 200px;
 }
 
 .selection:hover, .preview:hover {
@@ -111,16 +120,17 @@ label {
 }
 
 div.datadeck {
-    align-content: center;
-    align-items: center;
+    text-align: center;
     justify-content: center;
-    display: flex;
+    align-content: center;
     flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 section.entry {
-    margin-right: 10rem;
-    margin-left: 10rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
     padding-bottom: 0;
 }
 
@@ -180,8 +190,6 @@ section.entry {
     width: 100%;
   }
 
- 
-
   input#Target.box {
     width: 20px;
     height: 40px;
@@ -202,6 +210,10 @@ section.entry {
     top: -1px;
   }
 
+  input#form {
+      margin-bottom: 2rem;
+  }
+
   h2.timeFrame {
       margin: 0;
       font-weight: bold;
@@ -210,3 +222,18 @@ section.entry {
   div.textInput {
       margin: 1rem;
   }
+
+@media (min-width: 550px) {
+    .preview {
+        width: 300px;
+    }
+
+    h1.DataEn {
+        font-size: 50px;
+    }
+    section.entry {
+        margin-right: 10rem;
+        margin-left: 10rem;
+        padding-bottom: 0;
+    }
+}

@@ -224,10 +224,13 @@ export class AdminSettings extends Component {
                                     {usersList}
                                 </select>
                             </label>
-                            <button onClick={(e) => this.addOwner(e)}>
+
+                            <button className= "addAdmin"
+                                onClick={(e) => this.addOwner(e)}>
                                 Submit
-                    </button>
-                            <button
+                            </button>
+
+                            <button className = "cancel"
                                 onClick={() => this.closeForm()}>
                                 Cancel
                     </button>
@@ -294,11 +297,12 @@ export class AdminSettings extends Component {
         if (this.state.enableEdit) {
             content = (
                 <div class="adminButtons">
-                    <button
+                    <button className= "addAdmin"
                         onClick={() => this.openModal()}>
                         Add Admin
                     </button>
-                    <button
+
+                    <button className= "cancel"
                         onClick={() => this.cancelEdit()}>
                         Cancel
                     </button>
@@ -308,8 +312,8 @@ export class AdminSettings extends Component {
             content = (
                 <div class="adminButtons">
                     <button
+                        className= "save2"
                         value="test"
-                        class="edit"
                         onClick={() => this.editAdminInfo()}>
                         Edit Owners
                 </button>
@@ -319,12 +323,11 @@ export class AdminSettings extends Component {
 
         return (
             <div className="body">
+                <AdminPanelNav />
                 <main>
-                    <AdminPanelNav />
-
                     <h1 class="ASettingsTitle"> Settings </h1>
 
-                    <div class="main_content2">
+                    <div class="main-content">
                         <div class="columnSettings">
                             <section class="PermInfo">
                                 <div class="PermissionBox">
@@ -403,7 +406,8 @@ class UserItem extends Component {
 
 class AdminItem extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> : <button
+        let button = !this.props.enableEdit ? <div></div> : 
+        <button className = "remove"
             onClick={() => { this.props.removeAdmin(this.props.adminID) }}>-
         </button>
 
