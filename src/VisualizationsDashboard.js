@@ -49,6 +49,7 @@ export class DashBoard extends Component {
         return test
     }
 
+
     yearElements() {
         const test = Array.from(this.props.monthsYearsMap.entries()).map((key) => {
              return <YearElement
@@ -58,78 +59,6 @@ export class DashBoard extends Component {
         return test
     }
 
-    // Determines the color of the actual field.
-    // If the actual is greater or equal to the target
-    // change color to green.
-    // If the actual is within 5% of the target, 
-    // change color to orange.
-    // If the actual is neither of the above,
-    // change color to red. 
-    actualColor(actual, target, dataType) {
-        let actualFloat = parseFloat(actual)
-        let targetFloat = parseFloat(target)
-        switch (dataType) {
-            case "money":
-            case "number":
-                if (actualFloat >= targetFloat) {
-                    return "#50c53d"
-                } else {
-                    let subtractNum = targetFloat * 0.05
-                    let marginNum = targetFloat - subtractNum
-                    if (actualFloat >= marginNum) {
-                        return "#f9a354"
-                    } else {
-                        return "#fe0000"
-                    }
-                }
-            case "percent":
-                if (actualFloat >= targetFloat) {
-                    return "#50c53d"
-                } else {
-                    if (actualFloat >= targetFloat - 5) {
-                        return "#f9a354"
-                    } else {
-                        return "#fe0000"
-                    }
-                }
-            case "text":
-                return "#FFFFFF"
-        }
-    }
-
-    // Renders information for months for
-    // the selected metric calculation and year
-    monthArrayElements() {
-        const monthArrayInfo = []
-        for (let i = 0; i <= 11; i++) {
-            let monthObj = this.props.selectedYearMap[i + 1]
-            if (monthObj) {
-                let color = this.actualColor(monthObj.actual, monthObj.target, monthObj.dataType)
-                monthArrayInfo[i] = (
-                    <MetricMonthly
-                        month={i + 1}
-                        actual={monthObj.actual}
-                        coe={monthObj.coe}
-                        highlights={monthObj.highlights}
-                        lowlights={monthObj.lowlights}
-                        target={monthObj.target}
-                        datatype={monthObj.dataType}
-                        color={color}/>
-                )
-            } else {
-                monthArrayInfo[i] = (
-                    <MetricMonthly
-                        month={i + 1}
-                        actual=""
-                        coe=""
-                        highlights=""
-                        lowlights=""
-                        target=""/>
-                )
-            }
-        }
-        return monthArrayInfo
-    }
 
     barChart() {
         if (this.props.selectedYearMap.length > 0) {
@@ -294,38 +223,6 @@ export class DashBoard extends Component {
     svgRender() {
         return <svg id="bar-chart"ref={this.barChart()}
               width={860} height={210}/>
-    }
-    // Renders information for quarters for the
-    // selected metric calculation and year
-    quarterArrayElements() {
-        const quarterArrayInfo = []
-        for (let i = 0; i <= 3; i++) {
-            let quarterObj = this.props.selectedQuarterMap[i + 1]
-            if (quarterObj) {
-                quarterArrayInfo[i] = (
-                    <MetricQuarterly
-                        quarter={i + 1}
-                        actual={quarterObj.actual}
-                        coe={quarterObj.coe}
-                        highlights={quarterObj.highlights}
-                        lowlights={quarterObj.lowlights}
-                        target={quarterObj.target}
-                    />
-                )
-            } else {
-                quarterArrayInfo[i] = (
-                <MetricQuarterly
-                quarter={i + 1}
-                actual=""
-                coe=""
-                highlights=""
-                lowlights=""
-                target=""
-                
-            />)
-            }
-        }
-        return quarterArrayInfo
     }
 
     lineChart() {
@@ -530,62 +427,20 @@ export class DashBoard extends Component {
         return <svg id="line-chart" ref={this.lineChart()}
               width={860} height={210}/>
     }
-    // Renders information for annuals for
-    // the selected metric calculation and year
-    annualsArrayElements() {
-        let annualArrayInfo = []
-        for (let i = 0; i < 1; i++) {
-            let annualObj = this.props.selectedAnnualMap[i + 1]
-            if (annualObj) {
-                annualArrayInfo[i] = (
-                    <MetricAnnuals
-                        year={this.state.selectedYear}
-                        actual={annualObj.actual}
-                        coe={annualObj.coe}
-                        highlights={annualObj.highlights}
-                        lowlights={annualObj.lowlights}
-                        target={annualObj.target}
-                    />
-                )
-            } else {
-                annualArrayInfo[i] = (
-                    <MetricAnnuals
-                    year={this.props.selectedYear}
-                    actual=""
-                    coe=""
-                    highlights=""
-                    lowlights=""
-                    target=""
-                    />
-                )
-            }
-        }
-        return annualArrayInfo
-    }
 
-   //
 
     render() {
         const metricElements = this.arrayElements()
 
-        let currentNumCalc = this.state.currentCalculation
-        const monthElements = this.monthArrayElements()
-        const quarterElements = this.quarterArrayElements()
-        const annualElements = this.annualsArrayElements()
         let yearElements = this.yearElements()
         const barChart = this.svgRender()
         const lineChart = this.svgRenderLine()
 
         return (
             <div className="body">
-                <div id="titleElements">
-                    <button id="back-arrow"
-                        onClick={(e) => this.props.goBack(e)}>
-                    &larr;
-                    </button>
-                    <h1 id="metrictitle"> {this.props.metricAreaInfo} </h1>
-                </div>
+                <h1> {this.props.metricAreaInfo} </h1>
                 <div>
+                    {/* <h2> Select A Metric Calculation </h2> */}
                     <div className="options">
                         <div 
                         className="dropTitle"
@@ -610,58 +465,11 @@ export class DashBoard extends Component {
                         {yearElements}
                     </select>
                     </div>
-
-
-                    <div id="legend">
-                        <div className="test">
-                            <div id="onTarget"className="targets">
-                            </div>
-                            <div className="targets">
-                                On Target
-                            </div>
-                        </div>
-                        <div className="test">
-                        <div id="inMargin"className="targets">
-                            </div>
-                            <div className="targets">
-                            &lt;5% variation to target
-                            </div>
-                        </div>
-                        <div className="test">
-                        <div id="outMargin"className="targets">
-                            </div>
-                            <div className="targets">
-                            &gt;5% variation to target
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                {/* <Table bordered align="center">
-                <thead>
-                    <tr>
-                    <th> Metric Calculations </th>
-                    <th> Metric Calculations </th>
-                    </tr>
-                </thead>
-
-
-                Table representing metric and metric caluclation
-                <tbody>
-                    {metricElements}
-                </tbody>
-            </Table> */}
 
                 {/* Container for current  */}
                 <div>
-                    {/* Monthly Information */}
-                    {monthElements}
-                    {/* Quarterly Information */}
-                    {quarterElements}
-
-                    {/* Yearly Information */}
-                    {annualElements}
-                    
                     {barChart}
                     {lineChart}
                 </div>
@@ -691,151 +499,6 @@ class MetricCalculationRow extends Component {
                 id={this.props.metricCalcID}>
                 {this.props.metrics}
             </option>
-        )
-    }
-}
-
-class MetricMonthly extends Component {
-    componentDidMount() {
-        console.log(this.props)
-    }
-
-    month(num) {
-        switch (num) {
-            case 1:
-                return "January"
-            case 2:
-                return "February"
-            case 3:
-                return "March"
-            case 4:
-                return "April"
-            case 5:
-                return "May"
-            case 6:
-                return "June"
-            case 7:
-                return "July"
-            case 8:
-                return "August"
-            case 9:
-                return "September"
-            case 10:
-                return "October"
-            case 11:
-                return "November"
-            case 12:
-                return "December"
-        }
-    }
-
-    render() {
-        let actualValue = this.props.actual
-        let monthValue = this.month(this.props.month)
-        // let color = this.actualColor(this.props.actual, this.props.target, this.props.datatype)
-        // console.log(color)
-        let color = "green"
-
-        // If there is no value existing for the actual yet
-        if (!actualValue) {
-            actualValue = "N/A"
-        }
-
-        return (
-            <div>
-                <h2 className="title">{monthValue}</h2>
-                <Table responsive>
-                    <tbody className="table">
-                        <tr>
-                            <th className="values">Actual</th>
-                            <th className="values">Target</th>
-                            <th>Highlights</th>
-                            <th>Lowlights</th>
-                            <th className="values">Correction of Error</th>
-                        </tr>
-                        <tr>
-                            <th style={{backgroundColor: this.props.color}} className="values">{actualValue}</th>
-                            <th className="values">{this.props.target}</th>
-                            <th>{this.props.highlights}</th>
-                            <th>{this.props.lowlights}</th>
-                            <th className="values">{this.props.coe}</th>
-                        </tr>
-                    </tbody>
-                </Table>
-            </div>
-        )
-    }
-}
-
-// QUARTER TABLES
-class MetricQuarterly extends Component {
-    render() {
-
-        let actualValue = this.props.actual
-        let quarterValue = "Quarter " + this.props.quarter
-
-        // If there is no value existing for the actual yet
-        if (!actualValue) {
-            actualValue = "N/A"
-        }
-
-        return (
-            <div>
-                <h2>{quarterValue}</h2>
-                <Table responsive>
-                    <tbody>
-                        <tr>
-                            <th className="values">Actual</th>
-                            <th className="values">Target</th>
-                            <th>Highlights</th>
-                            <th>Lowlights</th>
-                            <th className="values">Correction of Error</th>
-                        </tr>
-                        <tr>
-                            {/* This should be auto-calculated based upon month values */}
-                            <th className="values">{actualValue}</th>
-                            <th className="values">{this.props.target}</th>
-                            <th>{this.props.highlights}</th>
-                            <th>{this.props.lowlights}</th>
-                            <th className="values">{this.props.coe}</th>
-                        </tr>
-                    </tbody>
-                </Table>
-            </div>
-        )
-    }
-}
-
-class MetricAnnuals extends Component {
-    render() {
-
-        let actualValue = this.props.actual
-                // If there is no value existing for the actual yet
-                if (!actualValue) {
-                    actualValue = "N/A"
-                }
-        return (
-            <div>
-                <h2>Annual Information {this.props.year} </h2>
-                <Table>
-                    <tbody>
-                        <tr>
-                            <th className="values">Actual</th>
-                            <th className="values">Target</th>
-                            <th>Highlights</th>
-                            <th>Lowlights</th>
-                            <th className="values">Correction of Error</th>
-                        </tr>
-                        <tr>
-                            <th className="values">{actualValue}</th>
-                            <th className="values">{this.props.target}</th>
-                            <th>{this.props.highlights}</th>
-                            <th>{this.props.lowlights}</th>
-                            <th className="values">{this.props.coe}</th>
-                        </tr>
-                    </tbody>
-                </Table>
-            </div>
         )
     }
 }

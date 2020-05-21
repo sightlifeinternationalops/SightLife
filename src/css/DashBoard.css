@@ -4,6 +4,22 @@
     text-align: center;
 }
 
+#titleElements {
+    text-align: center;
+}
+
+#back-arrow {
+    display: block;
+    position: absolute;
+    margin-left: 20%;
+    margin-top: 10px;
+}
+
+#metrictitle {
+    display: inline-block;
+    text-align: center;
+}
+
 .dropTitle {
     display:inline-block;
     margin-right: 5px;

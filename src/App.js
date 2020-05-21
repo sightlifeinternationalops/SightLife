@@ -5,6 +5,7 @@ import { About } from './About';
 import { Metrics, MetricAreaCard } from './Metrics';
 import { DataEntry } from './DataEntry';
 import { FAQ } from './FAQ';
+import { Visualizations } from './Visualizations.js'
 import { SignIn } from './SignIn';
 import { AdminSettings } from './AdminSettings'
 import { AdminPanelMetrics } from './AdminPanelMetrics'
@@ -289,9 +290,17 @@ class App extends Component {
                   // {...this.state}
                   metrics={this.state.metrics}
                   metricAreaElements={this.metricAreaElements}
-                // retrieveMetricCalculations={this.retrieveMetriCalculations}
                 />}
               />
+              <Route 
+                path="/visualizations"
+                  render={() => <Visualizations
+                    // {...this.state}
+                    metrics={this.state.metrics}
+                    metricAreaElements={this.metricAreaElements}
+                  />}
+                  >
+              </Route>
               <Route
                 exact path="/dataEntry"
                 render={() => <DataEntry
@@ -386,6 +395,9 @@ export class NavBar extends Component {
         </li>
         <li className="nav-item">
           <NavLink to='/metrics' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Metrics</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to='/visualizations' className="nav-link" activeClassName="selected" activeStyle={{fontWeight:"bold", color: "#9991C6"}}>Visualizations</NavLink>
         </li>
         <li className="nav-item">
           <NavLink to='/dataentry' className="nav-link" activeClassName="selected" activeStyle={{ fontWeight: "bold", color: "#9991C6" }}>Data Entry</NavLink>

@@ -33,7 +33,7 @@ export class DataEntry extends Component {
             currentYear: new Date(), // Used for entering data for the current year
             tfValue: 1, // Will always default to January
             selectTF: "metricGoalsMonths", // Will always default to Months
-            dataType: "number", // Will always default to number
+            // dataType: "number", // Will always default to number
             actualEn: false,
             targetEn: false,
             preview: false,
@@ -219,6 +219,7 @@ export class DataEntry extends Component {
             metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
                 entries()).map((key) => {
                     let calculation = key[1]
+                    console.log(calculation)
                     return <MetricAreaCalcButton
                         metricCalcName={calculation.calcName}
                         metricCalcID={calculation.calcID}
@@ -229,9 +230,9 @@ export class DataEntry extends Component {
         } else {
             metricCalcElements = (
                 <div>
-                    <h3>
+                    <h4>
                         Choose a metric area
-                    </h3>
+                    </h4>
                 </div>
             )
         }
@@ -436,6 +437,8 @@ export class DataEntry extends Component {
     submitForm(dataType, selectTF, tfValue, calcID, radio, data, highlight, lowlight, coe) {
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
+
+        console.log(dataType)
         let year = new Date()
         year = year.getFullYear()
         // let x = this.test(selectTF, tfValue)
@@ -634,6 +637,10 @@ class MetricAreaButton extends Component {
 // Represesnts a single metric area calculation to render. Will render
 // depending on the metric area that was selected.
 class MetricAreaCalcButton extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     render() {
         let typeString = this.props.metricCalcName
         return (
@@ -648,6 +655,14 @@ class MetricAreaCalcButton extends Component {
 // This component will take in input from the user
 // for data entry. 
 export class DataEntryForm extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
+    componentDidUpdate() {
+        console.log(this.props)
+    }
+
     timeDisplayType(selectTf) {
         let x = null
         switch((selectTf)) {
@@ -697,7 +712,7 @@ export class DataEntryForm extends Component {
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
                     <button class="preview"
-                        onClick={() => this.props.submitForm(this.props.dataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
+                        onClick={() => this.props.submitForm(this.props.selectedMetricAreaCalculationDataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
                             this.props.radio, this.props.data, this.props.highlight,
                             this.props.lowlight, this.props.mitigation)}>
                         Submit

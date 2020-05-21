@@ -2,24 +2,22 @@ import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import { Button, ButtonGroup, ButtonToolbar } from 'reactstrap';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardDeck, CardGroup } from 'reactstrap';
-import './css/Metrics.css';
+import './css/HistoricalData.css';
 import './index.js';
 import firebase from 'firebase/app';
-import { DashBoard, YearElement } from './DashBoard';
+import { DashBoard, YearElement } from './VisualizationsDashboard';
 
-export class Metrics extends Component {
 
+export class Visualizations extends Component {
     constructor(props) {
         super(props);
 
         let year = new Date()
         year = year.getFullYear().toString()
 
-
         this.retrieveInfo = this.retrieveInfo.bind(this)
         this.handleCalChange = this.handleCalChange.bind(this)
         this.handleYearChange = this.handleYearChange.bind(this)
-        this.goBack = this.goBack.bind(this)
 
         this.state = {
             // Data to be passed into metric calculations
@@ -41,8 +39,8 @@ export class Metrics extends Component {
         }
     }
 
-    componentDidUpdate() {
-        console.log(this.state)
+    componentDidMount() {
+        console.log(this.props)
     }
 
     // Renders metric area cards 
@@ -76,7 +74,7 @@ export class Metrics extends Component {
             this.setInfo(mapCalculations, name, id)
         });
     }
-    
+
     // Callback to render new information
     setInfo(mapCalculations, name, id) {
         this.setState((state) => {
@@ -112,7 +110,7 @@ export class Metrics extends Component {
     // for that specific calculation id
     informationMonth(area, id, path) {
         let rootPath = firebase.database().ref(path + "/" + id)
-        let infoMap =  new Map()
+        let infoMap = new Map()
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
@@ -128,7 +126,7 @@ export class Metrics extends Component {
                 state.currentCalcID = id
                 state.monthsYearsMap = infoMap
                 state.selectEnable = false
-            return state
+                return state
             })
         })
         return infoMap
@@ -158,7 +156,7 @@ export class Metrics extends Component {
                 state.currentCalcID = id
                 state.monthsYearsMap = infoMap
                 state.selectedYearMap = selectedMonthMap
-            return state
+                return state
             })
         })
         return infoMap
@@ -166,7 +164,7 @@ export class Metrics extends Component {
 
     informationQuarter(area, id, path) {
         let rootPath = firebase.database().ref(path + "/" + id)
-        let infoMap =  new Map()
+        let infoMap = new Map()
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
@@ -179,7 +177,7 @@ export class Metrics extends Component {
             }
             this.setState((state) => {
                 state.quartersYearsMap = infoMap
-            return state
+                return state
             })
         })
         return infoMap
@@ -209,7 +207,7 @@ export class Metrics extends Component {
                 state.currentCalcID = id
                 state.quartersYearsMap = infoMap
                 state.selectedQuarterMap = selectedQuarterMap
-            return state
+                return state
             })
         })
         return infoMap
@@ -217,7 +215,7 @@ export class Metrics extends Component {
 
     informationAnnuals(area, id, path) {
         let rootPath = firebase.database().ref(path + "/" + id)
-        let infoMap =  new Map()
+        let infoMap = new Map()
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
@@ -230,7 +228,7 @@ export class Metrics extends Component {
             }
             this.setState((state) => {
                 state.annualsYearsMap = infoMap
-            return state
+                return state
             })
         })
         return infoMap
@@ -238,7 +236,7 @@ export class Metrics extends Component {
 
     informationAnnualRerender(area, id, path, year) {
         let rootPath = firebase.database().ref(path + "/" + id)
-        let infoMap =  new Map()
+        let infoMap = new Map()
 
         let selectedAnnualMap = new Map()
 
@@ -252,7 +250,7 @@ export class Metrics extends Component {
                 })
             }
 
-            
+
             selectedAnnualMap = infoMap.get(year)
 
             this.setState((state) => {
@@ -260,7 +258,7 @@ export class Metrics extends Component {
                 state.currentCalcID = id
                 state.AnnualsYearsMap = infoMap
                 state.selectedAnnualMap = selectedAnnualMap
-            return state
+                return state
             })
         })
         return infoMap
@@ -268,14 +266,14 @@ export class Metrics extends Component {
 
     renderYears() {
         const test = Array.from(this.state.monthsYearsMap.entries()).map((key) => {
-             return <YearElement
+            return <YearElement
                 year={key[0]}
                 yearFunc={this.handleYearChange} />
         })
         return test
     }
 
-   // When a year is selected,
+    // When a year is selected,
     // retrieves information for the month, quarter, and selected year
     // and pushes changes to state
     handleYearChange(event) {
@@ -292,25 +290,12 @@ export class Metrics extends Component {
         })
     }
 
-    goBack(e) {
-        e.preventDefault()
-        this.setState((state) => {
-            state.dashboardEnabled = false
-            state.monthsYearsMap = new Map()
-            state.quartersYearsMap = new Map()
-            state.annualsYearsMap = new Map()
-            state.selectedYearMap = new Map()
-            state.selectedQuarterMap = new Map()
-            state.selectedAnnualMap = new Map()
-            return state
-        })
-    }
-
     resetYears() {
         this.setState((state) => {
             state.monthsYearsMap = new Map()
         })
     }
+
 
     render() {
         const metricAreaElements = this.metricAreaElements()
@@ -327,14 +312,13 @@ export class Metrics extends Component {
                         handleCalChange={this.handleCalChange}
                         handleYearChange={this.handleYearChange}
                         information={this.information}
-                        goBack={this.goBack}
                     />
                 </div>
             )
         } else {
             content = (
                 <div>
-                    <h1> Metric Areas </h1>
+                    <h1> Visualizations </h1>
                     <CardDeck className='metricsDeck'>
                         {metricAreaElements}
                     </CardDeck>
