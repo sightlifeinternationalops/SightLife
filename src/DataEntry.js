@@ -749,6 +749,14 @@ export class DataEntryForm extends Component {
                                 {this.props.invalidRadio}
                             </p>
                         </div>
+                        {/* <h2 className = "timeFrame">Select a data-type <span class="required">*</span> </h2>
+                        <select
+                            onChange={(e) => this.props.updateChange(e)} name="dataType">
+                            <option value="number">Number</option>
+                            <option value="percent">Percent</option>
+                            <option value="money">Money</option>
+                            <option value="text">Text</option>
+                        </select> */}
                         {dataDisplay}
                         <div>
                             <p>
