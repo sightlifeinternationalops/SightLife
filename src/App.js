@@ -218,22 +218,23 @@ class App extends Component {
     let rootPath = firebase.database().ref('users')
     rootPath.once('value', (snapshot) => {
       let info = snapshot.val();
-      let keys = Object.keys(info)
-      let usersMap = new Map()
-
-      keys.map((key) => {
-        usersMap.set(key, info[key])
-      })
-      console.log(usersMap)
-      this.setState((state) => {
-        state.users = usersMap
-        return state
-      })
+      if (info) {
+        let keys = Object.keys(info)
+        let usersMap = new Map()
+  
+        keys.map((key) => {
+          usersMap.set(key, info[key])
+        })
+        console.log(usersMap)
+        this.setState((state) => {
+          state.users = usersMap
+          return state
+        })
+      }
     })
   }
 
   changeSignInStatus = () => {
-    console.log("test")
     this.setState((state) => {
       state.signInStatus = true
       return state
@@ -242,7 +243,7 @@ class App extends Component {
 
   disableSignInStatus = () => {
     this.setState((state) => {
-      state.signInStatus = false
+      state.signInStatus = true
       return state
     })
   }
