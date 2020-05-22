@@ -167,7 +167,7 @@ export class CreateAccount extends Component {
                         Verify your email to login to the application!
                     </p>
                     <p>
-                        <Link to="/">Return to Sign-In</Link>
+                        <Link to="/signIn">Return to Sign-In</Link>
                     </p>
                 </div>
             )
