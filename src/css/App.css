@@ -132,11 +132,8 @@ p.user-name:hover {
 .btn2 {
   color: black;
   border: white;
+  background-color: transparent;
   text-align: center;
-}
-
-div.btn2 {
-  align-content: center;
 }
 
 /* a .link {

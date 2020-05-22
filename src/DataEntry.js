@@ -37,6 +37,7 @@ export class DataEntry extends Component {
             actualEn: false,
             targetEn: false,
             preview: false,
+            month: "",
             lowlight: "", // Needed for firebase interaction
             highlight: "", // Needed for firebase interaction
             mitigation: "", // Needed for firebase interaction
@@ -291,7 +292,7 @@ export class DataEntry extends Component {
             errors["invalidMetricArea"] = "A metric area must be selected"
         }
         if (!this.state.selectedMetricAreaCalculations) {
-            errors["invalidMetricCalc"] = "A metric calculation must be selected"
+            errors["invalidMetricCalc"] = "A metric must be selected"
         }
         errors["errorMsg"] = "Not all required fields have been answered/selected. Check above for more detail."
 
@@ -589,7 +590,7 @@ export class DataEntry extends Component {
                             <p>{this.state.invalidMetricArea}</p>
                         </div>
                         {/* Populate based on metric chosen */}
-                        <h2 class='MetricTitles'> Metric Calculation <span class="required">*</span></h2>
+                        <h2 class='MetricTitles'> Metric <span class="required">*</span></h2>
                         <CardDeck className="datadeck">
                             {metricAreaCalculationsElements}
                         </CardDeck>
@@ -699,13 +700,14 @@ export class DataEntryForm extends Component {
                     <div>
                         <h2> Summary of Entered Data </h2>
                         <p>Metric Area: <b>{this.props.metricAreaName}</b></p>
-                        <p>Metric Calculation: <b>{this.props.selectedMetricAreaCalculationName}</b></p>
+                        <p>Metric: <b>{this.props.selectedMetricAreaCalculationName}</b></p>
                         {/* <p>Month: <b>{this.props.tfValue}</b></p> */}
                         {timeDisplayType}
                         <p>Data Type (Actual/Target): <b>{this.props.radio}</b></p>
                         <p>Data: <b>{this.props.data}</b></p>
                         <p>Highlight: <b>{this.props.highlight}</b></p>
                         <p>Lowlight: <b>{this.props.lowlight}</b></p>
+                        <p>Month: <b>{this.props.tfValue}</b></p>
                         <p>MitigationPlan: <b>{this.props.mitigation}</b></p>
                     </div>
                     <button class="preview"

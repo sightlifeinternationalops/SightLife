@@ -11,8 +11,14 @@
 #back-arrow {
     display: block;
     position: absolute;
-    margin-left: 20%;
+    margin-left: 18%;
     margin-top: 10px;
+    border-bottom: white;
+    border-top: white;
+    border-left: white;
+    border-right: white;
+    background-color: white;
+    font-size: 2rem;
 }
 
 #metrictitle {
@@ -153,6 +159,7 @@ div.options{
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-bottom: 1.5rem;
 }
 
 th.values {

@@ -41,30 +41,10 @@ export class DashBoard extends Component {
 
 
     barChart() {
+        d3.selectAll("svg").remove();
+        d3.selectAll("div.tooltip").remove();
         if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
-        const data = []
         var datatype
-        for (let i = 0; i <= 11; i++) {
-            let monthObj = this.props.selectedYearMap[i + 1]
-            if (monthObj) {
-                // Need to do some work based on the data type received for the metric
-                // cannot always assume it's an int
-                const actual = parseInt(monthObj.actual, 10)
-                const target = parseInt(monthObj.target, 10)
-                datatype = monthObj.dataType
-                data[i] = ({
-                    month: i + 1,
-                    actual: actual || 0,
-                    target: target || 0
-                })
-            } else {
-                data[i] = ({
-                    month: i + 1,
-                    actual: 0,
-                    target: 0
-                })
-            }
-        }
 
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
@@ -83,14 +63,58 @@ export class DashBoard extends Component {
     
         var dataset = [];
         for(let i = 0; i <= 3; i++ ) {
-         var actual = data[i * 3].actual
-         actual += data[i * 3 + 1].actual
-         actual += data[i * 3 + 2].actual
-            console.log(actual)
-         var target = data[i * 3].target
-         target += data[i * 3 + 1].target
-         target += data[i * 3 + 2].target
-    
+            var actualsCounter = 0;
+            var targetsCounter = 0;
+
+         var actual = 0
+         var target = 0
+
+         let monthObj1 = this.props.selectedYearMap[i * 3 + 1]
+        if (monthObj1) {
+            if(parseInt(monthObj1.actual, 10)) {
+                actual += parseInt(monthObj1.actual, 10) 
+                actualsCounter++
+            }
+            if(parseInt(monthObj1.target, 10)) {
+                target += parseInt(monthObj1.target, 10)
+                targetsCounter++
+             }
+             datatype = monthObj1.dataType
+
+        }
+        
+        let monthObj2 = this.props.selectedYearMap[i * 3 + 2]
+        if (monthObj2) {
+            if(parseInt(monthObj2.actual, 10)) {
+                actual += parseInt(monthObj2.actual, 10) 
+                actualsCounter++
+            }
+            if(parseInt(monthObj2.target, 10)) {
+                target += parseInt(monthObj2.target, 10)
+                targetsCounter++
+             }
+             datatype = monthObj2.dataType
+
+        }
+
+        let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
+        if (monthObj3) {
+            if(parseInt(monthObj3.actual, 10)) {
+                actual += parseInt(monthObj3.actual, 10) 
+                actualsCounter++
+            }
+            if(parseInt(monthObj3.target, 10)) {
+                target += parseInt(monthObj3.target, 10)
+                targetsCounter++
+             }
+             datatype = monthObj3.dataType
+        }
+
+         if (datatype == "percent") {
+            actual = actual / actualsCounter
+            target = target / targetsCounter;
+         }
+
           dataset[i] = {
             date: "Quarter " + (i + 1),
             values: [
@@ -115,13 +139,15 @@ export class DashBoard extends Component {
   
       // Left Axis (Contains Left Ticks)
       var y0 = d3.scaleLinear()
-        .domain([0, Math.max(actualRange[1], targetRange[1])])
-        .nice()
-        .range([height, 0]);
+      .domain([0, Math.max(actualRange[1] || 0, targetRange[1] || 0)])
+      .nice()
+      .range([height, 0]);
 
-        if (datatype == "percent") {
-            y0.domain ([0, 100])
-        }
+  var maxValue = Math.max(actualRange[1] || 0, targetRange[1] || 0)
+  console.log(maxValue)
+  if (datatype == "percent") {
+      y0.domain([0, Math.max(100,maxValue)])
+  }
   
       var color = d3.scaleOrdinal()
         .range(["#D5D1E9", "#9991C6"]);
@@ -132,6 +158,16 @@ export class DashBoard extends Component {
       var yAxisLeft = d3
           .axisLeft(y0)
           .tickFormat(function(d) { return parseInt(d) });
+
+          var formatComma = d3.format(",")
+
+          // FORMAT TICKS FOR MONEY AND PERCENT
+        if (datatype == "percent") {
+            yAxisLeft.tickFormat(function(d) { return parseInt(d) + "%" })
+        } else if (datatype == "money") {
+            yAxisLeft.tickFormat(function(d) { return "$" + formatComma(d); })
+            console.log("reached MONAY")
+        }
   
       // Ticks on x-axis and y-axis
       svg.append("g")
@@ -155,15 +191,7 @@ export class DashBoard extends Component {
       // Actuals TICKS
       svg.select('.y0.axis')
         .selectAll('.tick')
-          .style("fill", "black");
-
-      // FORMAT TICKS FOR MONEY AND PERCENT
-      if (datatype == "percent") {
-          d3.axisLeft().tickFormat(d => d + "%")
-      } else if (datatype == "money") {
-          d3.axisLeft().tickFormat(d => "$" + d )
-      }
-  
+          .style("fill", "black");  
     
       // MONTHS LABELS 
       svg.append("text")
@@ -178,6 +206,21 @@ export class DashBoard extends Component {
         .style("font-size", "12")
         .text("Actuals vs. Targets Quarterly");
         
+    var div = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0); 
+
+        var drawRect = ele => {
+            ele
+                .attr("width", x1.bandwidth())
+                .attr("x", function(d) { return x1(d.name); })
+                .attr("y", function(d) { return y0(d.value); })
+                .attr("height", function(d) { return height - y0(d.value); })
+                .style("fill", function(d) { return color(d.name); })
+            };
+
       var graph = svg
           .selectAll(".date")
           .data(dataset)
@@ -185,16 +228,42 @@ export class DashBoard extends Component {
           .append("g")
             .attr("class", "g")
             .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; });
-  
-      graph.selectAll("rect")
-          .data(function(d) { return d.values; })
-          .enter()
-          .append("rect")
-            .attr("width", x0.bandwidth())
-            .attr("x", function(d) { return x0(d.name); })
-            .attr("y", function(d) { return y0(d.value); })
-            .attr("height", function(d) { return height - y0(d.value); })
-            .style("fill", function(d) { return color(d.name); });
+
+        graph
+            .selectAll("rect")
+            .data(function(d) { return d.values; })
+            .join("rect")
+                .on('mouseover', function (d, i) {
+                    d3.select(this)
+                        .transition()
+                        .duration(200)
+                    div.transition()
+                        .duration(100)
+                        .style("opacity", 1);
+                    if (datatype == "percent") {
+                        div.html(d.name + ": " + d.value + "%")
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY) + "px");
+                    } else if (datatype == "money") {
+                        div.html(d.name + ":  $" + d.value)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY) + "px");
+                    } else {
+                        div.html(d.name + " " + d.value)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY) + "px");
+                    }
+                })
+    
+                .on('mouseout', function (d, i) {
+                    d3.select(this).transition()
+                        .duration(200)
+            
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", 0);
+                })
+                .call(drawRect)
 
         const tip = svg
             .append("g")
@@ -204,32 +273,6 @@ export class DashBoard extends Component {
             .append("text")
             .style("text-anchor", "middle");
 
-            var drawRect = ele => {
-                ele
-                    .attr("width", x1.bandwidth())
-                    .attr("x", function(d) { return x1(d.name); })
-                    .attr("y", function(d) { return y0(d.value); })
-                    .attr("height", function(d) { return height - y0(d.value); })
-                    .style("fill", function(d) { return color(d.name); })
-                };
-
-            graph
-            .selectAll("rect")
-            .data(function(d) { return d.values; })
-            .join("rect")
-                .on("mouseenter", function(d) {
-                    let text = "";
-                    const pos = d3.mouse(this);
-                    tip.attr("transform", `translate(${pos[0]}, ${pos[1] - 10})`);
-                    tipText.text(d.name + " " + d.value);
-                })
-    
-                .on("mousemove", function(d) {
-                    const pos = d3.mouse(this);
-                    tip.attr("transform", `translate(${pos[0]}, ${pos[1] - 10})`);
-                })
-            .call(drawRect)
-  
       // Legend
       var legend = svg
           .selectAll(".legend")
@@ -263,7 +306,6 @@ export class DashBoard extends Component {
 
 
     lineChart() {
-    
         if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
@@ -330,12 +372,17 @@ export class DashBoard extends Component {
         
         // What appears on the y-axis
         var y0 = d3.scaleLinear()
-            .domain([0, Math.max(actualRange[1], targetRange[1])])
+            .domain([0, Math.max(actualRange[1] || 0, targetRange[1] || 0)])
             .range([height, 0]);
     
+        var maxValue = Math.max(actualRange[1] || 0, targetRange[1] || 0)
+        console.log(maxValue)
         if (datatype == "percent") {
-            y0.domain ([0, 100])
+            y0.domain([0, Math.max(100,maxValue)])
         }
+        console.log(y0)
+
+
         // X-AXIS (VISUALS)
         var xAxis = d3
             .axisBottom(x0);
@@ -345,6 +392,15 @@ export class DashBoard extends Component {
             .axisLeft(y0)
             .tickFormat(function(d) { return parseInt(d) });
     
+            var formatComma = d3.format(",")
+
+        // FORMAT TICKS FOR MONEY AND PERCENT
+        if (datatype == "percent") {
+            yAxisLeft.tickFormat(function(d) { return parseInt(d) + "%" })
+        } else if (datatype == "money") {
+            yAxisLeft.tickFormat(function(d) { return "$" + formatComma(d); })
+            console.log("reached MONAY")
+        }
         // ACTUALS LINE
         var actual_line = d3
         .line()
@@ -421,85 +477,98 @@ export class DashBoard extends Component {
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("d", target_line);  
-    
-        // FOR HOVERING
-        var div = d3
-            .select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-    
-        // ACTUALS
-        svg
-        .selectAll("dot")
-        .data(dataset)
-        .enter()
-            .append("circle")
-        .attr("cx", d => x0(d.date))
-        .attr("cy", d => y0(d.values[0].value))
-        .attr("r", 3)
-        .attr("fill", "black")
-        .attr("opacity", 0.7)
-        .on('mouseover', function (d, i) {
-            d3.select(this).transition()
-                .duration('100')
-                .attr("r", 7);
-            div.transition()
-                .duration(100)
-                .style("opacity", 1);
-            div.html("Actuals: " + d.values[0].value)
-                .style("left", (d3.event.pageX + 10) + "px")
-                .style("top", (d3.event.pageY - 15) + "px");
-        })
-        .on('mouseout', function (d, i) {
-            d3.select(this).transition()
-                .duration(200)
-                .attr("r", 3);
-            div.transition()
-                .duration(200)
-                .style("opacity", 0);
-        })
-        .filter(d => isNaN(d.values[0].value)).remove();
-    
-        // TARGET
-        svg
-        .selectAll("dot")
-        .data(dataset)
-        .enter()
-        .append("circle")
-        .attr("cx", d => x0(d.date))
-        .attr("cy", d => y0(d.values[1].value))
-        .attr("r", 3)
-        .attr("fill", "black")
-        .attr("opacity", 0.7)
-        .on('mouseover', function (d, i) {
-            d3.select(this).transition()
-                .duration('100')
-                .attr("r", 7);
-            div.transition()
-                .duration(100)
-                .style("opacity", 1);
-            div.html("Target: " + d.values[1].value)
-                .style("left", (d3.event.pageX + 10) + "px")
-                .style("top", (d3.event.pageY - 15) + "px");
-        })
-        .on('mouseout', function (d, i) {
-            d3.select(this).transition()
-                .duration('200')
-                .attr("r", 3);
-            div.transition()
-                .duration('200')
-                .style("opacity", 0);
-        })
-        .filter(d => isNaN(d.values[1].value)).remove();
-    
-        // FORMAT TICKS FOR MONEY AND PERCENT
-        if (datatype == "percent") {
-            d3.axisLeft().tickFormat(d => d + "%")
-        } else if (datatype == "money") {
-            d3.axisLeft().tickFormat(d => "$" + d )
-            console.log("reached")
-        }
+
+       // FOR HOVERING
+       var div = d3
+       .select("body")
+       .append("div")
+       .attr("class", "tooltip")
+       .style("opacity", 0);
+
+   // ACTUALS
+   svg
+   .selectAll("dot")
+   .data(dataset)
+   .enter()
+       .append("circle")
+   .attr("cx", d => x0(d.date))
+   .attr("cy", d => y0(d.values[0].value))
+   .attr("r", 3)
+   .attr("fill", "black")
+   .attr("opacity", 0.7)
+   .on('mouseover', function (d, i) {
+       d3.select(this).transition()
+           .duration('100')
+           .attr("r", 7);
+       div.transition()
+           .duration(100)
+           .style("opacity", 1);
+       if (datatype == "percent") {
+           div.html("Target: " + d.values[1].value + "%")
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       } else if (datatype == "money") {
+           div.html("Target: $" + d.values[1].value)
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       } else {
+           div.html("Target: " + d.values[1].value)
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       }
+   })
+   .on('mouseout', function (d, i) {
+       d3.select(this).transition()
+           .duration(200)
+           .attr("r", 3);
+       div.transition()
+           .duration(200)
+           .style("opacity", 0);
+   })
+   .filter(d => isNaN(d.values[0].value)).remove();
+
+   // TARGET
+   svg
+   .selectAll("dot")
+   .data(dataset)
+   .enter()
+   .append("circle")
+   .attr("cx", d => x0(d.date))
+   .attr("cy", d => y0(d.values[1].value))
+   .attr("r", 3)
+   .attr("fill", "black")
+   .attr("opacity", 0.7)
+   .on('mouseover', function (d, i) {
+       d3.select(this).transition()
+           .duration('100')
+           .attr("r", 7);
+       div.transition()
+           .duration(100)
+           .style("opacity", 1);
+
+       if (datatype == "percent") {
+           div.html("Target: " + d.values[1].value + "%")
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       } else if (datatype == "money") {
+           div.html("Target: $" + d.values[1].value)
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       } else {
+           div.html("Target: " + d.values[1].value)
+               .style("left", (d3.event.pageX + 10) + "px")
+               .style("top", (d3.event.pageY - 15) + "px");
+       }
+   })
+   .on('mouseout', function (d, i) {
+       d3.select(this).transition()
+           .duration('200')
+           .attr("r", 3);
+       div.transition()
+           .duration('200')
+           .style("opacity", 0);
+   })
+   .filter(d => isNaN(d.values[1].value)).remove();
     
         // LEGEND (BOXES)
         var legend = svg
@@ -605,7 +674,7 @@ export class DashBoard extends Component {
                     <div className="options">
                         <div
                             className="dropTitle"
-                        ><strong>Metric Calculation: </strong></div>
+                        ><strong>Metric: </strong></div>
                         <select className="options"
 
                             onChange={(e) => this.props.handleCalChange(e)}>

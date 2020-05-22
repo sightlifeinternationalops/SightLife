@@ -219,7 +219,7 @@ export class AdminPanelMetricCalcs extends Component {
                             onClick={(e) => this.closeAddModal(e)}>
                             X
                             </button>
-                        <h2>New Calculation Name</h2>
+                        <h2>New Metric Name</h2>
                         <div>
                             <label>
                                 <input
@@ -233,7 +233,7 @@ export class AdminPanelMetricCalcs extends Component {
                             Data-Type
                             </h2>
                         <select
-                            name="dataType"
+                            name="dataType" className="dataType"
                             onChange={(e) => this.handleChange(e)}>
                                 <option value="none" disabled selected>Select a data type</option>
                             <option value="number">Number</option>
@@ -264,7 +264,7 @@ export class AdminPanelMetricCalcs extends Component {
                             onClick={(e) => this.closeArchiveModal(e)}>
                             X
                             </button>
-                        <h2> Current Calculation</h2>
+                        <h2> Current Metric</h2>
                         <div>
                             <button className="unarchive"
                                 onClick={(e) => this.unarchiveMetricCalc(e)}>
@@ -289,7 +289,7 @@ export class AdminPanelMetricCalcs extends Component {
                             X
                         </button>
 
-                        <h2>Current Calculation</h2>
+                        <h2>Current Metric</h2>
                         <div>
                             <label>
                                 <input
@@ -345,10 +345,10 @@ export class AdminPanelMetricCalcs extends Component {
             <div className="body">
                 <AdminPanelNav />
                 <main>
-                <h1 class="ASettingsTitle"> Metric Calculations </h1>
+                <h1 class="ASettingsTitle"> Metrics</h1>
                     <div class="main-content">
                         <div>
-                            <h2 className= "selectMetric">Select a Metric Area</h2>
+                            <h2 className= "selection" id="met-areas">Select a Metric Area</h2>
 
                             <select id="select-dropdown"
                                 onChange={(e) => this.updateME(e)}>
@@ -356,15 +356,15 @@ export class AdminPanelMetricCalcs extends Component {
                                 {metricAreaItemsList}
                             </select>
                             <div className="titleButton">
-                                <h2 style={{ display: "inline-block" }}>Metric Calculations</h2>
-                                <button
+                                <h2 className="subTitle"style={{ display: "inline-block" }}>Metrics</h2>
+                                <button className="plus"
                                     onClick={(e) => this.openAddModal(e)}
-                                >+</button>
+                                > + </button>
                             </div>
                             <div id="metricAreaCalcElements">
                                 {metricAreaCalculationElements}
                             </div>
-                            <h2>Archived Metric Calculations</h2>
+                            <h2 className= "selection" id="met-areas" >Archived Metrics</h2>
                             <div id="archivedAreaElements">
                                 {archivedAreaCalculationElements}
                             {/* <h2 className="metricC">Metric Calculations</h2>
