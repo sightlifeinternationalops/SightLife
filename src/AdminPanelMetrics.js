@@ -29,7 +29,31 @@ export class AdminPanelMetrics extends Component {
     // Load currently archived metric areas
     componentDidMount() {
         this.retrieveArchivedMetricAreaElements()
-        this.props.retrieveMetricsList()
+        this.retrieveMetricsList()
+    }
+
+    // Function for retrieving existing metrics
+    // Note: Separated this from renderMetricsList so that we can just
+    // pass in metricArea information to our components rather
+    // than retrieving everytime we need it.
+    // i.e - Retrieve once as opposed to retrieve multiple times.  
+    retrieveMetricsList = () => {
+        let rootPath = firebase.database().ref('metricAreas')
+
+        // Put all the metric areas in the this.state.metrics
+        rootPath.once('value', (snapshot) => {
+            let metricNameInfo = snapshot.val();
+            let databaseKeys = Object.keys(metricNameInfo);
+            let metricMap = new Map()
+
+            databaseKeys.map((key) => {
+                metricMap.set(key, metricNameInfo[key])
+            })
+            this.setState((state) => {
+                state.metrics = metricMap;
+                return state;
+            })
+        });
     }
 
     // Represents metric area elements to render on page.
@@ -117,6 +141,12 @@ export class AdminPanelMetrics extends Component {
         if (e.target != null) {
             let ref = firebase.database().ref('metricAreas')
             let id = ref.push().getKey()
+            let metricObject = {
+                metricName: this.state.MetricName,
+                metricID: id,
+                metricActualEnabled: false,
+                metricArchived: false
+            }
             firebase.database().ref('metricAreas/' + id.toString()).update({
                 metricName: this.state.MetricName,
                 metricID: id,
@@ -124,12 +154,22 @@ export class AdminPanelMetrics extends Component {
                 metricArchived: false
             })
 
-            // let 
-
-            this.closeModal(e)
+            let metricsMap = this.state.metrics
+            metricsMap.set(
+                id, metricObject
+            )
+            this.setMetricsMap(metricsMap)
         } else {
             console.log(e.error)
         }
+    }
+
+    setMetricsMap(metricsMap) {
+        this.setState((state) => {
+            state.metrics = metricsMap
+            state.display = "none"
+            return state
+        })
     }
 
     addForm() {

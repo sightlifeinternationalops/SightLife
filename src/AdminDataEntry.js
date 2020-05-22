@@ -171,8 +171,8 @@ export class AdminDataEntry extends Component {
             <div className="body">
                 <main>
                 <AdminPanelNav />
-                <h1> Data Entry Tracker </h1>
                     <div className="main-content">
+                    <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
                     <div id="metrics">
                     {metricAreas}
                     </div>
