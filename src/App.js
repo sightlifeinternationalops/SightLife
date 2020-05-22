@@ -414,9 +414,7 @@ export class NavBar extends Component {
           <div className="dropdown" id="myForm">
             <img className="profile" src={Profile} />
             <div className="dropdown-content" id="sign">
-              {/* <image class='prof-pic'>User's Profile Picture</image> */}
-              <p className='user-name'>User's Name</p>
-              
+              {/* <image class='prof-pic'>User's Profile Picture</image> */}              
               <div className="btn2">
               <button type="submit" className="btn2">
                 <NavLink to='/metrics' className="nav-link"> DashBoard </NavLink>
