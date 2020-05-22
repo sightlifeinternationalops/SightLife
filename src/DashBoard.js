@@ -460,19 +460,24 @@ export class DashBoard extends Component {
 
         if (dataType == "percent" && actualExists) {
             actual = Math.round(actual / actualsCounter )
+        } 
+        if (dataType == "percent" && targetExists) {
+            target = Math.round(target / targetsCounter )
+        }
+
+        if (monthObjColor) {
+            color = this.actualColor(actual, target, monthObjColor.dataType)
+        }
+
+        if (dataType == "percent" && actualExists) {
             actual += "%"
         } else if (dataType == "money" && actualExists) {
             actual = "$" + actual 
         }
         if (dataType == "percent" && targetExists) {
-            target = Math.round(target / targetsCounter )
             target += "%"
         } else if (dataType == "money" && targetExists) {
             target = "$" + target 
-        }
-
-        if (monthObjColor) {
-            color = this.actualColor(actual, target, monthObjColor.dataType)
         }
 
                 quarterArrayInfo[i] = (
@@ -761,6 +766,7 @@ svgRenderLine() {
         let monthObjColor
         let color
         let actualExists = false
+        let targetExists = false
         let dataType
         var targetsCounter = 0
         var actualsCounter = 0
@@ -775,31 +781,50 @@ svgRenderLine() {
                     actualsCounter ++
                     actual += parseInt(monthObj.actual, 10)
                 }
+
+                if (!targetExists && parseInt(monthObj.target, 10)){
+                    targetExists = true
+                }
                 
-                target += parseInt(monthObj.target, 10)
-                targetsCounter++
+                if (parseInt(monthObj.target, 10)) {
+                    target += parseInt(monthObj.target, 10)
+                    targetsCounter++
+                }
 
                 dataType = monthObj.dataType
                 monthObjColor = monthObj
-            } 
+        
+            }
         }
 
-        if (dataType == "percent") {
+        if (dataType == "percent" && actualExists) {
             actual = Math.round(actual / actualsCounter )
+        } 
+        if (dataType == "percent" && targetExists) {
             target = Math.round(target / targetsCounter )
-            actual += "%"
-            target += "%"
-        } else if (dataType == "money") {
-            actual = "$" + actual 
-            target = "$" + target 
         }
 
         if (!actualExists) {
             actual = "N/A"
         }
 
+        if (!targetExists) {
+            target = "N/A"
+        }
+
         if (monthObjColor) {
             color = this.actualColor(actual, target, monthObjColor.dataType)
+        }
+
+        if (dataType == "percent" && actualExists) {
+            actual += "%"
+        } else if (dataType == "money" && actualExists) {
+            actual = "$" + actual 
+        }
+        if (dataType == "percent" && targetExists) {
+            target += "%"
+        } else if (dataType == "money" && targetExists) {
+            target = "$" + target 
         }
 
                 annualArrayInfo[0] = (
