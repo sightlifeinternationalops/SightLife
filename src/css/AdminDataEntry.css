@@ -1,15 +1,51 @@
-/* .metricName {
-    display: inline-block;
-}
+.metricName {
+ display: inline-block;
+ margin-right: 50px;
+ text-align: left;
+} 
 
-.enteredData {
-    display: inline-block;
-}
-
-#metrics {
+ .metricsTest {
     text-align: center;
-} */
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 2.5px;
+    margin-left: 30rem;
+    margin-right: 30rem;
+}
 
+.table th.test1, .table td {
+    border-style: none;
+}
+
+th.test1{
+    border: none;
+}
+
+.tick {
+    width: 25px;
+    height: 25px;
+}
+
+.cross {
+    width: 25px;
+    height: 25px;
+}
+
+#dataEntryTable {
+    border: none;
+}
+
+table .test1, th .test1, td .test1 {
+    border: none;
+    padding: 10px;
+    width: 60%;
+}
+
+.test1 {
+    border: none;
+    border-color: white;
+}
 
  .column {
     float: none;
@@ -88,25 +124,11 @@ div.PermDatadeckPermission {
     vertical-align: middle
 }
 
-/* button.cancel {
-    background-color: transparent;
-    color: rgb(153, 145, 198);
-} */
-
 #dataEntry {
     border-width: 0.5px;
     border-color: gray;
     /* border-top-style: solid; */
 }
-
-/* #dataEntry button {
-    margin: 0;
-    margin-top: 1rem;
-}
-
-#dataEntry label {
-    margin-top: 1rem;
-} */
 
 #addUserForm {
     display: none;
