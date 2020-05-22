@@ -314,7 +314,7 @@ export class AdminSettings extends Component {
                         className= "save2"
                         value="test"
                         onClick={() => this.editAdminInfo()}>
-                        Edit Owners
+                        Edit Admins
                 </button>
                 </div>
             )
@@ -333,7 +333,7 @@ export class AdminSettings extends Component {
                                     <h3 class='PermissionText'> Admin Information </h3>
                                 </div>
                                 <div class="PermissionInfo">
-                                    <p class="PermText2"> Owner(s) </p>
+                                    <p class="PermText2"> Admin(s) </p>
                                     <div id="ownerElements">
                                         <ul>
                                             <div id="test">
