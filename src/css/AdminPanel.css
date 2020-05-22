@@ -136,20 +136,6 @@ div.PermDatadeckPermission {
     background-color: #9991C6;
 }
 
-.save {
-    text-align: center;
-    line-height: 50px;
-    background-color: green;
-    font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    border-style: inherit;
-    border-radius: 10px;
-    color: white;
-    width: 150px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-
 .cancel {
     text-align: center;
     line-height: 50px;

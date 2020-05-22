@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './css/AdminDataEntry.css';
 import { AdminPanelNav } from './AdminPanel';
 import firebase from 'firebase/app';
+import { Table } from 'reactstrap';
+
+import Cross from './img/cross.svg';
+import Tick from './img/tick.svg';
 
 // Not sure if AdminPanelNav is redundant. It is in the Admin panel js file
 export class AdminDataEntry extends Component {
@@ -27,7 +31,7 @@ export class AdminDataEntry extends Component {
     // and compare with that map, if the metric area exists
     // in the map with a false value, mark as unfulfilled
     // otherwise, mark as fulfilled
-    
+
     // Iterate through metric calculations
     // and return a map of metric areas that have false values
     metricCalculationFulfilled() {
@@ -45,19 +49,19 @@ export class AdminDataEntry extends Component {
         if (lastMonth === 0) {
             lastMonth = 12
             year = year - 1
-        } 
+        }
         let rootPath = firebase.database().ref('metricCalculations')
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
             let keys = Object.keys(info)
 
-                keys.map((key) => {
-                    let archived = info[key].calcArchived
-                    if (!info[key].calcArchived) {
-                        calcMap.set(key, info[key])
-                    }
-                })
+            keys.map((key) => {
+                let archived = info[key].calcArchived
+                if (!info[key].calcArchived) {
+                    calcMap.set(key, info[key])
+                }
+            })
             this.metricCalculationFalse(calcMap, lastMonth, year)
         })
     }
@@ -149,33 +153,79 @@ export class AdminDataEntry extends Component {
     retrieveAllCalculations() {
         let rootPath = firebase.database().ref('metricCalculations')
         rootPath.once('value', (snapshot) => {
-          let info = snapshot.val();
-          let keys = Object.keys(info);
-          let calcMap = new Map()
-    
-          keys.map((key) => {
-            calcMap.set(key, info[key])
-          })
-    
-          this.setState((state) => {
-            state.calcMap = calcMap
-            return state
-          })
+            let info = snapshot.val();
+            let keys = Object.keys(info);
+            let calcMap = new Map()
+
+            keys.map((key) => {
+                calcMap.set(key, info[key])
+            })
+
+            this.setState((state) => {
+                state.calcMap = calcMap
+                return state
+            })
         })
-      }
+    }
+    test(value) {
+        let x = null
+            switch (value) {
+                case 1:
+                    x = "January";
+                    break;
+                case 2:
+                    x = "February";
+                    break;
+                case 3:
+                    x = "March";
+                    break;
+                case 4:
+                    x = "April";
+                    break;
+                case 5:
+                    x = "May";
+                    break;
+                case 6:
+                    x = "June"
+                    break;
+                case 7:
+                    x = "July";
+                    break;
+                case 8:
+                    x = "August"
+                    break;
+                case 9:
+                    x = "September"
+                    break;
+                case 10:
+                    x = "October"
+                    break;
+                case 11:
+                    x = "November"
+                    break;
+                case 12:
+                    x = "December"
+                    break;
+            }
+        return x
+    }
 
     render() {
+        let month = new Date()
+        month = month.getMonth()
+        let monthVal = this.test(month)
         const metricAreas = this.renderMetricAreas()
 
         return (
             <div className="body">
                 <main>
-                <AdminPanelNav />
-                    <div className="main-content">
+                    <AdminPanelNav />
                     <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
-                    <div id="metrics">
-                    {metricAreas}
-                    </div>
+                    <div className="main-content">
+                        <h3> {monthVal} </h3>
+                        <div className="metricsTest">
+                            {metricAreas}
+                        </div>
                     </div>
                 </main>
             </div>
@@ -185,19 +235,24 @@ export class AdminDataEntry extends Component {
 
 class MetricAreaComponent extends Component {
 
+
     render() {
-        let test = this.props.enteredData ? 'Yes' : 'No'
+        let test = this.props.enteredData ? <img className="tick" src={Tick}/> : <img className="cross" src={Cross}/>
 
         return (
             <div>
-                {/* Metric Name */}
-                <div className="metricName">
-                    {this.props.metricName}
-                </div>
-                {/* Enabled or not enabled */}
-                <div className="enteredData">
-                    {test}
-                </div>
+            <Table responsive id="dataEntryTable">
+                <tbody className="test1">
+                    <tr className="test1">
+                        <th className="test1">
+                            {this.props.metricName}
+                        </th>
+                        <th className="test1">
+                            {test}
+                        </th>
+                    </tr>
+                </tbody>
+            </Table>
             </div>
         )
     }
