@@ -329,21 +329,7 @@ class MetricAreaInfo extends Component {
 
     render() {
         const metricAreaOwners = this.metricAreaOwners()
-        let content = null
-        let entryContent = null
-
-        if (!this.props.enableEdit) {
-            content = (
-                <div>
-                    <button class='save'
-                        type="Save"
-                        value="Save"
-                        onClick={() => { this.props.editMetricOwners() }}> <strong>Edit</strong> </button>
-                </div>
-            )
-            entryContent = null
-        } else {
-            content = (
+        let content = (
                 <div id="dataEntry">
                     <label>
                         <span> Data Entry for Actuals:</span>
@@ -363,24 +349,15 @@ class MetricAreaInfo extends Component {
                         checkedIcon={false}
                         checked={this.props.metricActualEnabled}
                         onChange={this.props.handleMAToggle} />
-                    <div>
-                        <button
-                            onClick={() => { this.props.saveAT(this.props.metricTargetEnabled, this.props.metricActualEnabled, this.props.currentMetricID) }}
-                            class='save'><strong>Save</strong></button>
-                        <button
-                            onClick={() => { this.props.cancelMetricOwners() }}
-                            class='cancel'><strong>Close</strong></button>
-                    </div>
                 </div>
             )
-            entryContent = (
+        let entryContent = (
                 <div>
                     <button
                         onClick={() => { this.props.addOwnerModal() }}
                         class='save'><strong>Add Owner</strong></button>
                 </div>
             )
-        }
 
         return (
             <div class="column"

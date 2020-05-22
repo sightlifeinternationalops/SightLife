@@ -35,6 +35,7 @@ class App extends Component {
       email: '',
       password: '',
       metrics: metricAreas,
+      calcMap: new Map(),
       usersMetrics: new Map(),
       users: new Map(),
     };
@@ -61,6 +62,7 @@ class App extends Component {
     // this.retrieveUsersMetricAreas()
     this.retrieveMetricsList()
     this.retrieveCurrentUsers()
+    this.retrieveAllCalculations()
   }
 
   componentWillUnmount() {
@@ -212,6 +214,24 @@ class App extends Component {
     });
   }
 
+  retrieveAllCalculations = () => {
+    let rootPath = firebase.database().ref('metricCalculations')
+    rootPath.once('value', (snapshot) => {
+      let info = snapshot.val();
+      let keys = Object.keys(info);
+      let calcMap = new Map()
+
+      keys.map((key) => {
+        calcMap.set(key, info[key])
+      })
+
+      this.setState((state) => {
+        state.calcMap = calcMap
+        return state
+      })
+    })
+  }
+
   // Retrieves a list of all current users
   // in SightLife
   retrieveCurrentUsers() {
@@ -325,7 +345,10 @@ class App extends Component {
               <Route
                 path="/admindataentry"
                 render={() => <AdminDataEntry
-                  {...this.state}
+                  retrieveAllCalculations={this.retrieveAllCalculations}
+                  calcMap={this.state.calcMap}
+                  metrics={this.state.metrics}
+                  retrieveMetricsList={this.retrieveMetricsList}
                   />}
               />
               {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
@@ -337,6 +360,7 @@ class App extends Component {
               <Route
                 path="/adminpanelmetrics"
                 render={() => <AdminPanelMetrics
+                  retrieveMetricsList={this.retrieveMetricsList}
                   users={this.state.users}
                   metrics={this.state.metrics}
                 />}

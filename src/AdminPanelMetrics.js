@@ -18,6 +18,8 @@ export class AdminPanelMetrics extends Component {
         this.retrieveMetricInfo = this.retrieveMetricInfo.bind(this)
 
         this.state = {
+            // currentMetrics: this.props.metrics,
+            metrics: new Map(),
             display : "none",
             modalDisplay: "none",
             archivedElements: new Map()
@@ -27,11 +29,12 @@ export class AdminPanelMetrics extends Component {
     // Load currently archived metric areas
     componentDidMount() {
         this.retrieveArchivedMetricAreaElements()
+        this.props.retrieveMetricsList()
     }
 
     // Represents metric area elements to render on page.
     metricAreaElements() {
-        const metricAreaElements = Array.from(this.props.metrics.entries()).map((key) => {
+        const metricAreaElements = Array.from(this.state.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a list of props containing information about that specific metric
             return <MetricAreaButton
                 metricName={key[1].metricName}
@@ -40,11 +43,6 @@ export class AdminPanelMetrics extends Component {
             />
         })
         return metricAreaElements
-    }
-
-    // Renders archived metric area elements on the page.
-    archivedMetricAreaElements() {
-
     }
 
     // Retrieves archived metric area elements from Firebase
@@ -125,6 +123,9 @@ export class AdminPanelMetrics extends Component {
                 metricActualEnabled: false, // Default is false, prevents users from altering actuals
                 metricArchived: false
             })
+
+            // let 
+
             this.closeModal(e)
         } else {
             console.log(e.error)
@@ -187,11 +188,6 @@ export class AdminPanelMetrics extends Component {
                         onClick={(e) => this.submitMetricInfo(e)}>
                         Save
                     </button>
-                    
-                    <button
-                        onClick={(e) => this.archiveMetricAreaElement(e)}>
-                        Archive
-                    </button>
                 </form>
             </div>
         )
@@ -247,12 +243,6 @@ export class AdminPanelMetrics extends Component {
                                 <div className="metricElements">
                                 {metricAreaElements}
                                 </div>
-                            </CardDeck>
-                        </div>
-                        <div>
-                            {/* Archived Metric Areas */}
-                            <CardDeck className="PermDatadeck">
-                                <h1 class='selection' id='met-areas'> Archived Metric Areas </h1>
                             </CardDeck>
                         </div>
                         {form}

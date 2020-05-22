@@ -1,0 +1,12 @@
+.metricName {
+    display: inline-block;
+}
+
+.enteredData {
+    display: inline-block;
+}
+
+#metrics {
+    text-align: center;
+}
+
