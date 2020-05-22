@@ -222,7 +222,7 @@ export class AdminDataEntry extends Component {
                     <AdminPanelNav />
                     <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
                     <div className="main-content">
-                        <h3> {monthVal} </h3>
+                        <h3 className="monthTitleDataEntry"> {monthVal} </h3>
                         <div className="metricsTest">
                             {metricAreas}
                         </div>

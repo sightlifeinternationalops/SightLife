@@ -32,6 +32,11 @@ th.test1{
     height: 25px;
 }
 
+.monthTitleDataEntry { 
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 #dataEntryTable {
     border: none;
 }
