@@ -1,23 +1,24 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.c21fbab1.chunk.css",
-    "main.js": "/SightLife/static/js/main.719c519e.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.719c519e.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.76d2533b.chunk.css",
+    "main.js": "/SightLife/static/js/main.41c4a4e1.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.41c4a4e1.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
-    "static/js/2.0205e1c4.chunk.js": "/SightLife/static/js/2.0205e1c4.chunk.js",
-    "static/js/2.0205e1c4.chunk.js.map": "/SightLife/static/js/2.0205e1c4.chunk.js.map",
+    "static/js/2.5f3c1730.chunk.js": "/SightLife/static/js/2.5f3c1730.chunk.js",
+    "static/js/2.5f3c1730.chunk.js.map": "/SightLife/static/js/2.5f3c1730.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.cfa2be2415054b492cda7aa6a443e466.js": "/SightLife/precache-manifest.cfa2be2415054b492cda7aa6a443e466.js",
+    "precache-manifest.320505b80c035f0cc6303f540d509786.js": "/SightLife/precache-manifest.320505b80c035f0cc6303f540d509786.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.c21fbab1.chunk.css.map": "/SightLife/static/css/main.c21fbab1.chunk.css.map",
-    "static/js/2.0205e1c4.chunk.js.LICENSE.txt": "/SightLife/static/js/2.0205e1c4.chunk.js.LICENSE.txt",
+    "static/css/main.76d2533b.chunk.css.map": "/SightLife/static/css/main.76d2533b.chunk.css.map",
+    "static/js/2.5f3c1730.chunk.js.LICENSE.txt": "/SightLife/static/js/2.5f3c1730.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
     "static/media/alex.jpg": "/SightLife/static/media/alex.5b6cafaf.jpg",
     "static/media/calculations.svg": "/SightLife/static/media/calculations.4f523f56.svg",
+    "static/media/cross.svg": "/SightLife/static/media/cross.2d51b5b8.svg",
     "static/media/data-collection.svg": "/SightLife/static/media/data-collection.469df034.svg",
     "static/media/development.png": "/SightLife/static/media/development.b5edeee8.png",
     "static/media/metrics.svg": "/SightLife/static/media/metrics.62aadad0.svg",
@@ -31,14 +32,15 @@
     "static/media/sightlife.png": "/SightLife/static/media/sightlife.e3d1f3c1.png",
     "static/media/switch.svg": "/SightLife/static/media/switch.dc3ba285.svg",
     "static/media/team.svg": "/SightLife/static/media/team.46b613d7.svg",
+    "static/media/tick.svg": "/SightLife/static/media/tick.cc7a48c6.svg",
     "static/media/toggle.svg": "/SightLife/static/media/toggle.cda0c0c8.svg",
     "static/media/training.png": "/SightLife/static/media/training.cb3a8202.png"
   },
   "entrypoints": [
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
-    "static/js/2.0205e1c4.chunk.js",
-    "static/css/main.c21fbab1.chunk.css",
-    "static/js/main.719c519e.chunk.js"
+    "static/js/2.5f3c1730.chunk.js",
+    "static/css/main.76d2533b.chunk.css",
+    "static/js/main.41c4a4e1.chunk.js"
   ]
 }

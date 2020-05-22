@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1b0618e2e28b5348d8b8c48b53374e6f",
+    "revision": "b5bc088964ff03f54e9e69cd982ef781",
     "url": "/SightLife/index.html"
   },
   {
-    "revision": "830c86398c11d427b3e9",
+    "revision": "29641f7ccb2889d00d20",
     "url": "/SightLife/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "b5afa53c1981a074e237",
-    "url": "/SightLife/static/css/main.c21fbab1.chunk.css"
+    "revision": "e1de5fd92fb42a30c902",
+    "url": "/SightLife/static/css/main.76d2533b.chunk.css"
   },
   {
-    "revision": "830c86398c11d427b3e9",
-    "url": "/SightLife/static/js/2.0205e1c4.chunk.js"
+    "revision": "29641f7ccb2889d00d20",
+    "url": "/SightLife/static/js/2.5f3c1730.chunk.js"
   },
   {
     "revision": "1e9f144860348fdb90f8bd02c06b275b",
-    "url": "/SightLife/static/js/2.0205e1c4.chunk.js.LICENSE.txt"
+    "url": "/SightLife/static/js/2.5f3c1730.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b5afa53c1981a074e237",
-    "url": "/SightLife/static/js/main.719c519e.chunk.js"
+    "revision": "e1de5fd92fb42a30c902",
+    "url": "/SightLife/static/js/main.41c4a4e1.chunk.js"
   },
   {
     "revision": "da4f19d41dc6ec0d2d72",
@@ -42,6 +42,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "4f523f560b6679d0cf9cc7b8c1638ede",
     "url": "/SightLife/static/media/calculations.4f523f56.svg"
+  },
+  {
+    "revision": "2d51b5b8da2dfc1549dc124ef09c4237",
+    "url": "/SightLife/static/media/cross.2d51b5b8.svg"
   },
   {
     "revision": "469df0340d0263297ee7c93f965543c9",
@@ -94,6 +98,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "46b613d71cda66c2bfff70ade62c0a10",
     "url": "/SightLife/static/media/team.46b613d7.svg"
+  },
+  {
+    "revision": "cc7a48c608a6e6d6d6655b9aa0914255",
+    "url": "/SightLife/static/media/tick.cc7a48c6.svg"
   },
   {
     "revision": "cda0c0c82523170dd54505b0fc7185c0",
