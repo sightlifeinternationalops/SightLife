@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.bdcd242d.chunk.css",
-    "main.js": "/SightLife/static/js/main.57fe562d.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.57fe562d.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.c21fbab1.chunk.css",
+    "main.js": "/SightLife/static/js/main.25f9eae5.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.25f9eae5.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
-    "static/js/2.00e0d20a.chunk.js": "/SightLife/static/js/2.00e0d20a.chunk.js",
-    "static/js/2.00e0d20a.chunk.js.map": "/SightLife/static/js/2.00e0d20a.chunk.js.map",
+    "static/js/2.0205e1c4.chunk.js": "/SightLife/static/js/2.0205e1c4.chunk.js",
+    "static/js/2.0205e1c4.chunk.js.map": "/SightLife/static/js/2.0205e1c4.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.d433981b6d27535ae47752ee7d6dd7b3.js": "/SightLife/precache-manifest.d433981b6d27535ae47752ee7d6dd7b3.js",
+    "precache-manifest.a69cfe32881e913591ab080b9eeb9b54.js": "/SightLife/precache-manifest.a69cfe32881e913591ab080b9eeb9b54.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.bdcd242d.chunk.css.map": "/SightLife/static/css/main.bdcd242d.chunk.css.map",
-    "static/js/2.00e0d20a.chunk.js.LICENSE.txt": "/SightLife/static/js/2.00e0d20a.chunk.js.LICENSE.txt",
+    "static/css/main.c21fbab1.chunk.css.map": "/SightLife/static/css/main.c21fbab1.chunk.css.map",
+    "static/js/2.0205e1c4.chunk.js.LICENSE.txt": "/SightLife/static/js/2.0205e1c4.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
     "static/media/alex.jpg": "/SightLife/static/media/alex.5b6cafaf.jpg",
@@ -37,8 +37,8 @@
   "entrypoints": [
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
-    "static/js/2.00e0d20a.chunk.js",
-    "static/css/main.bdcd242d.chunk.css",
-    "static/js/main.57fe562d.chunk.js"
+    "static/js/2.0205e1c4.chunk.js",
+    "static/css/main.c21fbab1.chunk.css",
+    "static/js/main.25f9eae5.chunk.js"
   ]
 }
