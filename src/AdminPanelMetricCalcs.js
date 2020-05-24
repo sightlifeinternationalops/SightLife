@@ -63,6 +63,16 @@ export class AdminPanelMetricCalcs extends Component {
         if (this.checkAddCalculation()) {
             let ref = firebase.database().ref('metricCalculations')
             let id = ref.push().getKey()
+
+            let metricCalcObject = {
+                calcName: this.state.addCalcName,
+                calcMetric: this.state.addCalcName,
+                calcID: id,
+                calcArchived: false,
+                metricAreaID: this.state.current,
+                dataType: this.state.dataType
+            }
+
             firebase.database().ref('metricCalculations/' + id.toString()).update({
                 calcName: this.state.addCalcName,
                 calcMetric: this.state.addCalcName,
@@ -71,6 +81,10 @@ export class AdminPanelMetricCalcs extends Component {
                 metricAreaID: this.state.current,
                 dataType: this.state.dataType
             })
+
+            let mapCalculations = this.state.currentMetricAreaCalculations
+            mapCalculations.set(id, metricCalcObject)
+
         }
     }
 
@@ -112,6 +126,7 @@ export class AdminPanelMetricCalcs extends Component {
             this.setCalculations(mapCalculations, archivedMap)
         })
     }
+
     // Sets state to have current metric area calculations for
     // the selected metric area. 
     setCalculations(mapCalculations, archivedMap) {
@@ -151,9 +166,10 @@ export class AdminPanelMetricCalcs extends Component {
         return archivedCalcElements
     }
 
-    openModal(calcID) {
+    openModal(calcID, calcName) {
         this.setState((state) => {
             this.state.currentCalc = calcID
+            this.state.currentCalcName = calcName
             this.state.modalDisplay = "block"
             return state
         })
@@ -321,6 +337,19 @@ export class AdminPanelMetricCalcs extends Component {
             rootPath.update({
                 calcArchived: true
             })
+
+            let metricCalcObject = {
+                calcID: this.state.currentCalc,
+                calcName: this.state.currentCalcName
+            }
+
+            let calcMap = this.state.currentMetricAreaCalculations
+            calcMap.delete(this.state.currentCalc)
+
+            let archivedMap = this.state.currentArchivedAreaCalculations
+            archivedMap.set(this.state.currentCalc, metricCalcObject)
+
+
         }
     }
 
@@ -409,7 +438,7 @@ class MetricAreaCalcButton extends Component {
         let typeString = this.props.metricCalcID
         return (
             <button
-                onClick={(e) => this.props.metricCalcFunc(this.props.metricCalcID)}
+                onClick={(e) => this.props.metricCalcFunc(this.props.metricCalcID, this.props.metricCalcName)}
                 class='selection' type={typeString} value={this.props.metricCalcID}>{this.props.metricCalcName}</button>
         )
     }

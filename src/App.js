@@ -12,11 +12,13 @@ import { AdminPanelMetrics } from './AdminPanelMetrics'
 import { AdminPanelUserPermissions } from './AdminPanelUserPermissions'
 import { AdminPanelMetricCalcs } from './AdminPanelMetricCalcs'
 import {AdminDataEntry} from './AdminDataEntry'
+import { ForgotPassword} from './ForgotPassword'
 import { CreateAccount } from './CreateAccount';
 
 import firebase from 'firebase/app';
 import SightLife from './img/sightlife.png';
 import Profile from './img/profile2.png'
+import { format } from 'd3';
 
 class App extends Component {
   constructor(props) {
@@ -78,7 +80,7 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
-    window.location = "/"
+    window.location = "sightlifeinternationalops.github.io/SightLife/#/"
   }
 
   // Create a user account
@@ -118,6 +120,16 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
+  }
+
+  handleForgotPassword = (email) => {
+    firebase.auth().sendPasswordResetEmail(email).then(function() {
+      // Email sent.
+    }).catch((err) => {
+      this.setState({
+        errorMessage: err.message
+      })
+    })
   }
 
   // ADMIN PANEL FUNCTIONS // 
@@ -289,6 +301,9 @@ class App extends Component {
                 handleSignUp={this.handleSignUp}
               />}
               />
+              <Route path="/forgotpassword" render={() => <ForgotPassword
+                handleForgotPassword={this.handleForgotPassword}/>}
+                />
             </Switch>
 
       )
@@ -306,7 +321,6 @@ class App extends Component {
               <Route
                 path="/metrics"
                 render={() => <Metrics
-                  // {...this.state}
                   metrics={this.state.metrics}
                   metricAreaElements={this.metricAreaElements}
                 />}
@@ -314,7 +328,6 @@ class App extends Component {
               <Route 
                 path="/visualizations"
                   render={() => <Visualizations
-                    // {...this.state}
                     metrics={this.state.metrics}
                     metricAreaElements={this.metricAreaElements}
                   />}

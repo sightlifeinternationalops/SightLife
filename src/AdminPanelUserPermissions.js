@@ -329,7 +329,11 @@ class MetricAreaInfo extends Component {
 
     render() {
         const metricAreaOwners = this.metricAreaOwners()
-        let content = (
+        let content = null
+        let entryContent = null
+
+        if (!this.props.enableEdit) {
+            content = (
                 <div id="dataEntry">
                     <label>
                         <span> Data Entry for Actuals:</span>
@@ -351,7 +355,14 @@ class MetricAreaInfo extends Component {
                         onChange={this.props.handleMAToggle} />
                 </div>
             )
-        let entryContent = (
+        } else {
+            content = (
+                <div>
+                    Test
+                </div>
+            )
+        }
+        entryContent = (
                 <div>
                     <button
                         onClick={() => { this.props.addOwnerModal() }}
@@ -377,6 +388,9 @@ class MetricAreaInfo extends Component {
                         </ul >
                         {entryContent}
                         {content}
+                        <button>
+                            Test
+                        </button>
                     </div>
                 </div>
             </div>

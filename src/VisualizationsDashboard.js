@@ -503,11 +503,11 @@ export class DashBoard extends Component {
        div.transition()
            .duration(100)
            .style("opacity", 1);
-           if (datatype == "percent") {
+           if (datatype === "percent") {
             div.html("Actuals: "+ d.values[0].value + "%")
                 .style("left", (d3.event.pageX + 10) + "px")
                 .style("top", (d3.event.pageY - 15) + "px");
-        } else if (datatype == "money") {
+        } else if (datatype === "money") {
             div.html("Actuals: " + d.values[0].value)
                 .style("left", (d3.event.pageX + 10) + "px")
                 .style("top", (d3.event.pageY - 15) + "px");

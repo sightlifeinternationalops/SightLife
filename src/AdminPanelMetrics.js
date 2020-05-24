@@ -168,6 +168,7 @@ export class AdminPanelMetrics extends Component {
         this.setState((state) => {
             state.metrics = metricsMap
             state.display = "none"
+            state.MetricName = ""
             return state
         })
     }

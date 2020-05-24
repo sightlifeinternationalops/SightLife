@@ -57,9 +57,7 @@ export class SignIn extends Component {
 
 
                 <div>
-                    <p>
-                        Forgot password?
-                    </p>
+                    <Link id="forgotPassword" to={'/Forgotpassword'}>Forgot Password?</Link>
                 </div>
                 <div>
                     <button
