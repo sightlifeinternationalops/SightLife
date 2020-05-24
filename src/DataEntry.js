@@ -501,11 +501,13 @@ export class DataEntry extends Component {
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
 
-        let year = new Date()
-        year = year.getFullYear()
-        let x = tfValue
+        // let year = new Date()
+        // year = year.getFullYear()
 
-        console.log(x)
+        let timeObj = this.checkIfLastYear(tfValue)
+
+        let year = timeObj.year
+        let x = timeObj.month
 
         let rootPath = firebase.database().ref(selectTF)
 
@@ -613,6 +615,7 @@ export class DataEntry extends Component {
             updateChange={this.updateChange}
             previewForm={this.previewForm}
             submitForm={this.submitForm}
+            checkIfLastYear={this.checkIfLastYear}
             editForm={this.editForm}
             check={this.check}
             timeDisplay={this.timeDisplay}
