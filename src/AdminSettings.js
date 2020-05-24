@@ -243,12 +243,18 @@ export class AdminSettings extends Component {
     }
 
     handleAToggle(actualToggle) {
+        firebase.database().ref('dataEntrySettings').update({
+            actuanEnabled: actualToggle
+        })
         this.setState({
             actualToggle
         })
     }
 
     handleTToggle(targetToggle) {
+        firebase.database().ref('dataEntrySettings').update({
+            targetEnabled: targetToggle
+        })
         this.setState({
             targetToggle
         })
@@ -380,11 +386,11 @@ export class AdminSettings extends Component {
                             </section>
                         </div>
 
-                        <div class='Save2Button'>
+                        {/* <div class='Save2Button'>
                             <button
                                 onClick={() => this.saveSettings(this.state.targetToggle, this.state.actualToggle)}
                                 class='save2' type="Save" value="Save"> Save </button>
-                        </div>
+                        </div> */}
                     </div>
 
                 </main>

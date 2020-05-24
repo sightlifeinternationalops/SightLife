@@ -10,8 +10,8 @@
     border-width: 1px;
     border-color: grey;
     border-radius: 2.5px;
-    margin-left: 30rem;
-    margin-right: 30rem;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .table th.test1, .table td {
@@ -256,6 +256,11 @@ li.textz {
     .cancel {
         margin-left: 0.5rem;
     }
+
+    .metricsTest {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
 }
 
 @media (min-width: 630px) {
@@ -266,6 +271,11 @@ li.textz {
     div.PermDatadeckPermission {
         margin-left: 1rem;
         margin-right: 1rem;
+    }
+
+    .metricsTest {
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
     li.svg {
@@ -308,6 +318,11 @@ li.textz {
         width: 50%;
     }
 
+    .metricsTest {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
     div.PermDatadeckPermission {
         margin-left: 1rem;
         margin-right: 1rem;
@@ -347,9 +362,20 @@ li.textz {
     .cancel {
         margin-left: 1rem;
     }
+
+    .metricsTest {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+}
+  
+@media (min-width: 1180px) {
+    .metricsTest {
+        margin-left: 30%;
+        margin-right: 30%;
+    }
 }
 
-  
       
   
 

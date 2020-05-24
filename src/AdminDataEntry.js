@@ -83,7 +83,7 @@ export class AdminDataEntry extends Component {
                     let yearObjects = info[id]
                     let lastMonthData = yearObjects[year][lastMonth]
                     // Check if value exists for month
-                    if (lastMonthData) {
+                    if (lastMonthData && id && calcMap) {
                         // Check if the target value is fulfilled
                         let metric = this.state.calcMap.get(id)
                         let metricID = metric.metricAreaID

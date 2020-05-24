@@ -329,46 +329,51 @@ class MetricAreaInfo extends Component {
 
     render() {
         const metricAreaOwners = this.metricAreaOwners()
-        let content = null
+        let content = (
+            <div id="dataEntry">
+                <label>
+                    <span> Data Entry for Actuals:</span>
+                </label>
+                <Switch
+                    onChange={this.props.handleMTToggle}
+                    className="react-switch"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    checked={this.props.metricTargetEnabled} />
+                <label>
+                    <span> Data Entry for Targets:</span>
+                </label>
+                <Switch
+                    className="react-switch"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    checked={this.props.metricActualEnabled}
+                    onChange={this.props.handleMAToggle} />
+            </div>
+        )
         let entryContent = null
+        let buttonContent = null
 
         if (!this.props.enableEdit) {
-            content = (
-                <div id="dataEntry">
-                    <label>
-                        <span> Data Entry for Actuals:</span>
-                    </label>
-                    <Switch
-                        onChange={this.props.handleMTToggle}
-                        className="react-switch"
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        checked={this.props.metricTargetEnabled} />
-                    <label>
-                        <span> Data Entry for Targets:</span>
-                    </label>
-                    <Switch
-                        className="react-switch"
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        checked={this.props.metricActualEnabled}
-                        onChange={this.props.handleMAToggle} />
-                </div>
+            buttonContent = (
+                <button className="editButton" onClick={() => this.props.editMetricOwners()}>
+                    Edit
+                </button>
             )
         } else {
-            content = (
-                <div>
-                    Test
-                </div>
+            buttonContent = (
+                <button className="editButton" onClick={() => this.props.cancelMetricOwners()}>
+                    Finish
+                </button>
             )
         }
         entryContent = (
-                <div>
-                    <button
-                        onClick={() => { this.props.addOwnerModal() }}
-                        class='save'><strong>Add Owner</strong></button>
-                </div>
-            )
+            <div>
+                <button
+                    onClick={() => { this.props.addOwnerModal() }}
+                    class='save'><strong>Add Owner</strong></button>
+            </div>
+        )
 
         return (
             <div class="column"
@@ -388,9 +393,7 @@ class MetricAreaInfo extends Component {
                         </ul >
                         {entryContent}
                         {content}
-                        <button>
-                            Test
-                        </button>
+                        {buttonContent}
                     </div>
                 </div>
             </div>
@@ -419,9 +422,9 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> : 
-        <button className = "remove"
-            onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
+        let button = !this.props.enableEdit ? <div></div> :
+            <button className="remove"
+                onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
         return (
             <li>

@@ -75,25 +75,11 @@ div.PermDatadeckPermission {
     vertical-align: middle
 }
 
-/* button.cancel {
-    background-color: transparent;
-    color: rgb(153, 145, 198);
-} */
-
 #dataEntry {
     border-width: 0.5px;
     border-color: gray;
     /* border-top-style: solid; */
 }
-
-/* #dataEntry button {
-    margin: 0;
-    margin-top: 1rem;
-}
-
-#dataEntry label {
-    margin-top: 1rem;
-} */
 
 #addUserForm {
     display: none;
@@ -122,7 +108,7 @@ div.PermDatadeckPermission {
     color: rgb(153, 145, 198);
 }
 
-#addUserBox button {
+#addUserBox button, .editButton {
     padding-left: 8px;
     padding-right: 8px;
     margin-left: 10px;
@@ -134,6 +120,10 @@ div.PermDatadeckPermission {
     height: 50px;
     width: 100px;
     background-color: #9991C6;
+}
+
+.editButton {
+    margin-bottom: 15px
 }
 
 .cancel {
