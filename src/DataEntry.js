@@ -564,10 +564,6 @@ export class DataEntry extends Component {
                             }
                         })
                     } 
-                    // else {
-                    //     console.log("Test")
-                    //     this.newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
-                    // }
                 })
             } else {
                 console.log("Test")
@@ -642,18 +638,22 @@ export class DataEntry extends Component {
         const metricAreaElements = this.metricAreaElements()
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         const dataEntryForm = this.renderDataEntryForm()
-        let content = null
+        let formContent = (                <div>
+            <section id="forms">
+                {dataEntryForm}
+            </section>
+        </div>)
 
-        if (this.state.selectedMetricAreaCalculations) {
-            content = (
-                <div>
-                    <section id="forms">
-                        {dataEntryForm}
-                    </section>
-                </div>
-            )
-        } else {
-            content = (
+        // if (this.state.selectedMetricAreaCalculations) {
+        //     content = (
+        //         <div>
+        //             <section id="forms">
+        //                 {dataEntryForm}
+        //             </section>
+        //         </div>
+        //     )
+        // } else {
+        let content = (
                 <div>
                   <section class="entry">
                         <h1 className="DataEn"> Data Entry Form </h1>
@@ -676,12 +676,13 @@ export class DataEntry extends Component {
                     </section>
             </div>
             )
-        }
+        // }
 
         return (
             <div className="body">
                 <main>
                     {content}
+                    {formContent}
                 </main>
             </div>
         )
