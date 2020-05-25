@@ -310,12 +310,24 @@ export class DataEntry extends Component {
 
     updateTCheckForm(event) {
         let val = (event.target.value)
-        this.setState((state) => {
-            state.radio = val
-            state.targetEn = true
-            state.actualEn = false
-            return state
-        })
+
+        let adminEnabled = this.checkTargetEnabled()
+
+        let userP = this.state.metricTargetEnabled
+
+        if (adminEnabled || userP) {
+            this.setState((state) => {
+                state.radio = val
+                state.targetEn = true
+                state.actualEn = false
+                return state
+            })
+        } else {
+            this.setState((state) => {
+                state.targetDisabledMsg = "Permissions to submit targets are currently disabled or past the first 3 months of the year. Contact your administrator to enable permissions."
+                return state
+            })
+        }
     }
 
     updateChange(event) {
@@ -570,6 +582,7 @@ export class DataEntry extends Component {
 
         // let year = new Date()
         // year = year.getFullYear()
+        console.log(radio)
 
         let timeObj = this.checkIfLastYear(tfValue)
 
@@ -605,6 +618,10 @@ export class DataEntry extends Component {
                                 lastEdit: new Date(),
                                 dataType: dataType
                             })
+                            this.setState((state) => {
+                                state.dataSubmitted = "Data successfully submitted!"
+                                return state
+                            })
                             // If user wants to edit a target
                         } else {
                             childPath.update({
@@ -615,6 +632,10 @@ export class DataEntry extends Component {
                                 time: x,
                                 lastEdit: new Date(),
                                 dataType: dataType
+                            })
+                            this.setState((state) => {
+                                state.dataSubmitted = "Data successfully submitted!"
+                                return state
                             })
                         }            
                     } else {
@@ -655,6 +676,7 @@ export class DataEntry extends Component {
 
             this.setState((state) => {
                 state.dataSubmitted = "Data successfully submitted!"
+                return state
             })
 
         }
@@ -907,7 +929,6 @@ export class DataEntryForm extends Component {
                             </p>
                         </div>
                         {selectTimeDisplay}
-                        {/* {timeDisplay} */}
 
                         {dataDisplay}
                         <div>
