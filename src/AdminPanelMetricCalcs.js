@@ -108,22 +108,25 @@ export class AdminPanelMetricCalcs extends Component {
         let rootPath = firebase.database().ref('metricCalculations')
         rootPath.once('value', (snapshot) => {
             let metricCalcInfo = snapshot.val();
-            let databaseKeys = Object.keys(metricCalcInfo);
-            let mapCalculations = new Map()
-            let archivedMap = new Map()
-
-            databaseKeys.map((key) => {
-                console.log(metricCalcInfo[key])
-                let id = metricCalcInfo[key].metricAreaID
-                if (id === this.state.current) {
-                    if (!metricCalcInfo[key].calcArchived) {
-                        mapCalculations.set(key, metricCalcInfo[key])
-                    } else {
-                        archivedMap.set(key, metricCalcInfo[key])
+            if (metricCalcInfo) {
+                let databaseKeys = Object.keys(metricCalcInfo);
+                let mapCalculations = new Map()
+                let archivedMap = new Map()
+    
+                databaseKeys.map((key) => {
+                    console.log(metricCalcInfo[key])
+                    let id = metricCalcInfo[key].metricAreaID
+                    if (id === this.state.current) {
+                        if (!metricCalcInfo[key].calcArchived) {
+                            mapCalculations.set(key, metricCalcInfo[key])
+                        } else {
+                            archivedMap.set(key, metricCalcInfo[key])
+                        }
                     }
-                }
-            })
-            this.setCalculations(mapCalculations, archivedMap)
+                })
+                this.setCalculations(mapCalculations, archivedMap)
+            }
+    
         })
     }
 

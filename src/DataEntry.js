@@ -265,7 +265,7 @@ export class DataEntry extends Component {
     // a metric area is chosen. 
     metricAreaCalculations() {
         let metricCalcElements = null
-        if (this.state.currentMetricAreaCalculations.size >= 1 ) {
+        if (this.state.currentMetricAreaCalculations.size >= 1) {
             metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
                 entries()).map((key) => {
                     let calculation = key[1]
@@ -352,42 +352,42 @@ export class DataEntry extends Component {
     // and returns the appropriate elements for that display
     timeDisplay(time) {
         let x = null
-        switch((time)) {
+        switch ((time)) {
             case "metricGoalsMonths":
                 x = (
-                <div>
-                <h2 id='month'> Month <span class="required">*</span></h2>
-                <select
-                onChange={(e) => this.updateSelectForm(e)}>
-                <option value="none">Select a month</option>
-                <option value={1}>January</option>
-                <option value={2}>February</option>
-                <option value={3}>March</option>
-                <option value={4}>April</option>
-                <option value={5}>May</option>
-                <option value={6}>June</option>
-                <option value={7}>July</option>
-                <option value={8}>August</option>
-                <option value={9}>September</option>
-                <option value={10}>October</option>
-                <option value={11}>November</option>
-                <option value={12}>December</option>
-            </select>
-            </div>)
+                    <div>
+                        <h2 id='month'> Month <span class="required">*</span></h2>
+                        <select
+                            onChange={(e) => this.updateSelectForm(e)}>
+                            <option value="none">Select a month</option>
+                            <option value={1}>January</option>
+                            <option value={2}>February</option>
+                            <option value={3}>March</option>
+                            <option value={4}>April</option>
+                            <option value={5}>May</option>
+                            <option value={6}>June</option>
+                            <option value={7}>July</option>
+                            <option value={8}>August</option>
+                            <option value={9}>September</option>
+                            <option value={10}>October</option>
+                            <option value={11}>November</option>
+                            <option value={12}>December</option>
+                        </select>
+                    </div>)
                 break;
             case "metricGoalsQuarters":
                 x = (
-                <div>
-                <h2 id='quarter'> Quarter <span class="required">*</span></h2>
-                <select
-                onChange={(e) => this.updateSelectForm(e)}>
-                    <option selected="selected">None</option>
-                    <option value="1">Quarter 1</option>
-                    <option value="2">Quarter 2</option>
-                    <option value="3">Quarter 3</option>
-                    <option value="4">Quarter 4</option>                
-                </select>
-                </div>
+                    <div>
+                        <h2 id='quarter'> Quarter <span class="required">*</span></h2>
+                        <select
+                            onChange={(e) => this.updateSelectForm(e)}>
+                            <option selected="selected">None</option>
+                            <option value="1">Quarter 1</option>
+                            <option value="2">Quarter 2</option>
+                            <option value="3">Quarter 3</option>
+                            <option value="4">Quarter 4</option>
+                        </select>
+                    </div>
                 )
                 break;
             case "metricGoalsAnnuals":
@@ -402,8 +402,8 @@ export class DataEntry extends Component {
     }
 
     currentMonthDisplay(radio) {
-        let x = null 
-        switch((radio)) {
+        let x = null
+        switch ((radio)) {
             case "metricGoalsMonths":
                 x = (
                     <div>
@@ -416,28 +416,28 @@ export class DataEntry extends Component {
 
     dataDisplay(dataType) {
         let x = null
-        switch((dataType)) {
+        switch ((dataType)) {
             case "money":
             case "number":
             case "percent":
                 x = (
                     <div class='textInput'>
-                    <label for="fname">Enter a value <span class="required">*</span> </label>
-                    <input
-                        value={this.props.data}
-                        onChange={(e) => this.updateChange(e)}
-                        type="number" id="form" name="data" />
+                        <label for="fname">Enter a value <span class="required">*</span> </label>
+                        <input
+                            value={this.props.data}
+                            onChange={(e) => this.updateChange(e)}
+                            type="number" id="form" name="data" />
                     </div>
                 )
-                    break;
+                break;
             case "text":
                 x = (
                     <div>
-                    <label for="fname">Enter text <span class="required">*</span> </label>
-                    <input
-                        value={this.props.data}
-                        onChange={(e) => this.updateChange(e)}
-                        type="text" id="form" name="data" />
+                        <label for="fname">Enter text <span class="required">*</span> </label>
+                        <input
+                            value={this.props.data}
+                            onChange={(e) => this.updateChange(e)}
+                            type="text" id="form" name="data" />
                     </div>
                 )
                 break;
@@ -509,6 +509,8 @@ export class DataEntry extends Component {
         let year = timeObj.year
         let x = timeObj.month
 
+        console.log(selectTF)
+
         let rootPath = firebase.database().ref(selectTF)
 
 
@@ -522,50 +524,36 @@ export class DataEntry extends Component {
             // Log error here...
             if (info) {
                 let keys = Object.keys(info)
-                keys.map((key) => {
-                    console.log(key)
-                    console.log(calcID)
-                    // If data exists in database...
-                    if (key === calcID) {
-                        // Check if the data already exists 
-                        console.log("Checking if data exists")
-                        let childPath = firebase.database().ref(selectTF + '/' +
-                            calcID + "/" + year + "/" + keyString)
-                        childPath.once('value', (snapshot) => {
-                            let cInfo = snapshot.val();
-                            // If data exists, overwrite it.
-                            if (cInfo) {
-                                // If user wants to edit an actual
-                                if (radio === "Actual") {
-                                    childPath.update({
-                                        actual: data,
-                                        lowlights: lowlight,
-                                        highlights: highlight,
-                                        coe: coe,
-                                        time: x,
-                                        lastEdit: new Date(),
-                                        dataType: dataType
-                                    })
-                                    // If user wants to edit a target
-                                } else {
-                                    childPath.update({
-                                        target: data,
-                                        lowlights: lowlight,
-                                        highlights: highlight,
-                                        coe: coe,
-                                        time: x,
-                                        lastEdit: new Date(),
-                                        dataType: dataType
-                                    })
-                                }
-
-                                // If data doesn't exist, create new entry.
-                            } else {
-                                console.log("Test")
-                                this.newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
-                            }
-                        })
-                    } 
+                let childPath = firebase.database().ref(selectTF + '/' + calcID + "/" + year + '/' + keyString)
+                childPath.once('value', (snapshot) => {
+                    let cInfo = snapshot.val()
+                    if (cInfo) {
+                        if (radio === "Actual") {
+                            childPath.update({
+                                actual: data,
+                                lowlights: lowlight,
+                                highlights: highlight,
+                                coe: coe,
+                                time: x,
+                                lastEdit: new Date(),
+                                dataType: dataType
+                            })
+                            // If user wants to edit a target
+                        } else {
+                            childPath.update({
+                                target: data,
+                                lowlights: lowlight,
+                                highlights: highlight,
+                                coe: coe,
+                                time: x,
+                                lastEdit: new Date(),
+                                dataType: dataType
+                            })
+                        }            
+                    } else {
+                        console.log("Test")
+                        this.newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
+                    }
                 })
             } else {
                 console.log("Test")
@@ -594,7 +582,7 @@ export class DataEntry extends Component {
                 coe: coe,
                 time: x,
                 actual: "N/A",
-                dataType: dataType, 
+                dataType: dataType,
                 inputTime: currentTime
             })
 
@@ -641,7 +629,7 @@ export class DataEntry extends Component {
         const metricAreaElements = this.metricAreaElements()
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         const dataEntryForm = this.renderDataEntryForm()
-        let formContent = (                <div>
+        let formContent = (<div>
             <section id="forms">
                 {dataEntryForm}
             </section>
@@ -657,28 +645,28 @@ export class DataEntry extends Component {
         //     )
         // } else {
         let content = (
-                <div>
-                  <section class="entry">
-                        <h1 className="DataEn"> Data Entry Form </h1>
-                        {/* Populate based on whether metric owner owns metric */}
-                        <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
-                        <CardDeck className="datadeck">
-                            {metricAreaElements}
-                        </CardDeck>
-                        <div class="errorMsg">
-                            <p>{this.state.invalidMetricArea}</p>
-                        </div>
-                        {/* Populate based on metric chosen */}
-                        <h2 class='MetricTitles'> Metric <span class="required">*</span></h2>
-                        <CardDeck className="datadeck">
-                            {metricAreaCalculationsElements}
-                        </CardDeck>
-                        <div class="errorMsg">
-                            <p>{this.state.invalidMetricCalc}</p>
-                        </div>
-                    </section>
+            <div>
+                <section class="entry">
+                    <h1 className="DataEn"> Data Entry Form </h1>
+                    {/* Populate based on whether metric owner owns metric */}
+                    <h2 class='MetricTitles'> Metric Area <span class="required">*</span> </h2>
+                    <CardDeck className="datadeck">
+                        {metricAreaElements}
+                    </CardDeck>
+                    <div class="errorMsg">
+                        <p>{this.state.invalidMetricArea}</p>
+                    </div>
+                    {/* Populate based on metric chosen */}
+                    <h2 class='MetricTitles'> Metric <span class="required">*</span></h2>
+                    <CardDeck className="datadeck">
+                        {metricAreaCalculationsElements}
+                    </CardDeck>
+                    <div class="errorMsg">
+                        <p>{this.state.invalidMetricCalc}</p>
+                    </div>
+                </section>
             </div>
-            )
+        )
         // }
 
         return (
@@ -744,7 +732,7 @@ export class DataEntryForm extends Component {
 
     timeDisplayType(selectTf) {
         let x = null
-        switch((selectTf)) {
+        switch ((selectTf)) {
             case "metricGoalsMonth":
                 x = (
                     <p>Month: <b>{this.props.tfValue}</b></p>
@@ -799,17 +787,17 @@ export class DataEntryForm extends Component {
                     </button>
                     <p>
                         {this.props.noActual}
-                        </p>
-                        <p>
+                    </p>
+                    <p>
                         {this.props.dataSubmitted}
-                        </p>
+                    </p>
                 </div>
             )
         } else {
             if (this.props.targetEn) {
                 selectTimeDisplay = (
                     <div>
-                        <h2 className = "InputOption">Select a Time Frame <span class="required">*</span> </h2>
+                        <h2 className="InputOption">Select a Time Frame <span class="required">*</span> </h2>
                         <select
                             onChange={(e) => this.props.updateChange(e)} name="selectTF">
                             <option value="metricGoalsMonths">Month</option>
@@ -831,17 +819,17 @@ export class DataEntryForm extends Component {
             content = (
                 <div>
                     <form>
-                    <h2 class='InputOption'> Select a Data Type <span class="required">*</span> </h2>
-                        <div class='CheckBoxes'> 
+                        <h2 class='InputOption'> Select a Data Type <span class="required">*</span> </h2>
+                        <div class='CheckBoxes'>
                             <div class='check-one'>
-                                <input class='box' type="checkbox" id="Target" name="Target" value="Target"  onChange={(e) => this.props.updateTCheckForm(e)} 
-                                checked={this.props.targetEn}
+                                <input class='box' type="checkbox" id="Target" name="Target" value="Target" onChange={(e) => this.props.updateTCheckForm(e)}
+                                    checked={this.props.targetEn}
                                 />
                                 <label class='check' for="Target">Target </label>
                             </div>
-                            
+
                             <div class='check-one'>
-                                <input class='box' type="checkbox" id="Actual" name="Actual" value="Actual"  onChange={(e) => this.props.updateACheckForm(e)} 
+                                <input class='box' type="checkbox" id="Actual" name="Actual" value="Actual" onChange={(e) => this.props.updateACheckForm(e)}
                                     checked={this.props.actualEn}
                                 />
                                 <label class='check' for="Actual">Actual</label>
@@ -854,7 +842,7 @@ export class DataEntryForm extends Component {
                         </div>
                         {selectTimeDisplay}
                         {/* {timeDisplay} */}
-            
+
                         {dataDisplay}
                         <div>
                             <p>
@@ -882,13 +870,13 @@ export class DataEntryForm extends Component {
                                 value={this.props.mitigation} type="text" id="form" name="mitigation" />
                         </p>
                     </form>
-                    
+
                     <div>
                         <p>
                             {this.props.errorMsg}
                         </p>
                     </div>
-                    
+
                     <button
                         onClick={() => this.props.previewForm(this.props.check())}
                         class="preview">Preview</button>

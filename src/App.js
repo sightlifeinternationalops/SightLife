@@ -230,17 +230,19 @@ class App extends Component {
     let rootPath = firebase.database().ref('metricCalculations')
     rootPath.once('value', (snapshot) => {
       let info = snapshot.val();
-      let keys = Object.keys(info);
-      let calcMap = new Map()
-
-      keys.map((key) => {
-        calcMap.set(key, info[key])
-      })
-
-      this.setState((state) => {
-        state.calcMap = calcMap
-        return state
-      })
+        if (info) {
+          let keys = Object.keys(info);
+          let calcMap = new Map()
+    
+          keys.map((key) => {
+            calcMap.set(key, info[key])
+          })
+    
+          this.setState((state) => {
+            state.calcMap = calcMap
+            return state
+        })
+      }
     })
   }
 

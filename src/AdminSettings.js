@@ -244,7 +244,7 @@ export class AdminSettings extends Component {
 
     handleAToggle(actualToggle) {
         firebase.database().ref('dataEntrySettings').update({
-            actuanEnabled: actualToggle
+            actualEnabled: actualToggle
         })
         this.setState({
             actualToggle
