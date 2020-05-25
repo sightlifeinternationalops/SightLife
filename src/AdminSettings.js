@@ -225,12 +225,12 @@ export class AdminSettings extends Component {
                                 </select>
                             </label>
 
-                            <button className= "addAdmin"
+                            <button className="addAdmin"
                                 onClick={(e) => this.addOwner(e)}>
                                 Submit
                             </button>
 
-                            <button className = "cancel"
+                            <button className="cancel"
                                 onClick={() => this.closeForm()}>
                                 Cancel
                     </button>
@@ -302,12 +302,12 @@ export class AdminSettings extends Component {
         if (this.state.enableEdit) {
             content = (
                 <div class="adminButtons">
-                    <button className= "addAdmin"
+                    <button className="addAdmin"
                         onClick={() => this.openModal()}>
                         Add Admin
                     </button>
 
-                    <button className= "cancel"
+                    <button className="cancel"
                         onClick={() => this.cancelEdit()}>
                         Cancel
                     </button>
@@ -317,7 +317,7 @@ export class AdminSettings extends Component {
             content = (
                 <div class="adminButtons">
                     <button
-                        className= "save2"
+                        className="save2"
                         value="test"
                         onClick={() => this.editAdminInfo()}>
                         Edit Admins
@@ -380,6 +380,15 @@ export class AdminSettings extends Component {
                                             onChange={this.handleTToggle}
                                             checked={this.state.targetToggle}
                                         />
+                                        {/* <label>
+                                            <span>Actual Month Selection:</span></label>
+                                        <Switch
+                                            className="react-switch"
+                                            uncheckedIcon={false}
+                                            checkedIcon={false}
+                                            onChange={this.handleTToggle}
+                                            checked={this.state.targetToggle}
+                                        /> */}
                                     </div>
                                 </div>
 
@@ -411,9 +420,9 @@ class UserItem extends Component {
 
 class AdminItem extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> : 
-        <button className = "remove"
-            onClick={() => { this.props.removeAdmin(this.props.adminID) }}>-
+        let button = !this.props.enableEdit ? <div></div> :
+            <button className="remove"
+                onClick={() => { this.props.removeAdmin(this.props.adminID) }}>-
         </button>
 
         return (

@@ -47,6 +47,7 @@ export class DataEntry extends Component {
 
     componentDidMount() {
         this.retrieveUsersMetricAreas()
+        this.retrieveAdminUsers()
         this.checkCurrentDateActuals()
         this.checkCurrentDateTargets()
         console.log(this.props)
@@ -55,6 +56,39 @@ export class DataEntry extends Component {
     componentDidUpdate() {
         console.log(this.state)
     }
+
+    retrieveAdminUsers() {
+        let rootPath = firebase.database().ref('admins')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+            let usersMap = new Map()
+
+            // If the admins reference exists in the database
+            // or if something exists in the database for admins
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    console.log(key)
+                    console.log(info[key])
+                    if (info[key].userID === this.props.user.uid) {
+                        console.log("Current user is an admin")
+                        this.setState((state) => {
+                            state.adminPermissions = true
+                            return state
+                        })
+                    }
+                })
+            }
+            // this.setAdminUsers(usersMap)
+        })
+    }
+
+    // setAdminUsers(users) {
+    //     this.setState((state) => {
+    //         state.currentAdmins = users
+    //         return state
+    //     })
+    // }
 
     // Checks the current date of the month. If it is the first 3 months of the year
     // the user can enter target data for the year.
@@ -141,9 +175,7 @@ export class DataEntry extends Component {
             state.metrics = ownerMap;
             return state;
           })
-          // this.updateMetricAreas(ownerMap)
         })      
-      // }
     }
 
     // Allows user to submit data entry for actuals.
@@ -271,6 +303,7 @@ export class DataEntry extends Component {
             console.log("Test")
             this.setState((state) => {
                 state.actualDisabledMsg = "Permissions to submit actuals are currently disabled or past the deadline. Contact your administrator."
+                return state
             })
         }
     }
@@ -823,7 +856,7 @@ export class DataEntryForm extends Component {
                 </div>
             )
         } else {
-            if (this.props.targetEn) {
+            if (this.props.targetEn || this.props.adminPermissions) {
                 selectTimeDisplay = (
                     <div>
                         <h2 className="InputOption">Select a Time Frame <span class="required">*</span> </h2>
@@ -856,13 +889,17 @@ export class DataEntryForm extends Component {
                                 />
                                 <label class='check' for="Target">Target </label>
                             </div>
-
                             <div class='check-one'>
                                 <input class='box' type="checkbox" id="Actual" name="Actual" value="Actual" onChange={(e) => this.props.updateACheckForm(e)}
                                     checked={this.props.actualEn}
                                 />
                                 <label class='check' for="Actual">Actual</label>
                             </div>
+                        </div>
+                        <div>
+                        <p>
+                                {this.props.actualDisabledMsg}
+                            </p>
                         </div>
                         <div>
                             <p>
