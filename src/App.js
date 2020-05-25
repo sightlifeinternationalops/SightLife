@@ -259,7 +259,7 @@ class App extends Component {
         keys.map((key) => {
           usersMap.set(key, info[key])
         })
-        console.log(usersMap)
+        // console.log(usersMap)
         this.setState((state) => {
           state.users = usersMap
           return state
@@ -339,6 +339,7 @@ class App extends Component {
                 exact path="/dataEntry"
                 render={() => <DataEntry
                   {...this.state}
+                  user={this.state.user}
                   usersMetrics={this.state.usersMetrics}
                   retMetricCalculations={this.retrieveMetricCalculations}
                 />}

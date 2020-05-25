@@ -46,8 +46,10 @@ export class DataEntry extends Component {
     }
 
     componentDidMount() {
+        this.retrieveUsersMetricAreas()
         this.checkCurrentDateActuals()
         this.checkCurrentDateTargets()
+        console.log(this.props)
     }
 
     componentDidUpdate() {
@@ -77,8 +79,8 @@ export class DataEntry extends Component {
             this.enableActuals()
             // Display error messaging
         } else {
-            console.log("Current date is within latter half of the month!")
-            console.log("Data cannot be submitted without admin permissions")
+            // console.log("Current date is within latter half of the month!")
+            // console.log("Data cannot be submitted without admin permissions")
             this.setState((state) => {
                 state.errorMsg = "Deadline has been passed for entering actuals for previous month. Contact admin to change permissions"
             })
@@ -119,6 +121,31 @@ export class DataEntry extends Component {
         })
     }
 
+    retrieveUsersMetricAreas = () => {
+        let rootPath = firebase.database().ref('metricAreas')
+        rootPath.once('value', (snapshot) => {
+          let info = snapshot.val()
+          let keys = Object
+          .keys(info);
+          let ownerMap = new Map()
+    
+          keys.map((key) => {
+            let currentOwners = info[key].owners
+            for (var user in currentOwners) {
+              if (currentOwners[user].userID === this.props.user.uid) {
+                ownerMap.set(key, info[key])
+              }
+            }
+          })
+          this.setState((state) => {
+            state.metrics = ownerMap;
+            return state;
+          })
+          // this.updateMetricAreas(ownerMap)
+        })      
+      // }
+    }
+
     // Allows user to submit data entry for actuals.
     enableActuals() {
         this.setState((state) => {
@@ -136,12 +163,12 @@ export class DataEntry extends Component {
     }
 
     // Sets current state of metric area ID to button that was clicked
-    setMetric(name, id) {
-        console.log(name)
-        console.log(id)
+    setMetric(name, id, actual, target) {
         this.setState((state) => {
             state.metricAreaID = id
             state.metricAreaName = name
+            state.metricActualEnabled = actual
+            state.metricTargetEnabled = target
             return state
         })
         this.retrieveMetricAreaCalculations()
@@ -196,10 +223,6 @@ export class DataEntry extends Component {
         })
     }
 
-    checkCalculationEnabled() {
-        // let rootPath = firebase.database().ref('')
-    }
-
     // If the current month is January
     // return last year's year
     checkIfLastYear(month) {
@@ -231,14 +254,25 @@ export class DataEntry extends Component {
 
         let timeObj = this.checkIfLastYear(month)
 
-        this.setState((state) => {
-            state.radio = val
-            state.actualEn = true
-            state.adminActualEn = adminEnabled
-            state.tfValue = timeObj.month
-            state.targetEn = false
-            return state
-        })
+       let userP = this.state.metricActualEnabled
+
+       console.log(userP)
+
+        if (adminEnabled || userP) {
+            this.setState((state) => {
+                state.radio = val
+                state.actualEn = true
+                state.adminActualEn = adminEnabled
+                state.tfValue = timeObj.month
+                state.targetEn = false
+                return state
+            })
+        } else {
+            console.log("Test")
+            this.setState((state) => {
+                state.actualDisabledMsg = "Permissions to submit actuals are currently disabled or past the deadline. Contact your administrator."
+            })
+        }
     }
 
     updateTCheckForm(event) {
@@ -613,12 +647,15 @@ export class DataEntry extends Component {
 
     // Represents metric area elements to render on page.
     metricAreaElements() {
-        const metricAreaElements = Array.from(this.props.usersMetrics.entries()).map((key) => {
+        const metricAreaElements = Array.from(this.state.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a 
             // list of props containing information about that specific metric
+            console.log(key[1].metricActualEnabled)
             return <MetricAreaButton
                 metricName={key[1].metricName}
                 metricID={key[1].metricID}
+                metricActualEnabled={key[1].metricActualEnabled}
+                metricTargetEnabled={key[1].metricTargetEnabled}
                 metricFunc={this.setMetric}
             />
         })
@@ -635,15 +672,6 @@ export class DataEntry extends Component {
             </section>
         </div>)
 
-        // if (this.state.selectedMetricAreaCalculations) {
-        //     content = (
-        //         <div>
-        //             <section id="forms">
-        //                 {dataEntryForm}
-        //             </section>
-        //         </div>
-        //     )
-        // } else {
         let content = (
             <div>
                 <section class="entry">
@@ -684,6 +712,7 @@ export class DataEntry extends Component {
 // will render that metric area's calculations
 class MetricAreaButton extends Component {
     componentDidUpdate() {
+        console.log(this.props.metricActualEnabled)
     }
 
     render() {
@@ -693,7 +722,7 @@ class MetricAreaButton extends Component {
                 class='selection'
                 type={typeString}
                 value={typeString}
-                onClick={() => this.props.metricFunc(this.props.metricName, this.props.metricID)}
+                onClick={() => this.props.metricFunc(this.props.metricName, this.props.metricID, this.props.metricActualEnabled, this.props.metricTargetEnabled)}
             >
                 {typeString}
             </button>

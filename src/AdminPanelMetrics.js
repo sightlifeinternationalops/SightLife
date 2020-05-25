@@ -151,6 +151,7 @@ export class AdminPanelMetrics extends Component {
                 metricName: this.state.MetricName,
                 metricID: id,
                 metricActualEnabled: false, // Default is false, prevents users from altering actuals
+                metricTargetEnabled: false,
                 metricArchived: false
             })
 

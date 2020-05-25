@@ -32,6 +32,10 @@ export class AdminPanelUserPermissions extends Component {
         this.retrieveCurrentUsers()
     }
 
+    componentDidUpate() {
+        console.log(this.state)
+    }
+
     // Retrieves a list of all current users
     // in SightLife
     retrieveCurrentUsers() {
@@ -229,12 +233,18 @@ export class AdminPanelUserPermissions extends Component {
     }
 
     handleMAToggle(metricActualEnabled) {
+        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+            metricActualEnabled: metricActualEnabled
+        })
         this.setState({
             metricActualEnabled
         })
     }
 
     handleMTToggle(metricTargetEnabled) {
+        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+                metricTargetEnabled: metricTargetEnabled
+        })
         this.setState({
             metricTargetEnabled
         })
@@ -335,11 +345,11 @@ class MetricAreaInfo extends Component {
                     <span> Data Entry for Actuals:</span>
                 </label>
                 <Switch
-                    onChange={this.props.handleMTToggle}
+                    onChange={this.props.handleMAToggle}
                     className="react-switch"
                     uncheckedIcon={false}
                     checkedIcon={false}
-                    checked={this.props.metricTargetEnabled} />
+                    checked={this.props.metricActualEnabled} />
                 <label>
                     <span> Data Entry for Targets:</span>
                 </label>
@@ -347,8 +357,8 @@ class MetricAreaInfo extends Component {
                     className="react-switch"
                     uncheckedIcon={false}
                     checkedIcon={false}
-                    checked={this.props.metricActualEnabled}
-                    onChange={this.props.handleMAToggle} />
+                    checked={this.props.metricTargetEnabled}
+                    onChange={this.props.handleMTToggle} />
             </div>
         )
         let entryContent = null
