@@ -230,6 +230,10 @@ export class AdminPanelUserPermissions extends Component {
         firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
             owners
         })
+        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+            metricActualEnabled: this.state.metricActualEnabled,
+            metricTargetEnabled: this.state.metricTargetEnabled
+        })
     }
 
     // Closes modal form
@@ -250,18 +254,18 @@ export class AdminPanelUserPermissions extends Component {
     }
 
     handleMAToggle(metricActualEnabled) {
-        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
-            metricActualEnabled: metricActualEnabled
-        })
+        // firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+        //     metricActualEnabled: metricActualEnabled
+        // })
         this.setState({
             metricActualEnabled
         })
     }
 
     handleMTToggle(metricTargetEnabled) {
-        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
-                metricTargetEnabled: metricTargetEnabled
-        })
+        // firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+        //         metricTargetEnabled: metricTargetEnabled
+        // })
         this.setState({
             metricTargetEnabled
         })
