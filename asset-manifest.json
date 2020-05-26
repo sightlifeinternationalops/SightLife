@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.182b64ec.chunk.css",
-    "main.js": "/SightLife/static/js/main.8ce96844.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.8ce96844.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.1beadfa1.chunk.css",
+    "main.js": "/SightLife/static/js/main.71f2fc54.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.71f2fc54.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js": "/SightLife/static/js/2.3278d30a.chunk.js",
     "static/js/2.3278d30a.chunk.js.map": "/SightLife/static/js/2.3278d30a.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.568ef78a4c8d72714e05b92c33a66b5f.js": "/SightLife/precache-manifest.568ef78a4c8d72714e05b92c33a66b5f.js",
+    "precache-manifest.ceffb5420dd85a9621e90769557491d3.js": "/SightLife/precache-manifest.ceffb5420dd85a9621e90769557491d3.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.182b64ec.chunk.css.map": "/SightLife/static/css/main.182b64ec.chunk.css.map",
+    "static/css/main.1beadfa1.chunk.css.map": "/SightLife/static/css/main.1beadfa1.chunk.css.map",
     "static/js/2.3278d30a.chunk.js.LICENSE.txt": "/SightLife/static/js/2.3278d30a.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
@@ -40,7 +40,7 @@
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js",
-    "static/css/main.182b64ec.chunk.css",
-    "static/js/main.8ce96844.chunk.js"
+    "static/css/main.1beadfa1.chunk.css",
+    "static/js/main.71f2fc54.chunk.js"
   ]
 }
