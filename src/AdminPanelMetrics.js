@@ -180,8 +180,11 @@ export class AdminPanelMetrics extends Component {
                 
                 <form className="metricBox">
                     <div>
+                    <button className="close-button"
+                            onClick={(e) => this.closeModal(e)}>
+                            X
+                        </button>
                         <h2>Adding New Metric Area</h2>
-                        
                         <label>
                             <input 
                             onChange={(e) => this.handleChange(e)}
@@ -189,16 +192,10 @@ export class AdminPanelMetrics extends Component {
                         </label>
                     </div>
 
-                    <button
+                    <button class="submit"
                         onClick={(e) => this.submitForm(e)}>
                         Submit
                     </button>
-
-                    <button 
-                        onClick={(e) => this.closeModal(e)}>
-                        Cancel
-                    </button>
-
                 </form>
             </div>
         )
@@ -226,7 +223,7 @@ export class AdminPanelMetrics extends Component {
                         </label>
                     </div>  
                     
-                    <button
+                    <button className="submit"
                         onClick={(e) => this.submitMetricInfo(e)}>
                         Save
                     </button>

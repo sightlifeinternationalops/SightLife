@@ -287,7 +287,7 @@ export class AdminPanelMetricCalcs extends Component {
                         <div>
                             <button className="unarchive"
                                 onClick={(e) => this.unarchiveMetricCalc(e)}>
-                                Unarchive
+                                Revive
                                 </button>
                         </div>
                     </form>
