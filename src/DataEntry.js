@@ -163,10 +163,14 @@ export class DataEntry extends Component {
           .keys(info);
           let ownerMap = new Map()
     
+        console.log(this.props.user.uid)
+
           keys.map((key) => {
             let currentOwners = info[key].owners
             for (var user in currentOwners) {
-              if (currentOwners[user].userID === this.props.user.uid) {
+                console.log(currentOwners[user])
+                console.log(currentOwners[user].userID)
+              if (currentOwners[user].userMetricID === this.props.user.uid) {
                 ownerMap.set(key, info[key])
               }
             }
