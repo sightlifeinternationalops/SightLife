@@ -56,8 +56,8 @@ export class SignIn extends Component {
                 </div>
 
 
-                <div>
-                    <Link id="forgotPassword" to={'/Forgotpassword'}>Forgot Password?</Link>
+                <div id="forgotPassword" >
+                    <Link to={'/Forgotpassword'}><strong>Forgot Password?</strong></Link>
                 </div>
                 <div>
                     <button
@@ -69,7 +69,7 @@ export class SignIn extends Component {
                 </div>
 
                 <div class='account2'>
-                    <a class='create'> <Link to={'/Createaccount'}> Create Account</Link></a>
+                    <a class='create'> <Link to={'/Createaccount'}> <strong>Create Account</strong></Link></a>
                 </div>
             </div>
         )
