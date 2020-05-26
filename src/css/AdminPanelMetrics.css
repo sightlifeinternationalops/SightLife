@@ -90,7 +90,7 @@ button.selection {
 .metricBox h2, input {
   margin-bottom: 1rem
 }
-.metricBox button {
+.metricBox .submit {
   padding-left: 8px;
   padding-right: 8px;
   margin-left: 10px;

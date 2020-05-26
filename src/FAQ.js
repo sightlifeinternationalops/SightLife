@@ -34,11 +34,6 @@ export class FAQ extends Component {
                     </p>
                     <img class="FAQ1" src={ FAQ2 } />
 
-                    <h3 class="questions"> What if I want to change my target metric calculation, metric or targets?</h3>
-                    <p> Contact the admin owner and they will change the settings that enable you to re-enter the data 
-                        as needed. 
-                    </p>
-
                     <h3 class="questions"> Can I add another metric owner? </h3>
                     <p> Only the admin can add another metric owner. They can do this by accessing the "user-permissions" tab
                         on the admin panel. 
