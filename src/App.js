@@ -80,7 +80,7 @@ class App extends Component {
       .catch((err) => {
         this.setState({ errorMessage: err.message })
       })
-    window.location = "/#/"
+    window.location = "/SightLife/#/"
   }
 
   // Create a user account
