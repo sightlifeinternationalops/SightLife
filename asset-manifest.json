@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.72bf1ad8.chunk.css",
-    "main.js": "/SightLife/static/js/main.15b40f9c.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.15b40f9c.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.1e992367.chunk.css",
+    "main.js": "/SightLife/static/js/main.2e1bb525.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.2e1bb525.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js": "/SightLife/static/js/2.3278d30a.chunk.js",
     "static/js/2.3278d30a.chunk.js.map": "/SightLife/static/js/2.3278d30a.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.c9bee40cd9765ca88dd6361531f20a66.js": "/SightLife/precache-manifest.c9bee40cd9765ca88dd6361531f20a66.js",
+    "precache-manifest.fdba64f441f05552b23a4e02dba17964.js": "/SightLife/precache-manifest.fdba64f441f05552b23a4e02dba17964.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.72bf1ad8.chunk.css.map": "/SightLife/static/css/main.72bf1ad8.chunk.css.map",
+    "static/css/main.1e992367.chunk.css.map": "/SightLife/static/css/main.1e992367.chunk.css.map",
     "static/js/2.3278d30a.chunk.js.LICENSE.txt": "/SightLife/static/js/2.3278d30a.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
@@ -40,7 +40,7 @@
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js",
-    "static/css/main.72bf1ad8.chunk.css",
-    "static/js/main.15b40f9c.chunk.js"
+    "static/css/main.1e992367.chunk.css",
+    "static/js/main.2e1bb525.chunk.js"
   ]
 }
