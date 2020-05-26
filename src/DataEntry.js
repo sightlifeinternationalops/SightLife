@@ -69,7 +69,8 @@ export class DataEntry extends Component {
                 keys.map((key) => {
                     console.log(key)
                     console.log(info[key])
-                    if (info[key].userID === this.props.user.uid) {
+                    console.log(this.props.user.uid)
+                    if (info[key].userMetricID === this.props.user.uid) {
                         console.log("Current user is an admin")
                         this.setState((state) => {
                             state.adminPermissions = true
