@@ -387,20 +387,6 @@ class MetricAreaInfo extends Component {
         let entryContent = null
         let buttonContent = null
 
-        // if (!this.props.enableEdit) {
-        //     buttonContent = (
-        //         <button className="editButton" onClick={() => this.props.editMetricOwners()}>
-        //             Edit
-        //         </button>
-        //     )
-        // } else {
-        //     buttonContent = (
-        //         <button className="editButton" onClick={() => this.props.cancelMetricOwners()}>
-        //             Finish
-        //         </button>
-        //     )
-        // }
-
         buttonContent = (
             <button className="editButton" onClick={(e) => this.props.saveChanges(e)}>
                 Save
