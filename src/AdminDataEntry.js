@@ -234,8 +234,6 @@ export class AdminDataEntry extends Component {
 }
 
 class MetricAreaComponent extends Component {
-
-
     render() {
         let test = this.props.enteredData ? <img className="tick" src={Tick}/> : <img className="cross" src={Cross}/>
 

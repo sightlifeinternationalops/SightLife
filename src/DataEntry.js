@@ -29,8 +29,8 @@ export class DataEntry extends Component {
             selectedMetricAreaCalculations: null, // Represents the chosen metric area calculation to populate
             metricAreaID: null, // Holds metric area ID
             metricAreaName: null, // Holds metric area name
-            canEditActuals: false, // Determines users ability to enter data for actuals
-            canEditTargets: false, // Determines users ability to enter data for targets
+            // canEditActuals: false, // Determines users ability to enter data for actuals
+            // canEditTargets: false, // Determines users ability to enter data for targets
             currentYear: new Date(), // Used for entering data for the current year
             // tfValue: 1, // Will always default to January
             selectTF: "metricGoalsMonths", // Will always default to Months
@@ -50,7 +50,6 @@ export class DataEntry extends Component {
         this.retrieveAdminUsers()
         this.checkCurrentDateActuals()
         this.checkCurrentDateTargets()
-        console.log(this.props)
     }
 
     componentDidUpdate() {
@@ -83,13 +82,6 @@ export class DataEntry extends Component {
         })
     }
 
-    // setAdminUsers(users) {
-    //     this.setState((state) => {
-    //         state.currentAdmins = users
-    //         return state
-    //     })
-    // }
-
     // Checks the current date of the month. If it is the first 3 months of the year
     // the user can enter target data for the year.
     // Note: To allow admin panel compatability to enable users to alter
@@ -106,6 +98,8 @@ export class DataEntry extends Component {
         let currentDay = currentDate.getDate()
 
         let checkActuals = this.checkActualEnabled()
+
+        console.log(checkActuals)
 
         // Check firebase to see if editing actuals is enabled
         // Allow user to submit entry for actuals if 
@@ -143,7 +137,10 @@ export class DataEntry extends Component {
     checkActualEnabled() {
         firebase.database().ref('dataEntrySettings/actualEnabled').once('value', (snapshot) => {
             let info = snapshot.val()
-            return info
+            this.setState((state) => {
+                state.canEditActuals = info
+                return state
+            })
         })
     }
 
@@ -151,7 +148,10 @@ export class DataEntry extends Component {
     checkTargetEnabled() {
         firebase.database().ref('dataEntrySettings/targetEnabled').once('value', (snapshot) => {
             let info = snapshot.val()
-            return info
+            this.setState((state) => {
+                state.canEditTargets = info
+                return state
+            })
         })
     }
 
@@ -201,6 +201,7 @@ export class DataEntry extends Component {
             state.metricAreaName = name
             state.metricActualEnabled = actual
             state.metricTargetEnabled = target
+            state.selectedMetricAreaCalculations = null
             return state
         })
         this.retrieveMetricAreaCalculations()
@@ -270,6 +271,8 @@ export class DataEntry extends Component {
             year: year
         }
 
+        console.log(timeObj)
+
         return timeObj
     }
 
@@ -280,13 +283,15 @@ export class DataEntry extends Component {
     updateACheckForm(event) {
         let val = (event.target.value)
 
-        let adminEnabled = this.checkActualEnabled()
+        let adminEnabled = this.state.canEditActuals
         let month = new Date()
         month = month.getMonth() + 1
 
         let timeObj = this.checkIfLastYear(month)
 
        let userP = this.state.metricActualEnabled
+
+       console.log(adminEnabled)
 
        console.log(userP)
 
@@ -311,7 +316,9 @@ export class DataEntry extends Component {
     updateTCheckForm(event) {
         let val = (event.target.value)
 
-        let adminEnabled = this.checkTargetEnabled()
+        let adminEnabled = this.state.canEditTargets
+
+        console.log(adminEnabled)
 
         let userP = this.state.metricTargetEnabled
 
@@ -685,6 +692,8 @@ export class DataEntry extends Component {
     renderDataEntryForm() {
         return <DataEntryForm
             {...this.state}
+            checkActualEnabled={this.checkActualEnabled}
+            checkTargetEnabled={this.checkTargetEnabled}
             updateSelectForm={this.updateSelectForm}
             updateRadioForm={this.updateRadioForm}
             updateTCheckForm={this.updateTCheckForm}
@@ -705,7 +714,6 @@ export class DataEntry extends Component {
         const metricAreaElements = Array.from(this.state.metrics.entries()).map((key) => {
             // Pass metricName, metricID into metricAreaCard as props then also pass in a 
             // list of props containing information about that specific metric
-            console.log(key[1].metricActualEnabled)
             return <MetricAreaButton
                 metricName={key[1].metricName}
                 metricID={key[1].metricID}
@@ -766,9 +774,6 @@ export class DataEntry extends Component {
 // Represents a single metric area to render. Clicking a button
 // will render that metric area's calculations
 class MetricAreaButton extends Component {
-    componentDidUpdate() {
-        console.log(this.props.metricActualEnabled)
-    }
 
     render() {
         let typeString = this.props.metricName

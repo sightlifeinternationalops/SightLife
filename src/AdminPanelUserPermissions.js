@@ -19,6 +19,7 @@ export class AdminPanelUserPermissions extends Component {
         this.removeMetricOwner = this.removeMetricOwner.bind(this)
         this.handleMAToggle = this.handleMAToggle.bind(this)
         this.handleMTToggle = this.handleMTToggle.bind(this)
+        this.saveChanges = this.saveChanges.bind(this)
 
         this.state = {
             currentMetricA: null,
@@ -72,7 +73,11 @@ export class AdminPanelUserPermissions extends Component {
                 if (key === "owners") {
                     let objectMap = info[key]
                     for (var object in objectMap) {
-                        userMap.set(object, objectMap[object].userName)
+                        // userMap.set(object, objectMap[object].userName)
+                        console.log(objectMap[object])
+                        let userInfoArray = [objectMap[object].userID, objectMap[object].userMetricID, objectMap[object].userName]
+                        userMap.set(object, userInfoArray)
+                        console.log(userMap)
                     }
                 }
             })
@@ -94,9 +99,10 @@ export class AdminPanelUserPermissions extends Component {
         })
     }
 
-    setMetricOwners(owners) {
+    setMetricOwners(owners, id) {
         this.setState((state) => {
             state.currentMetricAOwners = owners
+            state.firebaseUID = id
             return state
         })
     }
@@ -121,9 +127,9 @@ export class AdminPanelUserPermissions extends Component {
                 if (info[key].metricName === this.state.currentMetricA) {
                     for (var item in info[key].owners) {
                         if (info[key].owners[item].userName === removedItem) {
-                            let refPath = 'metricAreas/' + this.state.currentMetricID + '/owners/' + item
+                            // let refPath = 'metricAreas/' + this.state.currentMetricID + '/owners/' + item
 
-                            firebase.database().ref(refPath).remove()
+                            // firebase.database().ref(refPath).remove()
 
                             let usersInfo = this.state.currentMetricAOwners
                             usersInfo.delete(item)
@@ -198,21 +204,32 @@ export class AdminPanelUserPermissions extends Component {
         console.log(this.state)
         let rootPath = firebase.database().ref('metricAreas/' + this.state.currentMetricA + '/owners')
         let id = rootPath.push().getKey()
-        let userObject = {
-            userID: this.state.currentUserID,
-            userName: this.state.currentUserName,
-            userMetricID: id
-        }
-        firebase.database().ref('metricAreas/' + this.state.currentMetricID + '/owners/' + id.toString()).update({
-            userID: this.state.currentUserID,
-            userName: this.state.currentUserName,
-            userMetricID: id
+        let userArray = [
+            id,
+            this.state.currentUserID,
+            this.state.currentUserName
+        ]
+        let usersMap = this.state.currentMetricAOwners
+        usersMap.set(id, userArray)
+        this.setMetricOwners(usersMap, id)
+        this.cancelOwnerModal(e)
+    }
+
+    saveChanges(e) {
+        e.preventDefault()
+        var owners = {}
+
+        Array.from(this.state.currentMetricAOwners.entries()).map((key) => {
+            owners[key[0]] = {
+                userID: key[1][0],
+                userMetricID: key[1][1],
+                userName: key[1][2]
+            }
         })
 
-        let usersMap = this.state.currentMetricAOwners
-        usersMap.set(id, userObject.userName)
-        this.setMetricOwners(usersMap)
-        this.cancelOwnerModal(e)
+        firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
+            owners
+        })
     }
 
     // Closes modal form
@@ -311,6 +328,7 @@ export class AdminPanelUserPermissions extends Component {
                             handleMAToggle={this.handleMAToggle}
                             handleMTToggle={this.handleMTToggle}
                             saveAT={this.saveAT}
+                            saveChanges={this.saveChanges}
                         />
                         {form}
                     </div>
@@ -328,8 +346,9 @@ class MetricAreaInfo extends Component {
     // Represents metric area owners to render.
     metricAreaOwners() {
         const metricAreaOwners = Array.from(this.props.currentMetricAOwners.entries()).map((key) => {
+            console.log(key)
             return <MetricAreaOwner
-                owner={key[1]}
+                owner={key[1][2]}
                 enableEdit={this.props.enableEdit}
                 removeMetricOwner={this.props.removeMetricOwner}
             />
@@ -364,19 +383,26 @@ class MetricAreaInfo extends Component {
         let entryContent = null
         let buttonContent = null
 
-        if (!this.props.enableEdit) {
-            buttonContent = (
-                <button className="editButton" onClick={() => this.props.editMetricOwners()}>
-                    Edit
-                </button>
-            )
-        } else {
-            buttonContent = (
-                <button className="editButton" onClick={() => this.props.cancelMetricOwners()}>
-                    Finish
-                </button>
-            )
-        }
+        // if (!this.props.enableEdit) {
+        //     buttonContent = (
+        //         <button className="editButton" onClick={() => this.props.editMetricOwners()}>
+        //             Edit
+        //         </button>
+        //     )
+        // } else {
+        //     buttonContent = (
+        //         <button className="editButton" onClick={() => this.props.cancelMetricOwners()}>
+        //             Finish
+        //         </button>
+        //     )
+        // }
+
+        buttonContent = (
+            <button className="editButton" onClick={(e) => this.props.saveChanges(e)}>
+                Save
+            </button>
+        )
+
         entryContent = (
             <div>
                 <button
@@ -432,7 +458,7 @@ class MetricAreaButton extends Component {
 // Represents a single metric area owner.
 class MetricAreaOwner extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> :
+        let button = 
             <button className="remove"
                 onClick={() => { this.props.removeMetricOwner(this.props.owner, this.props.currentMetricA) }}>-</button>
 
