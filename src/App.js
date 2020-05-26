@@ -482,7 +482,7 @@ export class NavBar extends Component {
 
     return (
       <div className="navbar navbar-expand-lg navbar-light">
-        <a className="navbar-brand" href="/">
+        <a className="navbar-brand" href="/SightLife/#/">
           <img src={SightLife} alt="SightLife logo" />
         </a>
 
