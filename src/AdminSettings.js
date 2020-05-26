@@ -46,7 +46,9 @@ export class AdminSettings extends Component {
             if (info) {
                 let keys = Object.keys(info)
                 keys.map((key) => {
-                    usersMap.set(key, info[key])
+                    console.log(key)
+                    console.log(info[key])
+                    usersMap.set(key, [info[key].userMetricID, info[key].adminName, info[key].adminID])
                 })
             }
 
@@ -63,10 +65,11 @@ export class AdminSettings extends Component {
 
     renderAdminUsers() {
         const adminElements = Array.from(this.state.currentAdmins.entries()).map((key) => {
+            console.log(key)
             return <AdminItem
-                admin={key[1].userName}
-                adminID={key[1].adminID}
-                userID={key[1].userID}
+                admin={key[1][1]}
+                adminID={key[1][2]}
+                userID={key[1][0]}
                 removeAdmin={this.removeAdmin}
                 enableEdit={this.state.enableEdit}
             />
@@ -75,20 +78,20 @@ export class AdminSettings extends Component {
     }
 
     removeAdmin(removedAdmin) {
-        let rootPath = firebase.database().ref('admins')
+        // let rootPath = firebase.database().ref('admins')
 
-        rootPath.once('value', (snapshot) => {
-            let info = snapshot.val();
-            let keys = Object.keys(info)
+        // rootPath.once('value', (snapshot) => {
+        //     let info = snapshot.val();
+        //     let keys = Object.keys(info)
 
-            keys.map((key) => {
-                if (key === removedAdmin) {
-                    let refPath = 'admins/' + removedAdmin
-                    firebase.database().ref(refPath).remove()
-                }
-            })
-        })
-
+        //     keys.map((key) => {
+        //         if (key === removedAdmin) {
+        //             let refPath = 'admins/' + removedAdmin
+        //             firebase.database().ref(refPath).remove()
+        //         }
+        //     })
+        // })
+        console.log(removedAdmin)
         let usersMap = this.state.currentAdmins
         usersMap.delete(removedAdmin)
         this.setAdminUsers(usersMap)
@@ -127,21 +130,16 @@ export class AdminSettings extends Component {
         if (adminExist) {
             let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
             let id = rootString.push().getKey()
-            let userObject = {
-                userID: this.state.currentUserID,
-                userName: this.state.currentUserName,
-                adminID: id
-            }
-            firebase.database().ref('admins/' + id.toString()).update({
-                userID: this.state.currentUserID,
-                userName: this.state.currentUserName,
-                adminID: id
-            })
+
+            let userArray = [
+                this.state.currentUserID,
+                this.state.currentUserName,
+                id
+            ]
 
             let usersMap = this.state.currentAdmins
-            usersMap.set(id, userObject)
+            usersMap.set(id, userArray)
             this.setAdminUsers(usersMap)
-
             this.closeForm()
         } else {
             // Need to make a error display 
@@ -243,18 +241,18 @@ export class AdminSettings extends Component {
     }
 
     handleAToggle(actualToggle) {
-        firebase.database().ref('dataEntrySettings').update({
-            actualEnabled: actualToggle
-        })
+        // firebase.database().ref('dataEntrySettings').update({
+        //     actualEnabled: actualToggle
+        // })
         this.setState({
             actualToggle
         })
     }
 
     handleTToggle(targetToggle) {
-        firebase.database().ref('dataEntrySettings').update({
-            targetEnabled: targetToggle
-        })
+        // firebase.database().ref('dataEntrySettings').update({
+        //     targetEnabled: targetToggle
+        // })
         this.setState({
             targetToggle
         })
@@ -287,10 +285,27 @@ export class AdminSettings extends Component {
         })
     }
 
-    saveSettings(target, actual) {
-        firebase.database().ref('dataEntrySettings').update({
-            actualEnabled: actual,
-            targetEnabled: target
+    saveSettings() {
+        var admins = {}
+
+        Array.from(this.state.currentAdmins.entries()).map((key) => {
+            console.log(key)
+            admins[key[0]] = {
+                adminID: key[1][2],
+                userMetricID: key[1][0],
+                adminName:  key[1][1],
+            }
+        })
+
+        console.log(admins)
+
+        firebase.database().ref().update({
+            admins
+        })
+
+        firebase.database().ref("dataEntrySettings").update({
+            actualEnabled: this.state.actualToggle,
+            targetEnabled: this.state.targetToggle
         })
     }
 
@@ -299,7 +314,7 @@ export class AdminSettings extends Component {
         let form = this.addForm()
         const adminElements = this.renderAdminUsers()
 
-        if (this.state.enableEdit) {
+        // if (this.state.enableEdit) {
             content = (
                 <div class="adminButtons">
                     <button className="addAdmin"
@@ -307,24 +322,24 @@ export class AdminSettings extends Component {
                         Add Admin
                     </button>
 
-                    <button className="cancel"
+                    {/* <button className="cancel"
                         onClick={() => this.cancelEdit()}>
                         Cancel
-                    </button>
+                    </button> */}
                 </div>
             )
-        } else {
-            content = (
-                <div class="adminButtons">
-                    <button
-                        className="save2"
-                        value="test"
-                        onClick={() => this.editAdminInfo()}>
-                        Edit Admins
-                </button>
-                </div>
-            )
-        }
+        // } else {
+        //     content = (
+        //         <div class="adminButtons">
+        //             <button
+        //                 className="save2"
+        //                 value="test"
+        //                 onClick={() => this.editAdminInfo()}>
+        //                 Edit Admins
+        //         </button>
+        //         </div>
+        //     )
+        // }
 
         return (
             <div className="body">
@@ -354,7 +369,7 @@ export class AdminSettings extends Component {
 
                         {form}
 
-                        <div class="columnSettings">
+                        <div id="dataSettings" class="columnSettings">
                             <section class="PermInfo">
                                 <div class="PermissionBox">
                                     <h3 class='PermissionText'> Data Entry Form Settings </h3>
@@ -380,26 +395,17 @@ export class AdminSettings extends Component {
                                             onChange={this.handleTToggle}
                                             checked={this.state.targetToggle}
                                         />
-                                        {/* <label>
-                                            <span>Actual Month Selection:</span></label>
-                                        <Switch
-                                            className="react-switch"
-                                            uncheckedIcon={false}
-                                            checkedIcon={false}
-                                            onChange={this.handleTToggle}
-                                            checked={this.state.targetToggle}
-                                        /> */}
                                     </div>
                                 </div>
 
                             </section>
                         </div>
 
-                        {/* <div class='Save2Button'>
+                        <div class='Save2Button'>
                             <button
-                                onClick={() => this.saveSettings(this.state.targetToggle, this.state.actualToggle)}
+                                onClick={() => this.saveSettings()}
                                 class='save2' type="Save" value="Save"> Save </button>
-                        </div> */}
+                        </div>
                     </div>
 
                 </main>
@@ -420,7 +426,7 @@ class UserItem extends Component {
 
 class AdminItem extends Component {
     render() {
-        let button = !this.props.enableEdit ? <div></div> :
+        let button =
             <button className="remove"
                 onClick={() => { this.props.removeAdmin(this.props.adminID) }}>-
         </button>
