@@ -237,3 +237,10 @@ section.entry {
         padding-bottom: 0;
     }
 }
+
+@media (min-width: 1300px) {
+    div.datadeck {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+}
