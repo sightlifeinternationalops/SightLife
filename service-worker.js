@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/SightLife/precache-manifest.fb7bfea6a654e7a1f68e355636b04c00.js"
+  "/SightLife/precache-manifest.6e16e8c3be97bd8726e44f5484eb4e6d.js"
 );
 
 self.addEventListener('message', (event) => {
