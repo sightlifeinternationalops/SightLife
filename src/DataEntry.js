@@ -170,8 +170,9 @@ export class DataEntry extends Component {
             let currentOwners = info[key].owners
             for (var user in currentOwners) {
                 console.log(currentOwners[user])
-                console.log(currentOwners[user].userID)
+                console.log(currentOwners[user].userMetricID)
               if (currentOwners[user].userMetricID === this.props.user.uid) {
+                console.log("Owner of this metric")
                 ownerMap.set(key, info[key])
               }
             }
@@ -817,11 +818,9 @@ class MetricAreaCalcButton extends Component {
 // for data entry. 
 export class DataEntryForm extends Component {
     componentDidMount() {
-        console.log(this.props)
     }
 
     componentDidUpdate() {
-        console.log(this.props)
     }
 
     timeDisplayType(selectTf) {
