@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.1beadfa1.chunk.css",
-    "main.js": "/SightLife/static/js/main.08c4971c.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.08c4971c.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.60ed6cb2.chunk.css",
+    "main.js": "/SightLife/static/js/main.7f8ab589.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.7f8ab589.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js": "/SightLife/static/js/2.3278d30a.chunk.js",
     "static/js/2.3278d30a.chunk.js.map": "/SightLife/static/js/2.3278d30a.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.6e16e8c3be97bd8726e44f5484eb4e6d.js": "/SightLife/precache-manifest.6e16e8c3be97bd8726e44f5484eb4e6d.js",
+    "precache-manifest.b5b577227bc688dd98845c3a3291c467.js": "/SightLife/precache-manifest.b5b577227bc688dd98845c3a3291c467.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.1beadfa1.chunk.css.map": "/SightLife/static/css/main.1beadfa1.chunk.css.map",
+    "static/css/main.60ed6cb2.chunk.css.map": "/SightLife/static/css/main.60ed6cb2.chunk.css.map",
     "static/js/2.3278d30a.chunk.js.LICENSE.txt": "/SightLife/static/js/2.3278d30a.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
@@ -40,7 +40,7 @@
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
     "static/js/2.3278d30a.chunk.js",
-    "static/css/main.1beadfa1.chunk.css",
-    "static/js/main.08c4971c.chunk.js"
+    "static/css/main.60ed6cb2.chunk.css",
+    "static/js/main.7f8ab589.chunk.js"
   ]
 }
