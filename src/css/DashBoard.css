@@ -193,14 +193,13 @@ button.metrics.btn.btn-secondary {
 }
 
 div.metricsDeck.card-deck {
-    align-items: center;
-    align-content: center;
-    justify-content: center;
+    align-items: left;
+    align-content: left;
+    justify-content: left;
     display: flex;
     flex-direction: row;
     flex-grow: 0;
 }
-
 
 .metrics {
     border:10px solid rgb(153, 145, 198);
@@ -325,5 +324,14 @@ h2.Atitle {
         margin-left:20%; 
         margin-right:20%;
         text-align: center;
+    }
+}
+
+@media (min-width: 1300px) {
+    div.metricsDeck.card-deck {
+        display: flex;
+        padding: 5rem;
+        margin-left: 15rem;
+        margin-right: 15rem;
     }
 }
