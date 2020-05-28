@@ -36,10 +36,6 @@ export class DashBoard extends Component {
         d3.selectAll("div.tooltip").remove();
     }
 
-
-
-
-
     barChart() {
         d3.selectAll("svg").remove();
         d3.selectAll("div.tooltip").remove();
@@ -60,7 +56,6 @@ export class DashBoard extends Component {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    
         var dataset = [];
         for(let i = 0; i <= 3; i++ ) {
             var actualsCounter = 0;
@@ -111,8 +106,8 @@ export class DashBoard extends Component {
         }
 
          if (datatype == "percent") {
-            actual = actual / actualsCounter
-            target = target / targetsCounter;
+            actual = Math.round(actual / actualsCounter)
+            target = Math.round(target / targetsCounter)
          }
 
           dataset[i] = {
@@ -137,17 +132,20 @@ export class DashBoard extends Component {
         .domain(['Actuals', 'Target'])
         .rangeRound([15, x0.bandwidth()]);
   
-      // Left Axis (Contains Left Ticks)
+    var maxValue = Math.max(actualRange[1] || 0, targetRange[1] || 0)
+      var minValue = Math.min(actualRange[0] || 0, targetRange[0] || 0)
+      if (minValue < 0) {
+          minValue = minValue - 5
+      }
       var y0 = d3.scaleLinear()
-      .domain([0, Math.max(actualRange[1] || 0, targetRange[1] || 0)])
-      .nice()
-      .range([height, 0]);
+        .domain([Math.min(0, minValue), maxValue])
+        .nice()
+        .range([height, 0]);
 
-  var maxValue = Math.max(actualRange[1] || 0, targetRange[1] || 0)
-  console.log(maxValue)
-  if (datatype == "percent") {
-      y0.domain([0, Math.max(100,maxValue)])
-  }
+        if (datatype == "percent") {
+            y0.domain ([Math.min(0, minValue), Math.max(100, maxValue)])
+        }
+      // Left Axis (Contains Left Ticks)
   
       var color = d3.scaleOrdinal()
         .range(["#D5D1E9", "#9991C6"]);
@@ -371,16 +369,20 @@ export class DashBoard extends Component {
             .rangeRound([0, width], .4);
         
         // What appears on the y-axis
-        var y0 = d3.scaleLinear()
-            .domain([0, Math.max(actualRange[1] || 0, targetRange[1] || 0)])
-            .range([height, 0]);
-    
         var maxValue = Math.max(actualRange[1] || 0, targetRange[1] || 0)
-        console.log(maxValue)
+      var minValue = Math.min(actualRange[0] || 0, targetRange[0] || 0)
+    if (minValue < 0) {
+        minValue = minValue - 5
+    }
+
+      var y0 = d3.scaleLinear()
+        .domain([Math.min(0, minValue), maxValue])
+        .nice()
+        .range([height, 0]);
+
         if (datatype == "percent") {
-            y0.domain([0, Math.max(100,maxValue)])
+            y0.domain ([Math.min(0, minValue), Math.max(100, maxValue)])
         }
-        console.log(y0)
 
 
         // X-AXIS (VISUALS)

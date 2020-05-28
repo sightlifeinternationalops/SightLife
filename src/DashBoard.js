@@ -245,7 +245,7 @@ export class DashBoard extends Component {
         .domain([0, Math.max(actualRange[1], targetRange[1])])
         .nice()
         .range([height, 0]);
-
+        
         if (datatype == "percent") {
             y0.domain ([0, 100])
         }
