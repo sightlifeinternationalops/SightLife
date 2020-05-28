@@ -73,13 +73,13 @@ export class CreateAccount extends Component {
     // If email doesn't end with @sightlife.org,
     // do not allow submission
     renderEmailIssues() {
-        // if (this.state.email == null || this.state.email.slice(-14) != "@sightlife.org") {
-        //     console.log("Email is not a valid sightlife email")
-        //     return false
-        // }
-        if (this.state.email == null || this.state.email == undefined) {
+        if (this.state.email == null || this.state.email.slice(-14) != "@sightlife.org") {
+            console.log("Email is not a valid sightlife email")
             return false
         }
+        // if (this.state.email == null || this.state.email == undefined) {
+        //     return false
+        // }
         return true
     }
 
