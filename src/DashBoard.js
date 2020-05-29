@@ -71,6 +71,19 @@ export class DashBoard extends Component {
         console.log(actual)
         switch (dataType) {
             case "money":
+                if (actualFloat >= targetFloat) {
+                    return "#50c53d"
+                } else {
+                    let subtractNum = targetFloat * 0.05
+                    let marginNum = targetFloat - subtractNum
+                    if (actualFloat >= marginNum) {
+                        return "#f9a354"
+                    } else if (actualFloat < targetFloat - 5) {
+                        return "#fe0000"
+                    } else {
+                        return "#FFFFFF"
+                    }
+                }
             case "number":
                 if (actualFloat >= targetFloat) {
                     return "#50c53d"
@@ -82,7 +95,7 @@ export class DashBoard extends Component {
                     } else if (actualFloat < targetFloat - 5) {
                         return "#fe0000"
                     } else {
-                        return "FFFFFF"
+                        return "#FFFFFF"
                     }
                 }
             case "percent":
@@ -94,7 +107,7 @@ export class DashBoard extends Component {
                     } else if (actualFloat < targetFloat - 5) {
                         return "#fe0000"
                     } else {
-                        return "FFFFFF"
+                        return "#FFFFFF"
                     }
                 }
             case "text":
@@ -232,7 +245,7 @@ export class DashBoard extends Component {
         .domain([0, Math.max(actualRange[1], targetRange[1])])
         .nice()
         .range([height, 0]);
-
+        
         if (datatype == "percent") {
             y0.domain ([0, 100])
         }
