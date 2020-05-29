@@ -70,6 +70,7 @@ background-color: rgba(0,0,0,0.4)
 background-color:white;
 margin: 15% 10%; /* 15% from the top and centered */
 padding: 20px;
+position: relative;
 border: 1px solid #888;
 width: 80%; /* Could be more or less, depending on screen size */
 }

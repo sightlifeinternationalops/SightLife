@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Spinner } from 'reactstrap';
 import './css/DataEntry.css';
 import './index.js';
 
@@ -9,6 +10,22 @@ import { createPortal } from 'react-dom';
 export class DataEntry extends Component {
     constructor(props) {
         super(props);
+
+        let currentDate = new Date()
+        let year = currentDate.getFullYear()
+        let month = currentDate.getMonth() + 1
+
+        // Revert to previous year and to month being December
+        // Since metric owners are entering data for the previous month,
+        // when the current month is January they need to be submitting
+        // for December of last year
+        if (month === 1) {
+            month = 12
+            year = year - 1
+        // Any other time set it one month back prior
+        } else {
+            month = month - 1
+        }
 
         this.setMetric = this.setMetric.bind(this)
         this.updateChange = this.updateChange.bind(this)
@@ -32,16 +49,20 @@ export class DataEntry extends Component {
             // canEditActuals: false, // Determines users ability to enter data for actuals
             // canEditTargets: false, // Determines users ability to enter data for targets
             currentYear: new Date(), // Used for entering data for the current year
-            // tfValue: 1, // Will always default to January
+            tfValue: month, // Will always default to current year
+            tfValueYear: year,
             selectTF: "metricGoalsMonths", // Will always default to Months
             actualEn: false,
             targetEn: false,
             preview: false,
+            loading: "none",
             month: "",
             lowlight: "", // Needed for firebase interaction
             highlight: "", // Needed for firebase interaction
             mitigation: "", // Needed for firebase interaction
-            metrics: new Map()
+            metrics: new Map(),
+            currentYear: year,
+            currentMonth: month
         }
     }
 
@@ -218,6 +239,7 @@ export class DataEntry extends Component {
     setCalculations(mapCalculations) {
         this.setState((state) => {
             state.currentMetricAreaCalculations = mapCalculations
+            state.loading = "block"
             return state
         })
     }
@@ -262,25 +284,26 @@ export class DataEntry extends Component {
         })
     }
 
-    // If the current month is January
-    // return last year's year
-    checkIfLastYear(month) {
-        let year = new Date()
-        year = year.getFullYear()
+    // // If the current month is January
+    // // return last year's year
+    // checkIfLastYear(month) {
+    //     // let year = new Date()
+    //     // year = year.getFullYear()
 
-        if (month === 1) {
-            year = year - 1
-        }
+    //     if (month === 1) {
+    //         month = 12
+    //         year = year - 1
+    //     }
 
-        let timeObj = {
-            month: month,
-            year: year
-        }
+    //     let timeObj = {
+    //         month: month,
+    //         year: year
+    //     }
 
-        console.log(timeObj)
+    //     console.log(timeObj)
 
-        return timeObj
-    }
+    //     return timeObj
+    // }
 
     // If admin allows users to enter data for the current month
     // Need to set tfValue here whenever month is selected
@@ -290,10 +313,10 @@ export class DataEntry extends Component {
         let val = (event.target.value)
 
         let adminEnabled = this.state.canEditActuals
-        let month = new Date()
-        month = month.getMonth() + 1
+        // let month = new Date()
+        // month = month.getMonth() + 1
 
-        let timeObj = this.checkIfLastYear(month)
+        // let timeObj = this.checkIfLastYear(month)
 
        let userP = this.state.metricActualEnabled
 
@@ -306,7 +329,7 @@ export class DataEntry extends Component {
                 state.radio = val
                 state.actualEn = true
                 state.adminActualEn = adminEnabled
-                state.tfValue = timeObj.month
+                // state.tfValue = timeObj.month
                 state.targetEn = false
                 return state
             })
@@ -388,9 +411,17 @@ export class DataEntry extends Component {
     // allow user to submit null values for highlights, lowlights,
     // and mitigation plans. 
     previewForm(t) {
+        console.log(this.state)
+
         if (t) {
             this.setState((state) => {
                 state.preview = true
+                state.invalidData = ""
+                state.invalidRadio = ""
+                state.invalidMetricCalc = ""
+                state.invalidMetricArea = ""
+                state.errorMsg = ""
+                state.dataSubmitted = ""
                 return state
             })
         }
@@ -417,13 +448,16 @@ export class DataEntry extends Component {
     check() {
         if (this.state.data && this.state.radio && this.state.data !== ""
             && this.state.currentMetricAreaCalculations.size >= 1
-            && this.state.selectedMetricAreaCalculations) {
+            && this.state.selectedMetricAreaCalculations && this.state.tfValue && this.state.tfValue !== "none") {
             return true
         }
         let errors = {} // Object to hold errors
 
         if (!this.state.data) {
             errors["invalidData"] = "A value must be entered"
+        }
+        if (!this.state.tfValue) {
+            errors["invalidTime"] = "A month or quarter or annual must be selected."
         }
         if (!this.state.radio) {
             errors["invalidRadio"] = "An actual or target must be selected"
@@ -451,7 +485,7 @@ export class DataEntry extends Component {
                         <h2 id='month'> Month <span class="required">*</span></h2>
                         <select
                             onChange={(e) => this.updateSelectForm(e)}>
-                            <option value="none">Select a month</option>
+                            <option disabled selected value="none">Select a month</option>
                             <option value={1}>January</option>
                             <option value={2}>February</option>
                             <option value={3}>March</option>
@@ -589,18 +623,15 @@ export class DataEntry extends Component {
     // as a JSON readable format.
     // Check database if enty already exists, if it does, replace values in database
     // otherwise, simply add the new data
-    submitForm(dataType, selectTF, tfValue, calcID, radio, data, highlight, lowlight, coe) {
+    submitForm(year, dataType, selectTF, tfValue, calcID, radio, data, highlight, lowlight, coe) {
         // Get necessary values for inputting into database...
         // Need: Month, metricCalculationID, and Year
 
-        // let year = new Date()
-        // year = year.getFullYear()
-        console.log(radio)
+        // let timeObj = this.checkIfLastYear(tfValue)
 
-        let timeObj = this.checkIfLastYear(tfValue)
-
-        let year = timeObj.year
-        let x = timeObj.month
+        // let year = timeObj.year
+        // let x = timeObj.month
+        let x = tfValue
 
         console.log(selectTF)
 
@@ -731,10 +762,21 @@ export class DataEntry extends Component {
         return metricAreaElements
     }
 
+    checkLoadingState() {
+        if (this.state.currentMetricAreaCalculations.size > 0) {
+            return true
+        } else {
+            return false
+        }
+    } 
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         const metricAreaCalculationsElements = this.metricAreaCalculations()
         const dataEntryForm = this.renderDataEntryForm()
+
+        let loadingContent = this.checkLoadingState() ? <div>{metricAreaCalculationsElements}</div> : <Spinner style={{display: this.state.loading}} color="primary"/>
+
         let formContent = (<div>
             <section id="forms">
                 {dataEntryForm}
@@ -756,7 +798,9 @@ export class DataEntry extends Component {
                     {/* Populate based on metric chosen */}
                     <h2 class='MetricTitles'> Metric <span class="required">*</span></h2>
                     <CardDeck className="datadeck">
-                        {metricAreaCalculationsElements}
+                        {/* <Spinner style={{display:"none"}}/>
+                        {metricAreaCalculationsElements} */}
+                        {loadingContent}
                     </CardDeck>
                     <div class="errorMsg">
                         <p>{this.state.invalidMetricCalc}</p>
@@ -764,7 +808,6 @@ export class DataEntry extends Component {
                 </section>
             </div>
         )
-        // }
 
         return (
             <div className="body">
@@ -783,6 +826,7 @@ class MetricAreaButton extends Component {
 
     render() {
         let typeString = this.props.metricName
+
         return (
             <button
                 class='selection'
@@ -847,12 +891,58 @@ export class DataEntryForm extends Component {
         return x
     }
 
+    test(value) {
+        let x = null
+            switch (value) {
+                case "1":
+                    x = "January";
+                    break;
+                case "2":
+                    x = "February";
+                    break;
+                case "3":
+                    x = "March";
+                    break;
+                case "4":
+                    x = "April";
+                    break;
+                case "5":
+                    x = "May";
+                    break;
+                case "6":
+                    x = "June"
+                    break;
+                case "7":
+                    x = "July";
+                    break;
+                case "8":
+                    x = "August"
+                    break;
+                case "9":
+                    x = "September"
+                    break;
+                case "10":
+                    x = "October"
+                    break;
+                case "11":
+                    x = "November"
+                    break;
+                case "12":
+                    x = "December"
+                    break;
+            }
+        return x
+    }
+
     render() {
         let content = null
         let timeDisplay = this.props.timeDisplay(this.props.selectTF)
         let dataDisplay = this.props.dataDisplay(this.props.selectedMetricAreaCalculationDataType)
         let timeDisplayType = this.timeDisplayType(this.props.selectTF)
         let selectTimeDisplay = null
+        
+        let monthDisplay = this.test(this.props.tfValue.toString())
+        let highlight = this.props.highlight !== "" ? <div style={{display:"inline-block"}}>{this.props.highlight}</div> : <div>No highlights</div>
 
         // Will switch content to be the preview
         if (this.props.preview) {
@@ -865,15 +955,15 @@ export class DataEntryForm extends Component {
                         {timeDisplayType}
                         <p>Data Type (Actual/Target): <b>{this.props.radio}</b></p>
                         <p>Data: <b>{this.props.data}</b></p>
-                        <p>Highlight: <b>{this.props.highlight}</b></p>
+                        <div style={{display:"inline-block"}}><p>Highlight: <b style={{display:"inline-block"}}>{highlight}</b></p></div>
                         <p>Lowlight: <b>{this.props.lowlight}</b></p>
-                        <p>Month: <b>{this.props.tfValue}</b></p>
-                        <p>MitigationPlan: <b>{this.props.mitigation}</b></p>
+                        <p>Month: <b>{monthDisplay}</b></p>
+                        <p>Mitigation Plan: <b>{this.props.mitigation}</b></p>
                     </div>
                     <button class="preview"
                         onClick={(e) => this.props.editForm(e)}>Edit Data</button>
                     <button class="preview"
-                        onClick={() => this.props.submitForm(this.props.selectedMetricAreaCalculationDataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
+                        onClick={() => this.props.submitForm(this.props.tfValueYear, this.props.selectedMetricAreaCalculationDataType, this.props.selectTF, this.props.tfValue, this.props.selectedMetricAreaCalculations,
                             this.props.radio, this.props.data, this.props.highlight,
                             this.props.lowlight, this.props.mitigation)}>
                         Submit
@@ -901,13 +991,21 @@ export class DataEntryForm extends Component {
                     </div>
                 )
             } else if (this.props.actualEn) {
-                selectTimeDisplay = (
-                    <div>
-                        <p>
-                            Inserting actual data for the previous month
-                        </p>
-                    </div>
-                )
+                if (this.props.selectTF === "metricGoalsAnnuals") {
+                    dataDisplay = (
+                        <div>
+                            Cannot enter actuals for annual information.
+                        </div>
+                    )
+                } else {
+                    selectTimeDisplay = (
+                        <div>
+                            <p>
+                                Inserting actual data for the previous month
+                            </p>
+                        </div>
+                    )
+                }
             }
             content = (
                 <div>
@@ -933,15 +1031,19 @@ export class DataEntryForm extends Component {
                             </p>
                         </div>
                         <div>
-                            <p>
+                            <p className="invalidError">
                                 {this.props.invalidRadio}
                             </p>
                         </div>
                         {selectTimeDisplay}
 
+                        <p className="invalidError">
+                            {this.props.invalidTime}
+                        </p>
+
                         {dataDisplay}
                         <div>
-                            <p>
+                            <p className="invalidError">
                                 {this.props.invalidData}
                             </p>
                         </div>

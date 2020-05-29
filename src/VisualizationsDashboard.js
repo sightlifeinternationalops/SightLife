@@ -695,6 +695,11 @@ export class DashBoard extends Component {
                             {yearElements}
                         </select>
                     </div>
+
+                    <div style={{textAlign:"center"}}>
+                        {this.props.calcErrorMsg}
+                    </div>
+
                 </div>
 
 

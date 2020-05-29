@@ -31,7 +31,7 @@ export class AdminSettings extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state)
+        // console.log(this.state)
         // this.retrieveAdminUsers()
     }
 
@@ -46,8 +46,6 @@ export class AdminSettings extends Component {
             if (info) {
                 let keys = Object.keys(info)
                 keys.map((key) => {
-                    console.log(key)
-                    console.log(info[key])
                     usersMap.set(key, [info[key].userMetricID, info[key].adminName, info[key].adminID])
                 })
             }
@@ -65,7 +63,7 @@ export class AdminSettings extends Component {
 
     renderAdminUsers() {
         const adminElements = Array.from(this.state.currentAdmins.entries()).map((key) => {
-            console.log(key)
+            // console.log(key)
             return <AdminItem
                 admin={key[1][1]}
                 adminID={key[1][2]}
@@ -78,20 +76,6 @@ export class AdminSettings extends Component {
     }
 
     removeAdmin(removedAdmin) {
-        // let rootPath = firebase.database().ref('admins')
-
-        // rootPath.once('value', (snapshot) => {
-        //     let info = snapshot.val();
-        //     let keys = Object.keys(info)
-
-        //     keys.map((key) => {
-        //         if (key === removedAdmin) {
-        //             let refPath = 'admins/' + removedAdmin
-        //             firebase.database().ref(refPath).remove()
-        //         }
-        //     })
-        // })
-        console.log(removedAdmin)
         let usersMap = this.state.currentAdmins
         usersMap.delete(removedAdmin)
         this.setAdminUsers(usersMap)
@@ -113,7 +97,8 @@ export class AdminSettings extends Component {
     }
 
     // Closes modal form for adding users
-    closeForm() {
+    closeForm(e) {
+        e.preventDefault()
         this.setState((state) => {
             state.modalDisplay = "none"
             return state
@@ -122,13 +107,16 @@ export class AdminSettings extends Component {
 
     addOwner(e) {
         e.preventDefault()
-        let adminExist = this.adminExists()
+        let admins = this.state.currentAdmins
+        // console.log(admins)
 
-        console.log(e.target.value)
+        var test
 
+        // console.log(test)
         // If the user does not exist, add them to the owners
-        if (adminExist) {
+        if (!test) {
             let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
+            // let rootString = firebase.database().ref('admins/')
             let id = rootString.push().getKey()
 
             let userArray = [
@@ -140,10 +128,14 @@ export class AdminSettings extends Component {
             let usersMap = this.state.currentAdmins
             usersMap.set(id, userArray)
             this.setAdminUsers(usersMap)
-            this.closeForm()
+            this.closeForm(e)
         } else {
             // Need to make a error display 
             console.log("Selected user is already an admin!")
+            this.setState((state) => {
+                state.userExists = "User is already an admin"
+                return state
+            })
         }
     }
 
@@ -151,13 +143,18 @@ export class AdminSettings extends Component {
     // If the user is already an admin, notify the system
     adminExists() {
         let admins = this.state.currentAdmins
-        let adminExist = true
+        // console.log(admins)
         admins.forEach((key) => {
-            if (key.userID === this.state.currentUserID) {
-                adminExist = false
+
+            console.log(key)
+
+            if (key[0] === this.state.currentUserID) {
+                console.log("test")
+                return true
+            } else {
+                return false
             }
         })
-        return adminExist
     }
 
     // Put in app and send down
@@ -194,7 +191,6 @@ export class AdminSettings extends Component {
     // Returns all current users in SightLife as 
     // <option> elements
     usersList() {
-        console.log(this.props.users)
         const usersElements = Array.from(this.props.users.entries()).map((key) => {
             let name = key[1].fName + " " + key[1].lName
             return <UserItem
@@ -228,11 +224,14 @@ export class AdminSettings extends Component {
                                 Submit
                             </button>
 
-                            <button className="cancel"
-                                onClick={() => this.closeForm()}>
-                                Cancel
+                            <button className="close-button"
+                                onClick={(e) => this.closeForm(e)}>
+                                X
                     </button>
                         </div>
+                    <div>
+                        {this.state.userExists}
+                    </div>
                     </form>
                 </div>
             </div>
@@ -264,7 +263,6 @@ export class AdminSettings extends Component {
         actualSettings.once('value', (snapshot) => {
             let info = snapshot.val()
             actual = info
-            console.log(actual)
             this.setState((state) => {
                 state.actualToggle = actual
                 return state

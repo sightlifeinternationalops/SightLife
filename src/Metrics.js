@@ -152,14 +152,28 @@ export class Metrics extends Component {
 
             selectedMonthMap = infoMap.get(year)
 
-            console.log(infoMap)
-            this.setState((state) => {
-                state.currentCalc = area
-                state.currentCalcID = id
-                state.monthsYearsMap = infoMap
-                state.selectedYearMap = selectedMonthMap
-            return state
-            })
+            console.log(selectedMonthMap)
+
+            // Prevents metrics with no data for the current year from being loaded
+            if (selectedMonthMap){
+                this.setState((state) => {
+                    state.currentCalc = area
+                    state.currentCalcID = id
+                    state.monthsYearsMap = infoMap
+                    state.selectedYearMap = selectedMonthMap
+                    state.calcErrorMsg = ""
+                return state
+                })
+            } else {
+                this.setState((state) => {
+                    state.currentCalc = area
+                    state.currentCalcID = id
+                    state.monthsYearsMap = new Map()
+                    state.selectedYearMap = new Map()
+                    state.calcErrorMsg = "Currently no data for this metric! Enter data for this metric in order to render information."
+                    return state
+                })
+            }
         })
         return infoMap
     }
@@ -203,7 +217,6 @@ export class Metrics extends Component {
 
             selectedQuarterMap = infoMap.get(year)
 
-            console.log(infoMap)
             this.setState((state) => {
                 state.currentCalc = area
                 state.currentCalcID = id

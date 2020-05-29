@@ -95,6 +95,7 @@ export class AdminPanelUserPermissions extends Component {
             state.metricActualEnabled = mAE
             state.metricTargetEnabled = mTE
             state.ownersDisplay = "block"
+            state.submissionSaved = ""
             return state
         })
     }
@@ -102,6 +103,7 @@ export class AdminPanelUserPermissions extends Component {
     setMetricOwners(owners, id) {
         this.setState((state) => {
             state.currentMetricAOwners = owners
+            state.submissionSaved = ""
             state.firebaseUID = id
             return state
         })
@@ -180,10 +182,10 @@ export class AdminPanelUserPermissions extends Component {
                             </select>
                         </label>
                     </div>
-                    <button
+                    <button className="save"
                         onClick={(e) => this.submitOwnerModal(e)}>Submit</button>
-                    <button
-                        onClick={(e) => this.cancelOwnerModal(e)}>Cancel</button>
+                    <button className="close-button" id="close-buttonID"
+                        onClick={(e) => this.cancelOwnerModal(e)}>X</button>
                 </form>
             </div>
         )
@@ -234,6 +236,11 @@ export class AdminPanelUserPermissions extends Component {
             metricActualEnabled: this.state.metricActualEnabled,
             metricTargetEnabled: this.state.metricTargetEnabled
         })
+
+        this.setState((state) => {
+            state.submissionSaved = "Succesfully saved changes!"
+            return state
+        })
     }
 
     // Closes modal form
@@ -257,8 +264,10 @@ export class AdminPanelUserPermissions extends Component {
         // firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
         //     metricActualEnabled: metricActualEnabled
         // })
-        this.setState({
-            metricActualEnabled
+        this.setState((state) => {
+            state.metricActualEnabled = metricActualEnabled
+            state.submissionSaved = ""
+            return state
         })
     }
 
@@ -266,8 +275,10 @@ export class AdminPanelUserPermissions extends Component {
         // firebase.database().ref('metricAreas/' + this.state.currentMetricID).update({
         //         metricTargetEnabled: metricTargetEnabled
         // })
-        this.setState({
-            metricTargetEnabled
+        this.setState((state) => {
+            state.metricTargetEnabled = metricTargetEnabled
+            state.submissionSaved = ""
+            return state
         })
     }
 
@@ -388,7 +399,7 @@ class MetricAreaInfo extends Component {
         let buttonContent = null
 
         buttonContent = (
-            <button className="editButton" onClick={(e) => this.props.saveChanges(e)}>
+            <button className="save" onClick={(e) => this.props.saveChanges(e)}>
                 Save
             </button>
         )
@@ -420,6 +431,11 @@ class MetricAreaInfo extends Component {
                         {entryContent}
                         {content}
                         {buttonContent}
+                        <div>
+                            <p>
+                            {this.props.submissionSaved}
+                            </p>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -90,17 +90,24 @@ export class AdminDataEntry extends Component {
                         if (lastMonthData.target) {
                             let actual = lastMonthData.actual
                             if (actual === "N/A") {
-                                // let metric = this.state.calcMap.get(id)
-                                // let metricID = metric.metricAreaID
+                                console.log("Actual Not fulfilled")
                                 falseMap.set(metricID, false)
                             }
                         } else {
-                            falseMap.set(metricID, "No target")
+                            console.log("No target for this month")
+                            // falseMap.set(metricID, "No target")
                         }
                     }
+                // Metric Calculation does not have data at all. 
+                // Find metric area and set to false. 
+                } else {
+                    let metric = this.state.calcMap.get(id)
+                    let metricID = metric.metricAreaID
+                    falseMap.set(metricID, false)
                 }
             })
             console.log(this.state)
+            console.log(falseMap)
             this.compareMap(falseMap)
         })
     }
@@ -116,23 +123,20 @@ export class AdminDataEntry extends Component {
         Array.from(this.props.metrics.entries()).map((key) => {
             let id = key[0]
             let metricName = key[1].metricName
-            Array.from(falseMap.entries()).map((key2) => {
-                if (id === key2[0]) {
-                    let falseObject = {
-                        enteredData: false,
-                        metricName: metricName
-                    }
-                    renderedMap.set(id, falseObject)
-                } else {
-                    let trueObject = {
-                        enteredData: true,
-                        metricName: metricName
-                    }
-                    renderedMap.set(id, trueObject)
+            if (falseMap.has(id)) {
+                let falseObject = {
+                    enteredData: false,
+                    metricName: metricName
                 }
-            })
+                renderedMap.set(id, falseObject) 
+            } else {
+                let trueObject = {
+                    enteredData: true,
+                    metricName: metricName
+                }
+                renderedMap.set(id, trueObject)
+            }
         })
-
         this.setState((state) => {
             state.renderedMap = renderedMap
             return state
@@ -141,7 +145,6 @@ export class AdminDataEntry extends Component {
 
     renderMetricAreas() {
         const metricAreaElements = Array.from(this.state.renderedMap.entries()).map((key) => {
-            console.log(key)
             return <MetricAreaComponent
                 metricName={key[1].metricName}
                 enteredData={key[1].enteredData}

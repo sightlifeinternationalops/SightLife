@@ -108,7 +108,7 @@ export class DashBoard extends Component {
         const monthArrayInfo = []
         for (let i = 0; i <= 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
-            console.log(this.props.selectedYearMap)
+            // console.log(this.props.selectedYearMap)
             if (monthObj) {
                 let actual = parseInt(monthObj.actual, 10)
                 let target = parseInt(monthObj.target, 10)
@@ -882,6 +882,10 @@ svgRenderLine() {
                         <option value="" disabled selected>Select a Year</option>
                         {yearElements}
                     </select>
+                    </div>
+
+                    <div style={{textAlign:"center"}}>
+                        {this.props.calcErrorMsg}
                     </div>
 
 
