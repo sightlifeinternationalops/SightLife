@@ -57,6 +57,7 @@ export class AdminSettings extends Component {
     setAdminUsers(users) {
         this.setState((state) => {
             state.currentAdmins = users
+            state.submissionSaved = ""
             return state
         })
     }
@@ -243,8 +244,10 @@ export class AdminSettings extends Component {
         // firebase.database().ref('dataEntrySettings').update({
         //     actualEnabled: actualToggle
         // })
-        this.setState({
-            actualToggle
+        this.setState((state) => {
+            state.actualToggle = actualToggle
+            state.submissionSaved = ""
+            return state
         })
     }
 
@@ -252,8 +255,10 @@ export class AdminSettings extends Component {
         // firebase.database().ref('dataEntrySettings').update({
         //     targetEnabled: targetToggle
         // })
-        this.setState({
-            targetToggle
+        this.setState((state) => {
+            state.targetToggle = targetToggle
+            state.submissionSaved = ""
+            return state
         })
     }
 
@@ -305,6 +310,12 @@ export class AdminSettings extends Component {
             actualEnabled: this.state.actualToggle,
             targetEnabled: this.state.targetToggle
         })
+
+        this.setState((state) => {
+            state.submissionSaved = "Succesfully saved settings!"
+            return state
+        })
+
     }
 
     render() {
@@ -403,6 +414,9 @@ export class AdminSettings extends Component {
                             <button
                                 onClick={() => this.saveSettings()}
                                 class='save2' type="Save" value="Save"> Save </button>
+                        </div>
+                        <div style={{textAlign:"center"}}>
+                            {this.state.submissionSaved}
                         </div>
                     </div>
 
