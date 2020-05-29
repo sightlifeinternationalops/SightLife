@@ -84,7 +84,7 @@ export class AdminPanelMetricCalcs extends Component {
 
             let mapCalculations = this.state.currentMetricAreaCalculations
             mapCalculations.set(id, metricCalcObject)
-
+            window.location.reload()
         }
     }
 
@@ -178,9 +178,10 @@ export class AdminPanelMetricCalcs extends Component {
         })
     }
 
-    openArchiveModal(calcID) {
+    openArchiveModal(calcID, calcName) {
         this.setState((state) => {
             this.state.currentArchivedCalc = calcID
+            this.state.currentArchivedCalcName = calcName
             this.state.archivedModalDisplay = "block"
             return state
         })
@@ -226,6 +227,7 @@ export class AdminPanelMetricCalcs extends Component {
         rootPath.update({
             calcName: this.state.editCalcName
         })
+        window.location.reload()
     }
 
     addForm() {
@@ -283,7 +285,7 @@ export class AdminPanelMetricCalcs extends Component {
                             onClick={(e) => this.closeArchiveModal(e)}>
                             X
                             </button>
-                        <h2> Current Metric</h2>
+                        <h2>{this.state.currentArchivedCalcName}</h2>
                         <div>
                             <button className="unarchive"
                                 onClick={(e) => this.unarchiveMetricCalc(e)}>
@@ -308,10 +310,11 @@ export class AdminPanelMetricCalcs extends Component {
                             X
                         </button>
 
-                        <h2>Current Metric</h2>
+                        <h2>{this.state.currentCalcName}</h2>
                         <div>
                             <label>
                                 <input
+                                    placeholder="Edit Metric Name"
                                     type="text"
                                     name="editCalcName"
                                     onChange={(e) => this.handleChange(e)}
@@ -352,7 +355,7 @@ export class AdminPanelMetricCalcs extends Component {
             let archivedMap = this.state.currentArchivedAreaCalculations
             archivedMap.set(this.state.currentCalc, metricCalcObject)
 
-
+            window.location.reload()
         }
     }
 
@@ -362,6 +365,7 @@ export class AdminPanelMetricCalcs extends Component {
         rootPath.update({
             calcArchived: false
         })
+        window.location.reload()
     }
 
     render() {

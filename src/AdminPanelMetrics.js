@@ -160,6 +160,7 @@ export class AdminPanelMetrics extends Component {
                 id, metricObject
             )
             this.setMetricsMap(metricsMap)
+            window.location.reload()
         } else {
             console.log(e.error)
         }
@@ -186,7 +187,7 @@ export class AdminPanelMetrics extends Component {
                         </button>
                         <h2>Adding New Metric Area</h2>
                         <label>
-                            <input 
+                            <input placeholder="New Metric Area Name"
                             onChange={(e) => this.handleChange(e)}
                             type="text" name="MetricName"/>
                         </label>
@@ -215,9 +216,9 @@ export class AdminPanelMetrics extends Component {
                     </button>
 
                     <div>
-                        <h2>Current Metric: {this.state.currentmName} </h2>
+                        <h2>{this.state.currentmName} </h2>
                         <label>
-                        <input 
+                        <input style={{fontSize: "15px"}}placeholder="Edit Metric Area Name"
                             onChange={(e) => this.handleChange(e)}
                             type="text" name="editMetricName"/>
                         </label>
@@ -249,6 +250,7 @@ export class AdminPanelMetrics extends Component {
             rootPath.update({
                 metricName: this.state.editMetricName
             })
+            window.location.reload()
         }
     }
 
