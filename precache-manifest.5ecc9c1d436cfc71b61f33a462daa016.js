@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "17b46e3a399da150c5e3a9715e39df9b",
+    "revision": "c2122a8610b771a3fe6724ffa3d83d5f",
     "url": "/SightLife/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SightLife/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "de38c71df09bba445018",
+    "revision": "6984f6854a47a7f2cee9",
     "url": "/SightLife/static/css/main.35efe82d.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SightLife/static/js/2.1301f83e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "de38c71df09bba445018",
-    "url": "/SightLife/static/js/main.d0762bdb.chunk.js"
+    "revision": "6984f6854a47a7f2cee9",
+    "url": "/SightLife/static/js/main.bc9b25e4.chunk.js"
   },
   {
     "revision": "da4f19d41dc6ec0d2d72",

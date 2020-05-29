@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/SightLife/static/css/main.35efe82d.chunk.css",
-    "main.js": "/SightLife/static/js/main.d0762bdb.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.d0762bdb.chunk.js.map",
+    "main.js": "/SightLife/static/js/main.bc9b25e4.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.bc9b25e4.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
     "static/js/2.1301f83e.chunk.js": "/SightLife/static/js/2.1301f83e.chunk.js",
     "static/js/2.1301f83e.chunk.js.map": "/SightLife/static/js/2.1301f83e.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.86c02f4d3e844c93b5bd5aa601d39e25.js": "/SightLife/precache-manifest.86c02f4d3e844c93b5bd5aa601d39e25.js",
+    "precache-manifest.5ecc9c1d436cfc71b61f33a462daa016.js": "/SightLife/precache-manifest.5ecc9c1d436cfc71b61f33a462daa016.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
     "static/css/main.35efe82d.chunk.css.map": "/SightLife/static/css/main.35efe82d.chunk.css.map",
@@ -41,6 +41,6 @@
     "static/css/2.47e06e2e.chunk.css",
     "static/js/2.1301f83e.chunk.js",
     "static/css/main.35efe82d.chunk.css",
-    "static/js/main.d0762bdb.chunk.js"
+    "static/js/main.bc9b25e4.chunk.js"
   ]
 }
