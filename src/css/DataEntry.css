@@ -88,6 +88,10 @@ label {
     font-weight: bold;
 }
 
+.monthSelect {
+    text-align: center;
+}
+
 .selection, .preview {
     text-align: center;
     line-height: 65px;

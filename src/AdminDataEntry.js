@@ -12,15 +12,35 @@ export class AdminDataEntry extends Component {
     constructor(props) {
         super(props)
 
+        let date = new Date()
+        let currentMonth = date.getMonth() + 1
+        let lastMonth = currentMonth - 1
+
+        let year = new Date()
+        year = year.getFullYear()
+
+        // If month is January, make month be last year December
+        // Might have to do different data tracking if month is December
+        if (lastMonth === 0) {
+            lastMonth = 12
+            year = year - 1
+        }
+
         this.state = {
             falseMap: new Map(),
-            renderedMap: new Map()
+            renderedMap: new Map(),
+            currentYear: year,
+            currentMonth: lastMonth
         }
     }
 
     componentDidMount() {
         this.retrieveAllCalculations()
-        this.metricCalculationFulfilled()
+        this.metricCalculationFulfilled(this.state.currentMonth, this.state.currentYear)
+    }
+
+    componentDidUpdate() {
+        console.log(this.state)
     }
 
     // want to iterate through metric calculations...
@@ -34,22 +54,13 @@ export class AdminDataEntry extends Component {
 
     // Iterate through metric calculations
     // and return a map of metric areas that have false values
-    metricCalculationFulfilled() {
-        let date = new Date()
-        let currentMonth = date.getMonth() + 1
-        let lastMonth = currentMonth - 1
-
-        let year = new Date()
-        year = year.getFullYear()
-
+    metricCalculationFulfilled(lastMonth, year) {
         let calcMap = new Map()
+        // let year = this.state.currentYear
+        // let lastMonth = this.state.currentMonth
 
-        // If month is January, make month be last year December
-        // Might have to do different data tracking if month is December
-        if (lastMonth === 0) {
-            lastMonth = 12
-            year = year - 1
-        }
+        console.log(year)
+
         let rootPath = firebase.database().ref('metricCalculations')
 
         rootPath.once('value', (snapshot) => {
@@ -98,8 +109,8 @@ export class AdminDataEntry extends Component {
                             // falseMap.set(metricID, "No target")
                         }
                     }
-                // Metric Calculation does not have data at all. 
-                // Find metric area and set to false. 
+                    // Metric Calculation does not have data at all. 
+                    // Find metric area and set to false. 
                 } else {
                     let metric = this.state.calcMap.get(id)
                     let metricID = metric.metricAreaID
@@ -128,7 +139,7 @@ export class AdminDataEntry extends Component {
                     enteredData: false,
                     metricName: metricName
                 }
-                renderedMap.set(id, falseObject) 
+                renderedMap.set(id, falseObject)
             } else {
                 let trueObject = {
                     enteredData: true,
@@ -170,54 +181,95 @@ export class AdminDataEntry extends Component {
             })
         })
     }
+
     test(value) {
         let x = null
-            switch (value) {
-                case 1:
-                    x = "January";
-                    break;
-                case 2:
-                    x = "February";
-                    break;
-                case 3:
-                    x = "March";
-                    break;
-                case 4:
-                    x = "April";
-                    break;
-                case 5:
-                    x = "May";
-                    break;
-                case 6:
-                    x = "June"
-                    break;
-                case 7:
-                    x = "July";
-                    break;
-                case 8:
-                    x = "August"
-                    break;
-                case 9:
-                    x = "September"
-                    break;
-                case 10:
-                    x = "October"
-                    break;
-                case 11:
-                    x = "November"
-                    break;
-                case 12:
-                    x = "December"
-                    break;
-            }
+        switch (value) {
+            case "1":
+                x = "January";
+                break;
+            case "2":
+                x = "February";
+                break;
+            case "3":
+                x = "March";
+                break;
+            case "4":
+                x = "April";
+                break;
+            case "5":
+                x = "May";
+                break;
+            case "6":
+                x = "June"
+                break;
+            case "7":
+                x = "July";
+                break;
+            case "8":
+                x = "August"
+                break;
+            case "9":
+                x = "September"
+                break;
+            case "10":
+                x = "October"
+                break;
+            case "11":
+                x = "November"
+                break;
+            case "12":
+                x = "December"
+                break;
+        }
+        return x
+    }
+
+    // Updates state for month value when a drop-down option is selected
+    updateSelectForm(event) {
+        let tfValue = (event.target.value)
+        // this.setState((state) => {
+        //     state.currentMonth = tfValue
+        //     return state
+        // })
+        this.metricCalculationFulfilled(tfValue, this.state.currentYear)
+        this.setState((state) => {
+            state.currentMonth = tfValue
+            return state
+        })
+    }
+
+    monthSelect() {
+        let x = (
+            <div className="monthSelect">
+                <select
+                    onChange={(e) => this.updateSelectForm(e)}>
+                    <option disabled selected value="none">Select a month</option>
+                    <option value={1}>January</option>
+                    <option value={2}>February</option>
+                    <option value={3}>March</option>
+                    <option value={4}>April</option>
+                    <option value={5}>May</option>
+                    <option value={6}>June</option>
+                    <option value={7}>July</option>
+                    <option value={8}>August</option>
+                    <option value={9}>September</option>
+                    <option value={10}>October</option>
+                    <option value={11}>November</option>
+                    <option value={12}>December</option>
+                </select>
+            </div>
+        )
         return x
     }
 
     render() {
         let month = new Date()
         month = month.getMonth()
-        let monthVal = this.test(month)
+        let monthVal = this.test(this.state.currentMonth)
         const metricAreas = this.renderMetricAreas()
+
+        let monthSelect = this.monthSelect()
 
         return (
             <div className="body">
@@ -225,6 +277,7 @@ export class AdminDataEntry extends Component {
                     <AdminPanelNav />
                     <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
                     <div className="main-content">
+                    {monthSelect}
                         <h3 className="monthTitleDataEntry"> {monthVal} </h3>
                         <div className="metricsTest">
                             {metricAreas}
@@ -238,22 +291,22 @@ export class AdminDataEntry extends Component {
 
 class MetricAreaComponent extends Component {
     render() {
-        let test = this.props.enteredData ? <img className="tick" src={Tick}/> : <img className="cross" src={Cross}/>
+        let test = this.props.enteredData ? <img className="tick" src={Tick} /> : <img className="cross" src={Cross} />
 
         return (
             <div>
-            <Table responsive id="dataEntryTable">
-                <tbody className="test1">
-                    <tr className="test1">
-                        <th className="test1">
-                            {this.props.metricName}
-                        </th>
-                        <th className="test1">
-                            {test}
-                        </th>
-                    </tr>
-                </tbody>
-            </Table>
+                <Table responsive id="dataEntryTable">
+                    <tbody className="test1">
+                        <tr className="test1">
+                            <th className="test1">
+                                {this.props.metricName}
+                            </th>
+                            <th className="test1">
+                                {test}
+                            </th>
+                        </tr>
+                    </tbody>
+                </Table>
             </div>
         )
     }
