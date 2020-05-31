@@ -147,7 +147,6 @@ export class AdminPanelMetricCalcs extends Component {
         const metricCalcElements = Array.from(this.state.currentMetricAreaCalculations.
             entries()).map((key) => {
                 let calculation = key[1]
-                console.log(calculation.calcID)
                 return <MetricAreaCalcButton
                     metricCalcName={calculation.calcName}
                     metricCalcID={calculation.calcID}
@@ -195,11 +194,14 @@ export class AdminPanelMetricCalcs extends Component {
         })
     }
 
-    removeMetric() {
-        firebase.database().ref('metricAreaCalculations' + this.state.currentCalc).remove()
+    removeMetric(e) {
+        e.preventDefault()
+        console.log(this.state.currentArchivedCalc)
+        firebase.database().ref('metricCalculations/' + this.state.currentArchivedCalc).remove()
     }
 
     openArchiveModal(calcID, calcName) {
+        console.log(calcID)
         this.setState((state) => {
             this.state.currentArchivedCalc = calcID
             this.state.currentArchivedCalcName = calcName
@@ -349,7 +351,8 @@ export class AdminPanelMetricCalcs extends Component {
                             onClick={(e) => this.cancelRemoveModal(e)}>
                             Cancel
                         </button>
-                        <button>
+                        <button
+                            onClick={(e) => this.removeMetric(e)}>
                             Confirm
                         </button>
                         </form>

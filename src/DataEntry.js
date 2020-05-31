@@ -553,7 +553,7 @@ export class DataEntry extends Component {
                         <input
                             value={this.props.data}
                             onChange={(e) => this.updateChange(e)}
-                            type="number" id="form" name="data" />
+                            type="number" id="form" name="data" step="0.01"/>
                     </div>
                 )
                 break;

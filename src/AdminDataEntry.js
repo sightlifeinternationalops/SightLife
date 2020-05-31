@@ -86,20 +86,24 @@ export class AdminDataEntry extends Component {
                 let id = key[0]
                 if (info.hasOwnProperty(id)) {
                     let yearObjects = info[id]
-                    let lastMonthData = yearObjects[year][lastMonth]
-                    // Check if value exists for month
-                    if (lastMonthData && id && calcMap) {
-                        // Check if the target value is fulfilled
-                        let metric = this.state.calcMap.get(id)
-                        let metricID = metric.metricAreaID
-                        if (lastMonthData.target) {
-                            let actual = lastMonthData.actual
-                            if (actual === "N/A") {
-                                falseMap.set(metricID, false)
+                    if (yearObjects[year]) {
+                        if (yearObjects[year][lastMonth]) {
+                            let lastMonthData = yearObjects[year][lastMonth]
+                            // Check if value exists for month
+                            if (lastMonthData && id && calcMap) {
+                                // Check if the target value is fulfilled
+                                let metric = this.state.calcMap.get(id)
+                                let metricID = metric.metricAreaID
+                                if (lastMonthData.target) {
+                                    let actual = lastMonthData.actual
+                                    if (actual === "N/A") {
+                                        falseMap.set(metricID, false)
+                                    }
+                                } else {
+                                    console.log("No target for this month")
+                                    // falseMap.set(metricID, "No target")
+                                }
                             }
-                        } else {
-                            console.log("No target for this month")
-                            // falseMap.set(metricID, "No target")
                         }
                     }
                 // Metric Calculation does not have data at all. 
