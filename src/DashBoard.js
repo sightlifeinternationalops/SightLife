@@ -124,6 +124,7 @@ export class DashBoard extends Component {
             // console.log(this.props.selectedYearMap)
             if (monthObj) {
                 let actual = parseFloat(monthObj.actual)
+                console.log(monthObj.actual)
                 let target = parseFloat(monthObj.target)
                 if (!parseFloat(monthObj.actual)) {
                     actual = "N/A"
@@ -182,6 +183,7 @@ export class DashBoard extends Component {
             let targetExists = false
             let monthObjColor
             let color    
+            let dataType
             let actual = 0;
             let target = 0;
             var actualsCounter = 0;
@@ -204,6 +206,7 @@ export class DashBoard extends Component {
                 targetsCounter++
             }
             monthObjColor = monthObj1
+            dataType = monthObj1.dataType
         }
 
         let monthObj2 = this.props.selectedYearMap[i * 3 + 2]
@@ -223,6 +226,7 @@ export class DashBoard extends Component {
                 targetsCounter++
             }
             monthObjColor = monthObj2
+            dataType = monthObj2.dataType
         }
 
         let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
@@ -242,13 +246,7 @@ export class DashBoard extends Component {
                 targetsCounter++
             }
             monthObjColor = monthObj3
-        }
-
-        if (!actualExists) {
-            actual = "N/A"
-        }
-        if(!targetExists) {
-            target = "N/A"
+            dataType = monthObj3.dataType
         }
 
         if (dataType == "percent" && actualExists) {
@@ -256,6 +254,14 @@ export class DashBoard extends Component {
         } 
         if (dataType == "percent" && targetExists) {
             target = Math.round(target / targetsCounter )
+        }
+
+        if (!actualExists) {
+            actual = "N/A"
+        }
+
+        if (!targetExists) {
+            target = "N/A"
         }
 
         if (monthObjColor) {
