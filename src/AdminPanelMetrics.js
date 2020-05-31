@@ -119,7 +119,7 @@ export class AdminPanelMetrics extends Component {
     closeModal(e) {
         e.preventDefault()
         this.setState((state) => {
-            this.state.display = "none";
+            state.display = "none";
             return state
         })
     }
@@ -315,7 +315,8 @@ export class AdminPanelMetrics extends Component {
     closeModalE(e) {
         e.preventDefault()
         this.setState((state) => {
-            this.state.modalDisplay = "none"
+            state.modalDisplay = "none"
+            state.removeMetric = false
             return state
         })
     }

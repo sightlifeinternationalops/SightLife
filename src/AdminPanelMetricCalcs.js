@@ -179,9 +179,18 @@ export class AdminPanelMetricCalcs extends Component {
         })
     }
 
-    removeModal() {
+    removeModal(e) {
+        e.preventDefault()
         this.setState((state) => {
             state.removeModal = true
+            return state
+        })
+    }
+
+    cancelRemoveModal(e) {
+        e.preventDefault()
+        this.setState((state) => {
+            state.removeModal = false
             return state
         })
     }
@@ -224,7 +233,8 @@ export class AdminPanelMetricCalcs extends Component {
     closeArchiveModal(e) {
         e.preventDefault()
         this.setState((state) => {
-            this.state.archivedModalDisplay = "none"
+            state.archivedModalDisplay = "none"
+            state.removeModal = false
             return state
         })
     }
@@ -293,26 +303,60 @@ export class AdminPanelMetricCalcs extends Component {
     }
 
     archivedForm() {
-        let form = (
-            <div className="modalForm"
-                style={{ display: this.state.archivedModalDisplay }}>
-                <div>
-                    <form className="modalBox">
-                        <button className="close-button"
-                            onClick={(e) => this.closeArchiveModal(e)}>
-                            X
-                            </button>
-                        <h2>{this.state.currentArchivedCalcName}</h2>
-                        <div>
-                            <button className="unarchive"
-                                onClick={(e) => this.unarchiveMetricCalc(e)}>
-                                Revive
+        let form = null
+        if (!this.state.removeModal) {
+            form = (
+                <div className="modalForm"
+                    style={{ display: this.state.archivedModalDisplay }}>
+                    <div>
+                        <form className="modalBox">
+                            <button className="close-button"
+                                onClick={(e) => this.closeArchiveModal(e)}>
+                                X
                                 </button>
-                        </div>
-                    </form>
+                            <h2>{this.state.currentArchivedCalcName}</h2>
+                            <div>
+                                <button className="unarchive"
+                                    onClick={(e) => this.unarchiveMetricCalc(e)}>
+                                    Revive
+                                    </button>
+                                <button className="removeTest"
+                                    onClick={(e) => this.removeModal(e)}>
+                                    Remove
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        } else { 
+            form = (
+                <div className="modalForm"
+                    style={{ display: this.state.archivedModalDisplay }}>
+                    <div>
+                        <form className="modalBox">
+                        <button 
+                            onClick={(e) => this.closeArchiveModal(e)}
+                            id="close-button">
+                                X
+                        </button>
+                        <h2>WARNING!</h2>
+                            <p>
+                                Removing a metric will permanently remove the metric and any
+                                information associated with it. Only remove if necessary.
+                            </p>
+                        <button
+                            onClick={(e) => this.cancelRemoveModal(e)}>
+                            Cancel
+                        </button>
+                        <button>
+                            Confirm
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            )
+        }
         return form
     }
 
