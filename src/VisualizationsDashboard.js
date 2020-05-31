@@ -39,7 +39,7 @@ export class DashBoard extends Component {
     barChart() {
         d3.selectAll("svg").remove();
         d3.selectAll("div.tooltip").remove();
-        if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
+        if (this.props.selectedYearMap.length > 0) {
         var datatype
 
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
@@ -304,7 +304,7 @@ export class DashBoard extends Component {
 
 
     lineChart() {
-        if (this.props.selectedYearMap.length > 0 && this.props.selectedYearMap[1].dataType != "text") {
+        if (this.props.selectedYearMap.length > 0) {
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
