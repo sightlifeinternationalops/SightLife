@@ -108,33 +108,43 @@ export class AdminSettings extends Component {
 
     addOwner(e) {
         e.preventDefault()
-        let admins = this.state.currentAdmins
-        // console.log(admins)
 
-        var test
+        console.log(this.state.currentUserID)
 
-        // console.log(test)
-        // If the user does not exist, add them to the owners
-        if (!test) {
-            let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
-            // let rootString = firebase.database().ref('admins/')
-            let id = rootString.push().getKey()
-
-            let userArray = [
-                this.state.currentUserID,
-                this.state.currentUserName,
-                id
-            ]
-
-            let usersMap = this.state.currentAdmins
-            usersMap.set(id, userArray)
-            this.setAdminUsers(usersMap)
-            this.closeForm(e)
+        if (this.state.currentUserID) {
+            let admins = this.state.currentAdmins
+            // console.log(admins)
+    
+            var test
+    
+            // console.log(test)
+            // If the user does not exist, add them to the owners
+            if (!test) {
+                let rootString = firebase.database().ref('admins/' + this.state.currentUserID)
+                // let rootString = firebase.database().ref('admins/')
+                let id = rootString.push().getKey()
+    
+                let userArray = [
+                    this.state.currentUserID,
+                    this.state.currentUserName,
+                    id
+                ]
+    
+                let usersMap = this.state.currentAdmins
+                usersMap.set(id, userArray)
+                this.setAdminUsers(usersMap)
+                this.closeForm(e)
+            } else {
+                // Need to make a error display 
+                console.log("Selected user is already an admin!")
+                this.setState((state) => {
+                    state.userExists = "User is already an admin"
+                    return state
+                })
+            }
         } else {
-            // Need to make a error display 
-            console.log("Selected user is already an admin!")
             this.setState((state) => {
-                state.userExists = "User is already an admin"
+                state.invalidOwner = "Please select an owner."
                 return state
             })
         }
@@ -232,6 +242,9 @@ export class AdminSettings extends Component {
                         </div>
                     <div>
                         {this.state.userExists}
+                    </div>
+                    <div>
+                        {this.state.invalidOwner}
                     </div>
                     </form>
                 </div>

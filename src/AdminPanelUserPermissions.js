@@ -186,6 +186,9 @@ export class AdminPanelUserPermissions extends Component {
                         onClick={(e) => this.submitOwnerModal(e)}>Submit</button>
                     <button className="close-button" id="close-buttonID"
                         onClick={(e) => this.cancelOwnerModal(e)}>X</button>
+                                        <div>
+                    {this.state.invalidOwner}
+                </div>
                 </form>
             </div>
         )
@@ -204,17 +207,26 @@ export class AdminPanelUserPermissions extends Component {
     submitOwnerModal(e) {
         e.preventDefault()
         console.log(this.state)
-        let rootPath = firebase.database().ref('metricAreas/' + this.state.currentMetricA + '/owners')
-        let id = rootPath.push().getKey()
-        let userArray = [
-            id,
-            this.state.currentUserID,
-            this.state.currentUserName
-        ]
-        let usersMap = this.state.currentMetricAOwners
-        usersMap.set(id, userArray)
-        this.setMetricOwners(usersMap, id)
-        this.cancelOwnerModal(e)
+
+        if (this.state.currentUserID) {
+            let rootPath = firebase.database().ref('metricAreas/' + this.state.currentMetricA + '/owners')
+            let id = rootPath.push().getKey()
+            let userArray = [
+                id,
+                this.state.currentUserID,
+                this.state.currentUserName
+            ]
+            let usersMap = this.state.currentMetricAOwners
+            usersMap.set(id, userArray)
+            this.setMetricOwners(usersMap, id)
+            this.cancelOwnerModal(e)
+        } else {
+            this.setState((state) => {
+                state.invalidOwner = "Please select a user."
+                return state
+            })
+        }
+
     }
 
     saveChanges(e) {

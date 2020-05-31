@@ -203,34 +203,74 @@ export class AdminPanelMetrics extends Component {
         return form
     }
 
-    editMetricArea() {
-        let editForm = (
-            <div 
-                className="metricForm" style={ {display: this.state.modalDisplay} }>
-                
-                <form className="metricBox">
-                    <button 
-                        onClick={(e) => this.closeModalE(e)}
-                        id="close-button">
-                            X
-                    </button>
+    removeMetricArea() {
+        let rootPath = firebase.database().ref('metricAreas')
+        rootPath.remove(this.state.currentmID)
+    }
 
-                    <div>
-                        <h2>{this.state.currentmName} </h2>
-                        <label>
-                        <input style={{fontSize: "15px"}}placeholder="Edit Metric Area Name"
-                            onChange={(e) => this.handleChange(e)}
-                            type="text" name="editMetricName"/>
-                        </label>
-                    </div>  
+    removeMetric(e) {
+        e.preventDefault()
+        this.setState((state) => {
+            state.removeMetric = true
+            return state
+        })
+    }
+
+    editMetricArea() {
+        let editForm = null
+        if (!this.state.removeMetric) {
+            editForm = (
+                <div 
+                    className="metricForm" style={ {display: this.state.modalDisplay} }>
                     
-                    <button className="submit"
-                        onClick={(e) => this.submitMetricInfo(e)}>
-                        Save
-                    </button>
-                </form>
-            </div>
-        )
+                    <form className="metricBox">
+                        <button 
+                            onClick={(e) => this.closeModalE(e)}
+                            id="close-button">
+                                X
+                        </button>
+    
+                        <div>
+                            <h2>{this.state.currentmName} </h2>
+                            <label>
+                            <input style={{fontSize: "15px"}}placeholder="Edit Metric Area Name"
+                                onChange={(e) => this.handleChange(e)}
+                                type="text" name="editMetricName"/>
+                            </label>
+                        </div>  
+                        
+                        <button className="submit"
+                            onClick={(e) => this.submitMetricInfo(e)}>
+                            Save
+                        </button>
+                        <button
+                            className="remove"
+                            onClick={(e) => this.removeMetric(e)}>
+                            Remove
+                        </button>
+                    </form>
+                </div>
+            )
+        } else {
+            editForm = (
+                <div
+                    className="metricForm" style={ {display: this.state.modalDisplay}}>
+                        <form className="metricBox">
+                            <h2>WARNING!</h2>
+                            <p>
+                                Removing a metric will permanently remove the metric area
+                                and any metrics associated with it. 
+                            </p>
+                            <button>
+                                Cancel
+                            </button>
+                            <button>
+                                Confirm
+                            </button>
+                        </form>
+                </div>
+            )
+        }
         return editForm
     }
 

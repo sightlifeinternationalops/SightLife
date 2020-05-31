@@ -12,7 +12,8 @@ export class DataEntry extends Component {
         super(props);
 
         let currentDate = new Date()
-        let year = currentDate.getFullYear()
+        // let year = currentDate.getFullYear()
+        let year = 2019
         let month = currentDate.getMonth() + 1
 
         // Revert to previous year and to month being December

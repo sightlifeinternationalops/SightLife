@@ -40,7 +40,7 @@ export class AdminDataEntry extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state)
+        // console.log(this.state)
     }
 
     // want to iterate through metric calculations...
@@ -56,11 +56,6 @@ export class AdminDataEntry extends Component {
     // and return a map of metric areas that have false values
     metricCalculationFulfilled(lastMonth, year) {
         let calcMap = new Map()
-        // let year = this.state.currentYear
-        // let lastMonth = this.state.currentMonth
-
-        console.log(year)
-
         let rootPath = firebase.database().ref('metricCalculations')
 
         rootPath.once('value', (snapshot) => {
@@ -79,14 +74,13 @@ export class AdminDataEntry extends Component {
 
     metricCalculationFalse(calcMap, lastMonth, year) {
         let rootPath = firebase.database().ref('metricGoalsMonths')
-
         let falseMap = new Map()
-
-        console.log(lastMonth)
 
         rootPath.once('value', (snapshot) => {
             let info = snapshot.val()
-            // let keys = Object.keys(info)
+
+            // console.log(info)
+            console.log(calcMap)
 
             Array.from(calcMap.entries()).map((key) => {
                 let id = key[0]
@@ -101,7 +95,6 @@ export class AdminDataEntry extends Component {
                         if (lastMonthData.target) {
                             let actual = lastMonthData.actual
                             if (actual === "N/A") {
-                                console.log("Actual Not fulfilled")
                                 falseMap.set(metricID, false)
                             }
                         } else {
@@ -109,10 +102,11 @@ export class AdminDataEntry extends Component {
                             // falseMap.set(metricID, "No target")
                         }
                     }
-                    // Metric Calculation does not have data at all. 
-                    // Find metric area and set to false. 
+                // Metric Calculation does not have data at all. 
+                // Find metric area and set to false. 
                 } else {
                     let metric = this.state.calcMap.get(id)
+                    console.log(metric)
                     let metricID = metric.metricAreaID
                     falseMap.set(metricID, false)
                 }
@@ -126,9 +120,6 @@ export class AdminDataEntry extends Component {
     // For every key, value pair in the metrics map,
     // check if the key exists in the false map.
     compareMap(falseMap) {
-        console.log(falseMap)
-        console.log(this.props.metrics)
-
         let renderedMap = new Map()
 
         Array.from(this.props.metrics.entries()).map((key) => {
@@ -141,6 +132,7 @@ export class AdminDataEntry extends Component {
                 }
                 renderedMap.set(id, falseObject)
             } else {
+                console.log(metricName)
                 let trueObject = {
                     enteredData: true,
                     metricName: metricName
@@ -228,10 +220,6 @@ export class AdminDataEntry extends Component {
     // Updates state for month value when a drop-down option is selected
     updateSelectForm(event) {
         let tfValue = (event.target.value)
-        // this.setState((state) => {
-        //     state.currentMonth = tfValue
-        //     return state
-        // })
         this.metricCalculationFulfilled(tfValue, this.state.currentYear)
         this.setState((state) => {
             state.currentMonth = tfValue
@@ -266,7 +254,7 @@ export class AdminDataEntry extends Component {
     render() {
         let month = new Date()
         month = month.getMonth()
-        let monthVal = this.test(this.state.currentMonth)
+        let monthVal = this.test(this.state.currentMonth.toString())
         const metricAreas = this.renderMetricAreas()
 
         let monthSelect = this.monthSelect()
@@ -277,8 +265,8 @@ export class AdminDataEntry extends Component {
                     <AdminPanelNav />
                     <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
                     <div className="main-content">
-                    {monthSelect}
                         <h3 className="monthTitleDataEntry"> {monthVal} </h3>
+                        {monthSelect}
                         <div className="metricsTest">
                             {metricAreas}
                         </div>
