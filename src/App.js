@@ -40,7 +40,7 @@ class App extends Component {
       metrics: metricAreas,
       calcMap: new Map(),
       usersMetrics: new Map(),
-      users: new Map(),
+      users: new Map()
     };
   }
 
@@ -66,6 +66,7 @@ class App extends Component {
     this.retrieveMetricsList()
     this.retrieveCurrentUsers()
     this.retrieveAllCalculations()
+    this.isAdmin()
   }
 
   componentWillUnmount() {
@@ -137,17 +138,26 @@ class App extends Component {
     })
   }
 
-  // ADMIN PANEL FUNCTIONS // 
+  isAdmin() {
+    let rootPath = firebase.database().ref('admins')
+    rootPath.once('value', (snapshot) => {
+        let info = snapshot.val()
 
-  // Adds a new metric calculation for a selected metric area,
-  // for admin panel use. 
-  addMetricCalculation() {
-
-  }
-
-  // Gets current owners of metric area
-  getMetricOwnerInfo() {
-
+        // If the admins reference exists in the database
+        // or if something exists in the database for admins
+        if (info) {
+            let keys = Object.keys(info)
+            keys.map((key) => {
+                if (info[key].userMetricID === this.state.user.uid) {
+                    console.log("Current user is an admin")
+                    this.setState((state) => {
+                        state.adminPermissions = true
+                        return state
+                    })
+                }
+            })
+        }
+    })
   }
 
   retrieveUsersMetricAreas = () => {
@@ -170,9 +180,7 @@ class App extends Component {
           state.usersMetrics = ownerMap;
           return state;
         })
-        // this.updateMetricAreas(ownerMap)
       })      
-    // }
   }
 
   // Function for retrieving existing metrics
@@ -353,6 +361,7 @@ class App extends Component {
               <Route
                 path='/adminpanel'
                 render={() => <AdminPanelUserPermissions
+                  {...this.state}
                   metrics={this.state.metrics}
                   users={this.state.users} />
                 }
@@ -360,27 +369,32 @@ class App extends Component {
               <Route
                 path="/adminpanelmetriccalcs"
                 render={() => <AdminPanelMetricCalcs
+                  {...this.state}
                   metrics={this.state.metrics}
                 />}
               />
               <Route
                 path="/admindataentry"
                 render={() => <AdminDataEntry
+                  {...this.state}
+                  user={this.state.user}
                   retrieveAllCalculations={this.retrieveAllCalculations}
                   calcMap={this.state.calcMap}
                   metrics={this.state.metrics}
+                  isAdmin={this.state.adminPermissions}
                   retrieveMetricsList={this.retrieveMetricsList}
                   />}
               />
-              {/* <Route path="/AdminSettings" component={AdminSettings} /> */}
               <Route path="/adminsettings"
                 render={() => <AdminSettings
+                  {...this.state}
                   users={this.state.users}
                   metrics={this.state.metrics} />}
               />
               <Route
                 path="/adminpanelmetrics"
                 render={() => <AdminPanelMetrics
+                  {...this.state}
                   retrieveMetricsList={this.retrieveMetricsList}
                   users={this.state.users}
                   metrics={this.state.metrics}
@@ -419,6 +433,17 @@ export class NavBar extends Component {
   render() {
 
     let content = null
+    let adminButton = null
+
+    if (this.props.adminPermissions) {
+      adminButton = (
+        <div className="btn2">
+        <button type="submit" className="btn2">
+          <NavLink to='/adminpanel' className="nav-link">Admin Panel</NavLink>
+        </button>
+        </div>
+      )
+    }
 
     if (!this.props.user || (this.props.user && !this.props.verified)) {
       if (this.props.signInStatus) {
@@ -466,11 +491,13 @@ export class NavBar extends Component {
               </button>
               </div>    
               
-              <div className="btn2">
+              {/* <div className="btn2">
               <button type="submit" className="btn2">
                 <NavLink to='/adminpanel' className="nav-link">Admin Panel</NavLink>
               </button>
-              </div>
+              </div> */}
+
+              {adminButton}
 
               <div className="btn2">
               <button id="signOutButton" className="btn2"

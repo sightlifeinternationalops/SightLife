@@ -307,16 +307,7 @@ export class Metrics extends Component {
 
     goBack(e) {
         e.preventDefault()
-        this.setState((state) => {
-            state.dashboardEnabled = false
-            state.monthsYearsMap = new Map()
-            state.quartersYearsMap = new Map()
-            state.annualsYearsMap = new Map()
-            state.selectedYearMap = new Map()
-            state.selectedQuarterMap = new Map()
-            state.selectedAnnualMap = new Map()
-            return state
-        })
+        window.location.reload()
     }
 
     resetYears() {

@@ -30,6 +30,7 @@ export class AdminPanelMetrics extends Component {
     componentDidMount() {
         this.retrieveArchivedMetricAreaElements()
         this.retrieveMetricsList()
+        this.isAdmin()
     }
 
     // Function for retrieving existing metrics
@@ -321,33 +322,71 @@ export class AdminPanelMetrics extends Component {
         })
     }
 
+    isAdmin() {
+        let rootPath = firebase.database().ref('admins')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            // If the admins reference exists in the database
+            // or if something exists in the database for admins
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    if (info[key].userMetricID === this.props.user.uid) {
+                        console.log("Current user is an admin")
+                        this.setState((state) => {
+                            state.adminPermissions = true
+                            return state
+                        })
+                    }
+                })
+            }
+        })
+      }
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
-        let editForm = this.editMetricArea() 
+        let editForm = this.editMetricArea()
+        
+        let content = null
+
+        if (this.props.adminPermissions) {
+            content = (
+                <div>
+                <AdminPanelNav />
+                <div class="main-content">
+                    <div>
+                        <CardDeck className="PermDatadeck">
+                            <h1 class='selection' id='met-areas'> Metric Areas 
+                            
+                            <button
+                                id="addMetricAreaButton" 
+                                onClick={() => this.renderModal()}>
+                                <img class='more' src={More} />
+                                </button> </h1>
+                            <div className="metricElements">
+                            {metricAreaElements}
+                            </div>
+                        </CardDeck>
+                    </div>
+                    {form}
+                    {editForm}
+                </div>
+                </div>     
+            )
+        } else {
+            content = (
+                <div>
+                    Permissions denied.
+                </div>
+            )
+        }
 
         return (
             <div className="body">
                 <main>
-                    <AdminPanelNav />
-                    <div class="main-content">
-                        <div>
-                            <CardDeck className="PermDatadeck">
-                                <h1 class='selection' id='met-areas'> Metric Areas 
-                                
-                                <button
-                                    id="addMetricAreaButton" 
-                                    onClick={() => this.renderModal()}>
-                                    <img class='more' src={More} />
-                                    </button> </h1>
-                                <div className="metricElements">
-                                {metricAreaElements}
-                                </div>
-                            </CardDeck>
-                        </div>
-                        {form}
-                        {editForm}
-                    </div>
+                   {content}
                 </main>
             </div>
         )

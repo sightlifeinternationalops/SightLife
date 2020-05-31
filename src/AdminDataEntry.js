@@ -37,6 +37,8 @@ export class AdminDataEntry extends Component {
     componentDidMount() {
         this.retrieveAllCalculations()
         this.metricCalculationFulfilled(this.state.currentMonth, this.state.currentYear)
+        this.isAdmin()
+        console.log(this.props)
     }
 
     componentDidUpdate() {
@@ -106,8 +108,8 @@ export class AdminDataEntry extends Component {
                             }
                         }
                     }
-                // Metric Calculation does not have data at all. 
-                // Find metric area and set to false. 
+                    // Metric Calculation does not have data at all. 
+                    // Find metric area and set to false. 
                 } else {
                     let metric = this.state.calcMap.get(id)
                     console.log(metric)
@@ -255,17 +257,46 @@ export class AdminDataEntry extends Component {
         return x
     }
 
+    isAdmin() {
+        let rootPath = firebase.database().ref('admins')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+    
+            // If the admins reference exists in the database
+            // or if something exists in the database for admins
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    if (info[key].userMetricID === this.props.user.uid) {
+                        console.log("Current user is an admin")
+                        this.setState((state) => {
+                            state.adminPermissions = true
+                            return state
+                        })
+                    }
+                })
+            }
+        })
+      }
+
     render() {
         let month = new Date()
         month = month.getMonth()
         let monthVal = this.test(this.state.currentMonth.toString())
         const metricAreas = this.renderMetricAreas()
 
+        let content = null
         let monthSelect = this.monthSelect()
 
-        return (
-            <div className="body">
-                <main>
+        if (!this.props.adminPermissions) {
+            content = (
+                <div>
+                    Permissions Denied.
+                </div>
+            )
+        } else {
+            content = (
+                <div>
                     <AdminPanelNav />
                     <h1 className="ASettingsTitle"> Data Entry Tracker </h1>
                     <div className="main-content">
@@ -275,6 +306,14 @@ export class AdminDataEntry extends Component {
                             {metricAreas}
                         </div>
                     </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="body">
+                <main>
+                    {content}
                 </main>
             </div>
         )

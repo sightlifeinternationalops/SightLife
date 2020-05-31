@@ -198,6 +198,7 @@ export class AdminPanelMetricCalcs extends Component {
         e.preventDefault()
         console.log(this.state.currentArchivedCalc)
         firebase.database().ref('metricCalculations/' + this.state.currentArchivedCalc).remove()
+        window.location.reload()
     }
 
     openArchiveModal(calcID, calcName) {
