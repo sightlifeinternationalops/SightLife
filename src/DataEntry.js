@@ -685,17 +685,17 @@ export class DataEntry extends Component {
                         }            
                     } else {
                         console.log("Test")
-                        this.newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
+                        this.newMetricCalculation(year, dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
                     }
                 })
             } else {
                 console.log("Test")
-                this.newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
+                this.newMetricCalculation(year, dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x)
             }
         })
     }
 
-    newMetricCalculation(dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x) {
+    newMetricCalculation(year, dataType, selectTF, radio, calcID, keyString, data, lowlight, highlight, coe, x) {
         if (radio === "Actual") {
             console.log("Data does not exist yet!")
             console.log("Create a target before inserting an actual!")
@@ -707,8 +707,9 @@ export class DataEntry extends Component {
             // let ref = firebase.database().ref('metricAreas')
             // let id = ref.push().getKey()
             let currentTime = new Date()
-            let currentYear = currentTime.getFullYear() + "/"
-            firebase.database().ref(selectTF + '/' + calcID + "/" + currentYear + keyString).update({
+            // let currentYear = currentTime.getFullYear() + "/"
+            // let currentYear = this.state.currentYear
+            firebase.database().ref(selectTF + '/' + calcID + "/" + year + "/" + keyString).update({
                 target: data,
                 lowlights: lowlight,
                 highlights: highlight,

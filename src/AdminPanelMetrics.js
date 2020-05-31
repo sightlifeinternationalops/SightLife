@@ -203,15 +203,25 @@ export class AdminPanelMetrics extends Component {
         return form
     }
 
-    removeMetricArea() {
-        let rootPath = firebase.database().ref('metricAreas')
-        rootPath.remove(this.state.currentmID)
+    removeMetricArea(e) {
+        // let rootPath = firebase.database().ref('metricAreas')
+        // rootPath.remove(this.state.currentmID)
+        console.log(this.state.currentmID)
+        firebase.database().ref('metricAreas/' + this.state.currentmID).remove()
     }
 
     removeMetric(e) {
         e.preventDefault()
         this.setState((state) => {
             state.removeMetric = true
+            return state
+        })
+    }
+
+    cancelremoveMetric(e) {
+        e.preventDefault()
+        this.setState((state) => {
+            state.removeMetric = false
             return state
         })
     }
@@ -244,7 +254,7 @@ export class AdminPanelMetrics extends Component {
                             Save
                         </button>
                         <button
-                            className="remove"
+                            className="removeTest"
                             onClick={(e) => this.removeMetric(e)}>
                             Remove
                         </button>
@@ -255,16 +265,24 @@ export class AdminPanelMetrics extends Component {
             editForm = (
                 <div
                     className="metricForm" style={ {display: this.state.modalDisplay}}>
+                        
                         <form className="metricBox">
+                        <button 
+                            onClick={(e) => this.closeModalE(e)}
+                            id="close-button">
+                                X
+                        </button>
                             <h2>WARNING!</h2>
                             <p>
                                 Removing a metric will permanently remove the metric area
-                                and any metrics associated with it. 
+                                and any metrics associated with it. Only remove if necessary.
                             </p>
-                            <button>
+                            <button
+                                onClick={(e) => this.cancelremoveMetric(e)}>    
                                 Cancel
                             </button>
-                            <button>
+                            <button
+                                onClick={(e) => this.removeMetricArea(e)}>
                                 Confirm
                             </button>
                         </form>

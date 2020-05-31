@@ -136,6 +136,7 @@ export class AdminPanelMetricCalcs extends Component {
         this.setState((state) => {
             state.currentMetricAreaCalculations = mapCalculations
             state.currentArchivedAreaCalculations = archivedMap
+            state.noMetricChosen = ""
             return state
         })
     }
@@ -178,6 +179,17 @@ export class AdminPanelMetricCalcs extends Component {
         })
     }
 
+    removeModal() {
+        this.setState((state) => {
+            state.removeModal = true
+            return state
+        })
+    }
+
+    removeMetric() {
+        firebase.database().ref('metricAreaCalculations' + this.state.currentCalc).remove()
+    }
+
     openArchiveModal(calcID, calcName) {
         this.setState((state) => {
             this.state.currentArchivedCalc = calcID
@@ -191,6 +203,11 @@ export class AdminPanelMetricCalcs extends Component {
         if (this.checkAddOpenModal()) {
             this.setState((state) => {
                 state.addModalDisplay = "block"
+                return state
+            })
+        } else {
+            this.setState((state) => {
+                state.noMetricChosen = "Please select a metric area."
                 return state
             })
         }
@@ -398,20 +415,12 @@ export class AdminPanelMetricCalcs extends Component {
                                 > + </button>
                             </div>
                             <div id="metricAreaCalcElements">
+                                {this.state.noMetricChosen}
                                 {metricAreaCalculationElements}
                             </div>
                             <h2 className= "selection" id="met-areas" >Archived Metrics</h2>
                             <div id="archivedAreaElements">
                                 {archivedAreaCalculationElements}
-                            {/* <h2 className="metricC">Metric Calculations</h2>
-                            <div id="calcForm">
-                                <form>
-                                    <label for="fname">Enter a Calculation Name </label>
-                                    <textarea
-                                        onChange={(e) => this.handleChange(e)}
-                                        type="text" id="form" name="calcName" />
-                                </form>
-                                <button className="save2" onClick={() => this.addCalculation()}>Add Calculation</button> */}
                             </div>
                         </div>
                         {editForm}
