@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/SightLife/static/css/main.7cf7a6ee.chunk.css",
-    "main.js": "/SightLife/static/js/main.97d31a59.chunk.js",
-    "main.js.map": "/SightLife/static/js/main.97d31a59.chunk.js.map",
+    "main.css": "/SightLife/static/css/main.0f112df8.chunk.css",
+    "main.js": "/SightLife/static/js/main.1f1ce6b5.chunk.js",
+    "main.js.map": "/SightLife/static/js/main.1f1ce6b5.chunk.js.map",
     "runtime-main.js": "/SightLife/static/js/runtime-main.c76153de.js",
     "runtime-main.js.map": "/SightLife/static/js/runtime-main.c76153de.js.map",
     "static/css/2.47e06e2e.chunk.css": "/SightLife/static/css/2.47e06e2e.chunk.css",
     "static/js/2.92606ec4.chunk.js": "/SightLife/static/js/2.92606ec4.chunk.js",
     "static/js/2.92606ec4.chunk.js.map": "/SightLife/static/js/2.92606ec4.chunk.js.map",
     "index.html": "/SightLife/index.html",
-    "precache-manifest.ab0287f897faa2257b1846c144a4edaf.js": "/SightLife/precache-manifest.ab0287f897faa2257b1846c144a4edaf.js",
+    "precache-manifest.b09546e9f2b9602759b3833fc6f6520a.js": "/SightLife/precache-manifest.b09546e9f2b9602759b3833fc6f6520a.js",
     "service-worker.js": "/SightLife/service-worker.js",
     "static/css/2.47e06e2e.chunk.css.map": "/SightLife/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.7cf7a6ee.chunk.css.map": "/SightLife/static/css/main.7cf7a6ee.chunk.css.map",
+    "static/css/main.0f112df8.chunk.css.map": "/SightLife/static/css/main.0f112df8.chunk.css.map",
     "static/js/2.92606ec4.chunk.js.LICENSE.txt": "/SightLife/static/js/2.92606ec4.chunk.js.LICENSE.txt",
     "static/media/FAQ1.png": "/SightLife/static/media/FAQ1.edf710cf.png",
     "static/media/FAQ2.png": "/SightLife/static/media/FAQ2.44062380.png",
@@ -40,7 +40,7 @@
     "static/js/runtime-main.c76153de.js",
     "static/css/2.47e06e2e.chunk.css",
     "static/js/2.92606ec4.chunk.js",
-    "static/css/main.7cf7a6ee.chunk.css",
-    "static/js/main.97d31a59.chunk.js"
+    "static/css/main.0f112df8.chunk.css",
+    "static/js/main.1f1ce6b5.chunk.js"
   ]
 }
