@@ -347,11 +347,11 @@ export class AdminPanelMetricCalcs extends Component {
                                 Removing a metric will permanently remove the metric and any
                                 information associated with it. Only remove if necessary.
                             </p>
-                        <button
+                        <button className="submit"
                             onClick={(e) => this.cancelRemoveModal(e)}>
                             Cancel
                         </button>
-                        <button
+                        <button className="removeTest"
                             onClick={(e) => this.removeMetric(e)}>
                             Confirm
                         </button>

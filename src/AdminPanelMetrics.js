@@ -277,13 +277,13 @@ export class AdminPanelMetrics extends Component {
                                 Removing a metric will permanently remove the metric area
                                 and any metrics associated with it. Only remove if necessary.
                             </p>
-                            <button
+                            <button className="submit"
                                 onClick={(e) => this.cancelremoveMetric(e)}>    
                                 Cancel
                             </button>
-                            <button
+                            <button className="removeTest"
                                 onClick={(e) => this.removeMetricArea(e)}>
-                                Confirm
+                                Remove
                             </button>
                         </form>
                 </div>

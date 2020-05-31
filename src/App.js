@@ -31,6 +31,7 @@ class App extends Component {
 
     this.changeSignInStatus = this.changeSignInStatus.bind(this)
     this.disableSignInStatus = this.disableSignInStatus.bind(this)
+    this.handleSignIn = this.handleSignIn.bind(this)
 
     this.state = {
       signInStatus: false,
@@ -81,6 +82,7 @@ class App extends Component {
         this.setState({ errorMessage: err.message })
       })
     window.location = "/SightLife/#/"
+    window.location.reload()
   }
 
   // Create a user account
@@ -118,7 +120,10 @@ class App extends Component {
   handleSignIn = (email, password) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .catch((err) => {
-        this.setState({ errorMessage: err.message })
+        this.setState({ 
+          errorMessage: err.message,
+          signInErr: "Login failed. Incorrect email or password." 
+        })
       })
   }
 

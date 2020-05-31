@@ -18,6 +18,10 @@ input, label {
     display: block;
 }
 
+.inputError {
+    color: red;
+}
+
 label {
     color: black;
     font-weight: bold;

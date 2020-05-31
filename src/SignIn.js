@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import firebase from 'firebase/app';
+
 import './css/SignIn.css';
 import './index.js';
 
@@ -11,6 +13,10 @@ export class SignIn extends Component {
             email: "",
             password: ""
         }
+    }
+
+    componentDidUpdate() {
+        console.log(this.state)
     }
 
     updateEmail(event) {
@@ -29,11 +35,22 @@ export class SignIn extends Component {
         })
     }
 
-    handleSignIn(e) {
-        e.preventDefault()
-        console.log(this.props)
-        this.props.handleSignIn(this.state.email, this.state.password)
-    }
+    // handleSignIn(e) {
+    //     e.preventDefault()
+    //     this.props.handleSignIn(this.state.email, this.state.password)
+    // }
+
+      // Signs user into application
+  handleSignIn = (e, email, password) => {
+    e.preventDefault()
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch((err) => {
+        this.setState({ 
+          errorMessage: err.message,
+          signInErr: "Login failed. Incorrect email or password." 
+        })
+      })
+  }
 
     render() {
         return (
@@ -43,25 +60,28 @@ export class SignIn extends Component {
                 <div className="SignBox">
                     <div>
                         <label className = "sign" for='Email'>Email</label>
-                        <input
+                        <input style={{fontSize:"15px"}}
                             onChange={(e) => this.updateEmail(e)}
                             type='email' name='Email' required />
                     </div>
                     <div>
                         <label className = "sign" for='Password'> Password</label>
-                        <input
+                        <input style={{fontSize:"15px"}}
                             onChange={(e) => this.updatePassword(e)}
                             type='password' name='Password' required />
                     </div>
                 </div>
 
+                <div style={{textAlign: "center", color:"red"}}>
+                    {this.state.errorMessage}
+                </div>
 
                 <div id="forgotPassword" >
                     <Link to={'/Forgotpassword'}><strong>Forgot Password?</strong></Link>
                 </div>
                 <div>
                     <button
-                        onClick={(e) => this.handleSignIn(e)}
+                        onClick={(e) => this.handleSignIn(e, this.state.email, this.state.password)}
                         class='sign-in'>Sign In</button>
                 </div>
                 <div class='account'>

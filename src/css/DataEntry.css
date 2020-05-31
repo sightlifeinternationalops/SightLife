@@ -39,7 +39,7 @@ textarea#form {
 
 
 p {
-    color:rgb(109, 110, 113);
+    /* color:rgb(109, 110, 113); */
     /* font-size: 1rem; */
 }
 
@@ -57,6 +57,10 @@ h2#quarter {
 }
 
 .required {
+    color: red;
+}
+
+.invalidError {
     color: red;
 }
 
@@ -122,6 +126,10 @@ label {
 
 .errorMsg {
     text-align: center;
+}
+
+.errorMsg p {
+    color: red;
 }
 
 div.datadeck {

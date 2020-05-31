@@ -15,26 +15,34 @@ export class CreateAccount extends Component {
     // Check if fields are filled with appropriate content
     checkSubmissions() {
         let valid = true
+        let errors = {}
+
         if (!this.renderFnameIssues()) {
             console.log("Invalid first name")
+            errors["invalidFName"] = "Field must not be empty."
             valid = false
         }
         if (!this.renderLnameIssues()) {
             console.log("Invalid last name")
+            errors["invalidLName"] = "Field must not be empty."
             valid = false
         }
         if (!this.renderEmailIssues()) {
             console.log("Invalid email")
+            errors["invalidEmail"] = "Invalid e-mail. Make sure you enter a SightLife email."
             valid = false
         }
         if (!this.renderPasswordIssues()) {
             console.log("Invalid password")
+            errors["invalidPassword"] = "Make sure password reaches required specifications."
             valid = false
         }
         if (!this.renderRePasswordIssues()) {
             console.log("Invalid re-entered password")
+            errors["invalidRePassword"] = "Passwords do not match."
             valid = false
         }
+        this.setState(errors)
         return valid
     }
 
@@ -183,12 +191,18 @@ export class CreateAccount extends Component {
                             onChange={(e) => this.updateFname(e)}
                             type='text' name="firstName" required />
                     </p>
+                    <div className="inputError">
+                        {this.state.invalidFName}
+                    </div>
                     <p>
                         <label className = "sign" for='Last Name'> Last Name </label>
                         <input
                             onChange={(e) => this.updateLname(e)}
                             type='text' name="lastName" required />
                     </p>
+                    <div className="inputError">
+                        {this.state.invalidLName}
+                    </div>
                     <p>
                         <label className = "sign" for='Email'> Email </label>
                         <input
@@ -196,13 +210,18 @@ export class CreateAccount extends Component {
                             type='text' name='Email' required
                             placeholder=" SightLife Email" />
                     </p>
-
+                    <div className="inputError">
+                        {this.state.invalidEmail}
+                    </div>
                     <p>
                         <label className = "sign" for='Password'> Password </label>
                         <input
                             onChange={(e) => this.updatePassword(e)}
                             type='password' name='Password' required/>
                     </p>
+                    <div className="inputError">
+                        {this.state.invalidPassword}
+                    </div>
                     <ul id="pList">
                         <li>A password requires at least 8 characters</li>
                         <li>A password requires one special character (ex: @!?/)</li>
@@ -214,6 +233,9 @@ export class CreateAccount extends Component {
                             onChange={(e) => this.updateRePassword(e)}
                             type='password' name='Re-Password' required />
                     </p>
+                    <div className="inputError">
+                        {this.state.invalidRePassword}
+                    </div>
                 </div>
                     <p>
                         <button
