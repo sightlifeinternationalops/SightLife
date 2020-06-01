@@ -4,6 +4,7 @@
     justify-content: center;
     align-content: center;
 }
+
 /* Clear floats after the columns */
 .body:after {
     content: "";
@@ -24,10 +25,12 @@
     margin-left: 1.5rem;
     margin-right: 1.5rem;
 }
+
 .PermissionBox {
     background-color: #9991C6;;
     height: 50;
 }
+
 .PermissionText {
     color: white;
     padding: 5px;
@@ -35,6 +38,7 @@
     margin-block-start: 0;
     margin-top: 18px;
 }
+
 div.PermDatadeck {
     align-content: center;
     align-items: center;
@@ -42,6 +46,7 @@ div.PermDatadeck {
     display: flex;
     flex-direction: row;
 }
+
 div.PermDatadeckPermission {
     margin-left: 0rem;
     margin-right: 0rem;
@@ -51,29 +56,36 @@ div.PermDatadeckPermission {
     display: block;
     flex-direction: row;
 }
+
 .PermText {
     padding-top: 3px;
     margin-bottom: 0;
     line-height: 2rem;
     font-size: 18px
 }
+
 .column ul {
     margin: 0 auto;
 }
+
 .left-submission{
     margin-right: 1rem;
 }
+
 .right-submission {
     margin-left: 1rem;
 }
+
 .react-switch {
     vertical-align: middle
 }
+
 #dataEntry {
     border-width: 0.5px;
     border-color: gray;
     /* border-top-style: solid; */
 }
+
 #addUserForm {
     display: none;
     width: 100%;
@@ -86,6 +98,7 @@ div.PermDatadeckPermission {
     overflow: auto;
     background-color: rgba(0,0,0,0.4)
 }
+
 /* #addUserBox {
     background-color: #fefefe;
     margin: 15% auto; 
@@ -96,7 +109,7 @@ div.PermDatadeckPermission {
     width: 90%;
 } */
 
-#addUserBox button #close-buttonID {
+/* #addUserBox button #close-buttonID {
     padding: 0;
     margin: 0;
     width: 50px;
@@ -106,7 +119,7 @@ div.PermDatadeckPermission {
     color: black;
     border-style: none;
     position: absolute;
-}
+} */
 
 #addUserBox h2 {
     color: rgb(153, 145, 198);
@@ -115,6 +128,7 @@ div.PermDatadeckPermission {
 .editButton {
     margin-bottom: 15px
 }
+
 .cancel {
     text-align: center;
     line-height: 50px;
@@ -128,37 +142,46 @@ div.PermDatadeckPermission {
     margin-bottom: 20px;
     margin-top: 10px;
 }
+
 .save:hover {
     background-color: rgb(153, 145, 198);
     color: white;
 }
+
 .save:focus {
     background-color: rgb(153, 145, 198);
     color: white;
 }
+
 .main-content {
   margin-left: 80px;
 }
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     list-style: none;
     text-decoration: none;
- }
+}
+
 a.Admin {
       font-size: 18px;
       font-weight: bold;
 }
+
 img.settings {
    width: 50px;
 }
+
 li.svg {
     display: block;
 }
+
 li.textz {
     display: none; 
 }
+
 .sidebar {
     width: 50px;
     height: 100%;
@@ -168,34 +191,41 @@ li.textz {
     left: 0;
     overflow-x: hidden;
 }
+
 img.settings {
     padding: 12px;
     align-content: center;
     justify-content: center;
 }
+
 .sidebar h2{
     color: #fff;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 30px;
 }
+
 .sidebar ul li{
     border-bottom: 1px solid #E6E7E8;
     border-bottom: 1px solid white;
     border-top: 1px solid rgba(255,255,255,0.05);
 }    
+
 .body .sidebar ul li a {
     color: white;
     display: block;
 }
+
 .body .sidebar ul li:hover{
     background-color: rgb(153, 145, 198);
 }
+
 @media (min-width: 430px) {
     .cancel {
         margin-left: 0.5rem;
     }
 }
+
 @media (min-width: 630px) {
     .column {
         width: 90%;
@@ -230,6 +260,7 @@ img.settings {
         width: 60%; /* Could be more or less, depending on screen size */
     }
 }
+
 @media (min-width: 900px) {
     .column {
         float: left;
@@ -262,6 +293,7 @@ img.settings {
         margin-left: 0.5rem;
     }
 }
+
 @media (min-width: 1025px) {
     .cancel {
         margin-left: 1rem;
