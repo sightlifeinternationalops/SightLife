@@ -172,18 +172,17 @@ export class DashBoard extends Component {
     // selected metric calculation and year
     quarterArrayElements() {
         const quarterArrayInfo = []
+        var metricCalc = this.props.metricAreaCalculations.get(this.props.currentCalcID)
         var dataType
 
-        if (this.props.selectedYearMap[1]) {
-            dataType = this.props.selectedYearMap[1].dataType
+        if (metricCalc) {
+            dataType = metricCalc.dataType
         }
 
         for (let i = 0; i <= 3; i++) {
             let actualExists = false
             let targetExists = false
-            let monthObjColor
             let color    
-            let dataType
             let actual = 0;
             let target = 0;
             var actualsCounter = 0;
@@ -205,8 +204,6 @@ export class DashBoard extends Component {
                 target += parseFloat(monthObj1.target) || 0
                 targetsCounter++
             }
-            monthObjColor = monthObj1
-            dataType = monthObj1.dataType
         }
 
         let monthObj2 = this.props.selectedYearMap[i * 3 + 2]
@@ -225,8 +222,6 @@ export class DashBoard extends Component {
                 target += parseFloat(monthObj2.target) || 0
                 targetsCounter++
             }
-            monthObjColor = monthObj2
-            dataType = monthObj2.dataType
         }
 
         let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
@@ -245,8 +240,6 @@ export class DashBoard extends Component {
                 target += parseFloat(monthObj3.target) || 0
                 targetsCounter++
             }
-            monthObjColor = monthObj3
-            dataType = monthObj3.dataType
         }
 
         if (dataType == "percent" && actualExists) {
@@ -263,10 +256,8 @@ export class DashBoard extends Component {
         if (!targetExists) {
             target = "N/A"
         }
-
-        if (monthObjColor) {
-            color = this.actualColor(actual, target, monthObjColor.dataType)
-        }
+           
+        color = this.actualColor(actual, target, dataType)
 
         if (dataType == "percent" && actualExists) {
             actual += "%"
@@ -298,13 +289,18 @@ export class DashBoard extends Component {
         let annualArrayInfo = []
         let actual = 0
         let target = 0
-        let monthObjColor
         let color
         let actualExists = false
         let targetExists = false
-        let dataType
+        var dataType
         var targetsCounter = 0
         var actualsCounter = 0
+
+        var metricCalc = this.props.metricAreaCalculations.get(this.props.currentCalcID)
+
+        if (metricCalc) {
+            dataType = metricCalc.dataType
+        }
 
         for(let i = 0; i < 11; i++) {
             let monthObj = this.props.selectedYearMap[i + 1]
@@ -325,10 +321,6 @@ export class DashBoard extends Component {
                     target += parseFloat(monthObj.target)
                     targetsCounter++
                 }
-
-                dataType = monthObj.dataType
-                monthObjColor = monthObj
-        
             }
         }
 
@@ -347,9 +339,7 @@ export class DashBoard extends Component {
             target = "N/A"
         }
 
-        if (monthObjColor) {
-            color = this.actualColor(actual, target, monthObjColor.dataType)
-        }
+        color = this.actualColor(actual, target, dataType)
 
         if (dataType == "percent" && actualExists) {
             actual += "%"

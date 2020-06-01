@@ -39,8 +39,16 @@ export class DashBoard extends Component {
     barChart() {
         d3.selectAll("svg").remove();
         d3.selectAll("div.tooltip").remove();
-        if (this.props.selectedYearMap.length > 0) {
+        var metricCalc = this.props.metricAreaCalculations.get(this.props.currentCalcID)
         var datatype
+    
+        if (metricCalc) {
+            datatype = metricCalc.dataType
+        } else {
+            datatype = ""
+        }
+
+        if (this.props.selectedYearMap.length > 0 && (datatype != "text" || datatype != "")) {
 
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
@@ -74,7 +82,6 @@ export class DashBoard extends Component {
                 target += parseInt(monthObj1.target, 10)
                 targetsCounter++
              }
-             datatype = monthObj1.dataType
 
         }
         
@@ -88,8 +95,6 @@ export class DashBoard extends Component {
                 target += parseInt(monthObj2.target, 10)
                 targetsCounter++
              }
-             datatype = monthObj2.dataType
-
         }
 
         let monthObj3 = this.props.selectedYearMap[i * 3 + 3]
@@ -102,7 +107,6 @@ export class DashBoard extends Component {
                 target += parseInt(monthObj3.target, 10)
                 targetsCounter++
              }
-             datatype = monthObj3.dataType
         }
 
          if (datatype == "percent") {
@@ -304,7 +308,16 @@ export class DashBoard extends Component {
 
 
     lineChart() {
-        if (this.props.selectedYearMap.length > 0) {
+        var metricCalc = this.props.metricAreaCalculations.get(this.props.currentCalcID)
+        var datatype
+    
+        if (metricCalc) {
+            datatype = metricCalc.dataType
+        } else {
+            datatype = ""
+        }
+
+        if (this.props.selectedYearMap.length > 0 && (datatype != "text" || datatype != "")) {
         var margin = {top: 30, right: 100, bottom: 70, left: 130},
         width = 1200 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
@@ -320,13 +333,11 @@ export class DashBoard extends Component {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
             const data = []
-            var datatype
             for (let i = 0; i <= 11; i++) {
                 let monthObj = this.props.selectedYearMap[i + 1]
                 if (monthObj) {
                     // Need to do some work based on the data type received for the metric
                     // cannot always assume it's an int
-                    datatype = monthObj.dataType
                     const actual = parseInt(monthObj.actual, 10)
                     console.log(actual)
                     const target = parseInt(monthObj.target, 10)
