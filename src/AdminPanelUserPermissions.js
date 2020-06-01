@@ -31,6 +31,7 @@ export class AdminPanelUserPermissions extends Component {
 
     componentDidMount() {
         this.retrieveCurrentUsers()
+        this.isAdmin()
     }
 
     componentDidUpate() {
@@ -329,14 +330,37 @@ export class AdminPanelUserPermissions extends Component {
         })
     }
 
+    isAdmin() {
+        let rootPath = firebase.database().ref('admins')
+        rootPath.once('value', (snapshot) => {
+            let info = snapshot.val()
+
+            // If the admins reference exists in the database
+            // or if something exists in the database for admins
+            if (info) {
+                let keys = Object.keys(info)
+                keys.map((key) => {
+                    if (info[key].userMetricID === this.props.user.uid) {
+                        console.log("Current user is an admin")
+                        this.setState((state) => {
+                            state.adminPermissions = true
+                            return state
+                        })
+                    }
+                })
+            }
+        })
+      }
+
     render() {
         const metricAreaElements = this.metricAreaElements()
         let form = this.addForm()
+        let content = null
 
-        return (
-            <div className="body">
-                <main>
-                    <AdminPanelNav />
+        if (this.props.adminPermissions) {
+            content = (
+                <div>
+                                        <AdminPanelNav />
                     <h1 class="ASettingsTitle"> Metric Owner Settings </h1>
 
                     <div class="main-content">
@@ -359,6 +383,20 @@ export class AdminPanelUserPermissions extends Component {
                         />
                         {form}
                     </div>
+                </div>
+            )
+        } else {
+            content = (
+                <div>
+                    Permissions denied.
+                </div>
+            )
+        }
+
+        return (
+            <div className="body">
+                <main>
+                    {content}
                 </main>
             </div>
         )

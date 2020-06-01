@@ -335,8 +335,9 @@ export class AdminSettings extends Component {
         let content = null
         let form = this.addForm()
         const adminElements = this.renderAdminUsers()
+        let overallContent = null
 
-        // if (this.state.enableEdit) {
+        if (this.props.adminPermissions) {
             content = (
                 <div class="adminButtons">
                     <button className="addAdmin"
@@ -344,27 +345,10 @@ export class AdminSettings extends Component {
                         Add Admin
                     </button>
 
-                    {/* <button className="cancel"
-                        onClick={() => this.cancelEdit()}>
-                        Cancel
-                    </button> */}
                 </div>
             )
-        // } else {
-        //     content = (
-        //         <div class="adminButtons">
-        //             <button
-        //                 className="save2"
-        //                 value="test"
-        //                 onClick={() => this.editAdminInfo()}>
-        //                 Edit Admins
-        //         </button>
-        //         </div>
-        //     )
-        // }
-
-        return (
-            <div className="body">
+            overallContent = (
+                <div>
                 <AdminPanelNav />
                 <main>
                     <h1 class="ASettingsTitle"> Settings </h1>
@@ -434,6 +418,19 @@ export class AdminSettings extends Component {
                     </div>
 
                 </main>
+                </div>
+            )
+        } else {
+            overallContent = (
+                <div>
+                    Permission denied.
+                </div>
+            )
+        }
+
+        return (
+            <div className="body">
+              {overallContent}
             </div>
         )
     }
