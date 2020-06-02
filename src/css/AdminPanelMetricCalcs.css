@@ -23,7 +23,7 @@ h2.metricC {
   padding-right: 8px;
   margin-left: 10px;
   margin-right: 10px;
-  border-style: inherit;
+  border-style: none;
   border-radius: 5px;
   color: white;
   font-size: 20px;
@@ -58,7 +58,10 @@ h2.metricC {
 }
 
 .close-button {
-  padding: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 10px;
+  margin-right:10px;
   margin: 0;
   width: 50px;
   right: 0;
@@ -67,6 +70,7 @@ h2.metricC {
   color: black;
   border-style: none;
   position: absolute;
+  /* background-color: #9991C6; */
 }
 
 .modalForm {
@@ -115,7 +119,7 @@ h2.metricC {
   border-radius: 10px;
   color: white;
   width: 150px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: 10px
 }
 

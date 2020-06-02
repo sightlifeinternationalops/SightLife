@@ -1,384 +1,393 @@
 .metricName {
- display: inline-block;
- margin-right: 50px;
- text-align: left;
-} 
-
- .metricsTest {
-    text-align: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: grey;
-    border-radius: 2.5px;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-.table th.test1, .table td {
-    border-style: none;
-}
-
-th.test1{
-    border: none;
-}
-
-.tick {
-    width: 25px;
-    height: 25px;
-}
-
-.cross {
-    width: 25px;
-    height: 25px;
-}
-
-.monthTitleDataEntry { 
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-#dataEntryTable {
-    border: none;
-}
-
-table .test1, th .test1, td .test1 {
-    border: none;
-    padding: 10px;
-    width: 60%;
-}
-
-.test1 {
-    border: none;
-    border-color: white;
-}
-
- .column {
-    float: none;
-    width: 100%;
-    justify-content: center;
-    align-content: center;
-}
-
-/* Clear floats after the columns */
-.body:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.PermInfo {
-    box-shadow: 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1), 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1);
-    border-radius: 10px 10px 10px 10px;
-    margin: 0 auto;
-    padding: 0;
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
-}
-
-.PermissionBox {
-    background-color: #9991C6;;
-    height: 50;
-}
-
-.PermissionText {
-    color: white;
-    padding: 5px;
-    margin-bottom: 0;
-    margin-block-start: 0;
-    margin-top: 18px;
-}
-
-div.PermDatadeck {
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-}
-
-div.PermDatadeckPermission {
-    margin-left: 0rem;
-    margin-right: 0rem;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    display: block;
-    flex-direction: row;
-}
-
-.PermText {
-    padding-top: 3px;
-    margin-bottom: 0;
-    line-height: 2rem;
-    font-size: 18px
-}
-
-.column ul {
-    margin: 0 auto;
-}
-
-.left-submission{
-    margin-right: 1rem;
-}
-
-.right-submission {
-    margin-left: 1rem;
-}
-
-.react-switch {
-    vertical-align: middle
-}
-
-#dataEntry {
-    border-width: 0.5px;
-    border-color: gray;
-    /* border-top-style: solid; */
-}
-
-#addUserForm {
-    display: none;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4)
-}
-
-#addUserBox {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    position: relative;
-    border-radius: 10px;
-    width: 90%;
-}
-
-#addUserBox h2 {
-    color: rgb(153, 145, 198);
-}
-
-#addUserBox button {
-    padding-left: 8px;
-    padding-right: 8px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-style: inherit;
-    border-radius: 5px;
-    color: white;
-    font-size: 20px;
-    height: 50px;
-    width: 100px;
-    background-color: #9991C6;
-}
-
-.cancel {
-    text-align: center;
-    line-height: 50px;
-    background-color: #6D6E70;
-    font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    border-style: inherit;
-    border-radius: 10px;
-    color: white;
-    width: 150px; 
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-
-
-.save:hover {
-    background-color: rgb(153, 145, 198);
-    color: white;
-}
-
-.save:focus {
-    background-color: rgb(153, 145, 198);
-    color: white;
-}
-
-.main-content {
-  margin-left: 80px;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
- }
-
-a.Admin {
-      font-size: 18px;
-      font-weight: bold;
-}
-
-img.settings {
-   width: 50px;
-}
-
-li.svg {
-    display: block;
-}
-
-li.textz {
-    display: none; 
-}
-
-.sidebar h2{
-    color: #fff;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 30px;
-}
-  
-.sidebar ul li{
-    border-bottom: 1px solid #E6E7E8;
-    border-bottom: 1px solid white;
-    border-top: 1px solid rgba(255,255,255,0.05);
-}    
-  
-.body .sidebar ul li a {
-    color: white;
-    display: block;
-}
-  
-.body .sidebar ul li:hover{
-    background-color: rgb(153, 145, 198);
-}
-
-@media (min-width: 430px) {
-    .cancel {
-        margin-left: 0.5rem;
-    }
-
+    display: inline-block;
+    margin-right: 50px;
+    text-align: left;
+   } 
+   
     .metricsTest {
-        margin-left: 10%;
-        margin-right: 10%;
-    }
-}
-
-@media (min-width: 630px) {
+       text-align: center;
+       border-style: solid;
+       border-width: 1px;
+       border-color: grey;
+       border-radius: 2.5px;
+       margin-left: 5%;
+       margin-right: 5%;
+   }
+   
+   .table th.test1, .table td {
+       border-style: none;
+   }
+   
+   th.test1{
+       border: none;
+   }
+   
+   .tick {
+       width: 25px;
+       height: 25px;
+   }
+   
+   .cross {
+       width: 25px;
+       height: 25px;
+   }
+   
+   .monthTitleDataEntry { 
+       margin-top: 30px;
+       margin-bottom: 20px;
+   }
+   
+   #dataEntryTable {
+       border: none;
+   }
+   
+   table .test1, th .test1, td .test1 {
+       border: none;
+       padding: 10px;
+       width: 60%;
+   }
+   
+   .test1 {
+       border: none;
+       border-color: white;
+   }
+   
     .column {
-        width: 90%;
+       float: none;
+       width: 100%;
+       justify-content: center;
+       align-content: center;
+   }
+   
+   /* Clear floats after the columns */
+   .body:after {
+       content: "";
+       display: table;
+       clear: both;
+   }
+   
+   .PermInfo {
+       box-shadow: 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1), 0px 4px 4px 0px rgba(0.1, 0.1, 0.1, 0.1);
+       border-radius: 10px 10px 10px 10px;
+       margin: 0 auto;
+       padding: 0;
+       margin-left: 1.5rem;
+       margin-right: 1.5rem;
+   }
+   
+   .PermissionBox {
+       background-color: #9991C6;;
+       height: 50;
+   }
+   
+   .PermissionText {
+       color: white;
+       padding: 5px;
+       margin-bottom: 0;
+       margin-block-start: 0;
+       margin-top: 18px;
+   }
+   
+   div.PermDatadeck {
+       align-content: center;
+       align-items: center;
+       justify-content: center;
+       display: flex;
+       flex-direction: row;
+   }
+   
+   div.PermDatadeckPermission {
+       margin-left: 0rem;
+       margin-right: 0rem;
+       align-content: center;
+       align-items: center;
+       justify-content: center;
+       display: block;
+       flex-direction: row;
+   }
+   
+   .PermText {
+       padding-top: 3px;
+       margin-bottom: 0;
+       line-height: 2rem;
+       font-size: 18px
+   }
+   
+   .column ul {
+       margin: 0 auto;
+   }
+   
+   .left-submission{
+       margin-right: 1rem;
+   }
+   
+   .right-submission {
+       margin-left: 1rem;
+   }
+   
+   .react-switch {
+       vertical-align: middle
+   }
+   
+   #dataEntry {
+       border-width: 0.5px;
+       border-color: gray;
+       /* border-top-style: solid; */
+   }
+   
+   #addUserForm {
+       display: none;
+       width: 100%;
+       height: 100%;
+       text-align: center;
+       position: fixed;
+       z-index: 1;
+       left: 0;
+       top: 0;
+       overflow: auto;
+       background-color: rgba(0,0,0,0.4)
+   }
+   
+   #addUserBox {
+       background-color: #fefefe;
+       margin: 15% auto; 
+       padding: 20px;
+       border: 1px solid #888;
+       position: relative;
+       border-radius: 10px;
+       width: 90%;
+   }
+   
+   #addUserBox h2 {
+       color: rgb(153, 145, 198);
+   }
+   
+   /* #addUserBox button {
+       padding-left: 8px;
+       padding-right: 8px;
+       margin-left: 10px;
+       margin-right: 10px;
+       border-style: inherit;
+       border-radius: 5px;
+       color: white;
+       font-size: 20px;
+       height: 50px;
+       width: 100px;
+       background-color: #9991C6;
+   } */
+   
+   button#close-buttonID.close-button {
+       padding-left: 8px;
+       padding-right: 8px;
+       margin-left: 10px;
+       margin-right: 10px;
+       margin: 0;
+       width: 50px;
+       height: 40px;
+       right: 0;
+       top: 0;
+       color: black;
+       border-style: none;
+       border-radius: 0;
+       position: absolute;
+       /* background-color: #9991C6; */
+   }
+   
+   .cancel {
+       text-align: center;
+       line-height: 50px;
+       background-color: #6D6E70;
+       font-size: 18px;
+       font-family: Arial, Helvetica, sans-serif;
+       border-style: inherit;
+       border-radius: 10px;
+       color: white;
+       width: 150px; 
+       margin-bottom: 20px;
+       margin-top: 10px;
+   }
+   
+   .save:hover {
+       background-color: rgb(153, 145, 198);
+       color: white;
+   }
+   
+   .save:focus {
+       background-color: rgb(153, 145, 198);
+       color: white;
+   }
+   
+   .main-content {
+     margin-left: 80px;
+   }
+   
+   * {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+       list-style: none;
+       text-decoration: none;
     }
-
-    div.PermDatadeckPermission {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-
-    .metricsTest {
-        margin-left: 10%;
-        margin-right: 10%;
-    }
-
-    li.svg {
-        display: none;
-    }
-
-    li.textz {
-        display: block; 
-    }
-
-    .sidebar {
-        width: 200px;  
-    }
-
-    .main-content {
-        margin-left: 200px;
-    }
-
-    div.PermInfo {
-        margin-left: 2rem;
-        margin-right: 2rem;
-    }
-
-    .ASettingsTitle {
-        margin-left: 200px;
-    }
-
-    .cancel {
-        margin-left: 1rem;
-    }
-
-    #addUserBox {
-        width: 60%; /* Could be more or less, depending on screen size */
-    }
-}
-
-@media (min-width: 900px) {
-    .column {
-        float: left;
-        width: 50%;
-    }
-
-    .metricsTest {
-        margin-left: 10%;
-        margin-right: 10%;
-    }
-
-    div.PermDatadeckPermission {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-
-    li.svg {
-        display: none;
-    }
-
-    li.textz {
-        display: block; 
-    }
-
-    .sidebar {
-        width: 200px;  
-    }
-
-    .main-content {
-        margin-left: 200px;
-    }
-
-    div.PermInfo {
-        margin-right: 3rem;
-        margin-left: 0;
-    }
-
-    #addUserBox {
-        width: 40%; /* Could be more or less, depending on screen size */
-    }
-
-    .cancel {
-        margin-left: 0.5rem;
-    }
-}
-
-@media (min-width: 1025px) {
-    .cancel {
-        margin-left: 1rem;
-    }
-
-    .metricsTest {
-        margin-left: 10rem;
-        margin-right: 10rem;
-    }
-}
-  
-@media (min-width: 1180px) {
-    .metricsTest {
-        margin-left: 30%;
-        margin-right: 30%;
-    }
-}
-
-      
-  
-
-  
-
-  
+   
+   a.Admin {
+         font-size: 18px;
+         font-weight: bold;
+   }
+   
+   img.settings {
+      width: 50px;
+   }
+   
+   li.svg {
+       display: block;
+   }
+   
+   li.textz {
+       display: none; 
+   }
+   
+   .sidebar h2{
+       color: #fff;
+       text-transform: uppercase;
+       text-align: center;
+       margin-bottom: 30px;
+   }
+     
+   .sidebar ul li{
+       border-bottom: 1px solid #E6E7E8;
+       border-bottom: 1px solid white;
+       border-top: 1px solid rgba(255,255,255,0.05);
+   }    
+     
+   .body .sidebar ul li a {
+       color: white;
+       display: block;
+   }
+     
+   .body .sidebar ul li:hover{
+       background-color: rgb(153, 145, 198);
+   }
+   
+   @media (min-width: 430px) {
+       .cancel {
+           margin-left: 0.5rem;
+       }
+   
+       .metricsTest {
+           margin-left: 10%;
+           margin-right: 10%;
+       }
+   }
+   
+   @media (min-width: 630px) {
+       .column {
+           width: 90%;
+       }
+   
+       div.PermDatadeckPermission {
+           margin-left: 1rem;
+           margin-right: 1rem;
+       }
+   
+       .metricsTest {
+           margin-left: 10%;
+           margin-right: 10%;
+       }
+   
+       li.svg {
+           display: none;
+       }
+   
+       li.textz {
+           display: block; 
+       }
+   
+       .sidebar {
+           width: 200px;  
+       }
+   
+       .main-content {
+           margin-left: 200px;
+       }
+   
+       div.PermInfo {
+           margin-left: 2rem;
+           margin-right: 2rem;
+       }
+   
+       .ASettingsTitle {
+           margin-left: 200px;
+       }
+   
+       .cancel {
+           margin-left: 1rem;
+       }
+   
+       #addUserBox {
+           width: 60%; /* Could be more or less, depending on screen size */
+       }
+   }
+   
+   @media (min-width: 900px) {
+       .column {
+           float: left;
+           width: 50%;
+       }
+   
+       .metricsTest {
+           margin-left: 10%;
+           margin-right: 10%;
+       }
+   
+       div.PermDatadeckPermission {
+           margin-left: 1rem;
+           margin-right: 1rem;
+       }
+   
+       li.svg {
+           display: none;
+       }
+   
+       li.textz {
+           display: block; 
+       }
+   
+       .sidebar {
+           width: 200px;  
+       }
+   
+       .main-content {
+           margin-left: 200px;
+       }
+   
+       div.PermInfo {
+           margin-right: 3rem;
+           margin-left: 0;
+       }
+   
+       #addUserBox {
+           width: 40%; /* Could be more or less, depending on screen size */
+       }
+   
+       .cancel {
+           margin-left: 0.5rem;
+       }
+   }
+   
+   @media (min-width: 1025px) {
+       .cancel {
+           margin-left: 1rem;
+       }
+   
+       .metricsTest {
+           margin-left: 10rem;
+           margin-right: 10rem;
+       }
+   }
+     
+   @media (min-width: 1180px) {
+       .metricsTest {
+           margin-left: 30%;
+           margin-right: 30%;
+       }
+   }  
