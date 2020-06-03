@@ -60,13 +60,13 @@ export class SignIn extends Component {
                 <div className="SignBox">
                     <div>
                         <label className = "sign" for='Email'>Email</label>
-                        <input style={{fontSize:"15px"}}
+                        <input className = "inputBox" style={{fontSize:"15px"}}
                             onChange={(e) => this.updateEmail(e)}
                             type='email' name='Email' required />
                     </div>
                     <div>
                         <label className = "sign" for='Password'> Password</label>
-                        <input style={{fontSize:"15px"}}
+                        <input className = "inputBox" style={{fontSize:"15px"}}
                             onChange={(e) => this.updatePassword(e)}
                             type='password' name='Password' required />
                     </div>
