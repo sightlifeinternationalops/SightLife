@@ -78,7 +78,7 @@ export class DashBoard extends Component {
                     let marginNum = targetFloat - subtractNum
                     if (actualFloat >= marginNum) {
                         return "#f9a354"
-                    } else if (actualFloat < targetFloat - 5) {
+                    } else if (actualFloat < marginNum) {
                         return "#fe0000"
                     } else {
                         return "#FFFFFF"
@@ -92,7 +92,7 @@ export class DashBoard extends Component {
                     let marginNum = targetFloat - subtractNum
                     if (actualFloat >= marginNum) {
                         return "#f9a354"
-                    } else if (actualFloat < targetFloat - 5) {
+                    } else if (actualFloat < marginNum) {
                         return "#fe0000"
                     } else {
                         return "#FFFFFF"
