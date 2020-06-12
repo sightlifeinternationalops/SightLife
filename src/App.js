@@ -47,6 +47,8 @@ class App extends Component {
   componentDidMount() {
     this.authUnSubFunction = firebase.auth().onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) { // If user is logged in
+        // window.location.reload()
+        this.isAdmin()
         this.setState({
           user: firebaseUser,
           checkingLogin: false,
@@ -120,6 +122,7 @@ class App extends Component {
   // Signs user into application
   handleSignIn = (email, password) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
+      // window.location.reload()
       .catch((err) => {
         this.setState({ 
           errorMessage: err.message,
