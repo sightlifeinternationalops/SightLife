@@ -78,7 +78,7 @@ export class DashBoard extends Component {
                     let marginNum = targetFloat - subtractNum
                     if (actualFloat >= marginNum) {
                         return "#f9a354"
-                    } else if (actualFloat < targetFloat - 5) {
+                    } else if (actualFloat < marginNum) {
                         return "#fe0000"
                     } else {
                         return "#FFFFFF"
@@ -92,7 +92,7 @@ export class DashBoard extends Component {
                     let marginNum = targetFloat - subtractNum
                     if (actualFloat >= marginNum) {
                         return "#f9a354"
-                    } else if (actualFloat < targetFloat - 5) {
+                    } else if (actualFloat < marginNum) {
                         return "#fe0000"
                     } else {
                         return "#FFFFFF"
@@ -385,28 +385,26 @@ export class DashBoard extends Component {
                 </div>
                 <div>
                     <div className="options">
-                        <div 
-                        className="dropTitle"
-                        ><strong>Metric: </strong></div>
-                    <select className="options"
-
-                        onChange={(e) => this.props.handleCalChange(e)}>
-                        <option value="None" disabled selected>None</option>
-                        {metricElements}
-                    </select>
+                        <div className="dropTitle"><strong>Metric: </strong>     
+                            <select className="options"
+                                onChange={(e) => this.props.handleCalChange(e)}>
+                                <option value="None" disabled selected>None</option>
+                                {metricElements}
+                            </select>
+                        </div>
                     
-
-                    {/* Once a metric is selected,
-                    fill in depending on how many keys
-                    and enable */}
-                       <div className="dropTitle"><strong>Year: </strong></div>
-                    <select 
-                        disabled={this.state.selectEnable}
-                        name="selectedYear"
-                        onChange={(e) => this.props.handleYearChange(e)}>
-                        <option value="" disabled selected>Select a Year</option>
-                        {yearElements}
-                    </select>
+                        {/* Once a metric is selected,
+                        fill in depending on how many keys
+                        and enable */}
+                       <div className="dropTitle"><strong>Year: </strong>
+                            <select 
+                                disabled={this.state.selectEnable}
+                                name="selectedYear"
+                                onChange={(e) => this.props.handleYearChange(e)}>
+                                <option value="" disabled selected>Select a Year</option>
+                                {yearElements}
+                            </select>
+                        </div>
                     </div>
 
                     <div style={{textAlign:"center"}}>

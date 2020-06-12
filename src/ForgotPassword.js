@@ -40,6 +40,7 @@ export class ForgotPassword extends Component {
                     onClick={() => this.props.handleForgotPassword(this.state.emailInput)}>Email Me</button>
                 <div className="reroute">
                     <Link id="signin" to={"/signin"}>Sign In</Link>
+                    <p> </p>
                     <Link id="createaccount" to={"/createaccount"}>Create Account</Link>
                 </div>
             </div>
