@@ -104,16 +104,16 @@ class App extends Component {
 
         user.sendEmailVerification().then(function () {
           // Email sent
+          return true
         }).catch(function (error) {
           // An error happened.
-          console.log(error.errorMessage)
         })
       })
       .catch(function (error) {
         // Handle errors here
-        var errorCode = error.errorCode
-        var errorMessage = error.errorMessage
-        window.alert("Error : " + errorMessage)
+        // var errorCode = error.errorCode
+        // var errorMessage = error.errorMessage
+        window.alert(error)
       })
   }
 
@@ -148,7 +148,8 @@ class App extends Component {
         if (info) {
             let keys = Object.keys(info)
             keys.map((key) => {
-                if (info[key].userMetricID === this.state.user.uid) {
+
+                if (this.state.user && info[key].userMetricID === this.state.user.uid ) {
                     console.log("Current user is an admin")
                     this.setState((state) => {
                         state.adminPermissions = true

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './css/SignIn.css';
 import './index.js';
+import { AdminDataEntry } from './AdminDataEntry';
+
+import firebase from 'firebase/app';
 
 export class CreateAccount extends Component {
     constructor(props) {
@@ -182,79 +185,82 @@ export class CreateAccount extends Component {
         } else {
             content = (
                 <div className="body">
-                <h1> Create Account </h1>
-                <div className="form">
-                    <div className="SignBox">
-                    <p>
-                        <label className = "sign" for='First Name'> First Name </label>
-                        <input
-                            onChange={(e) => this.updateFname(e)}
-                            type='text' name="firstName" required />
-                    </p>
-                    <div className="inputError">
-                        {this.state.invalidFName}
-                    </div>
-                    <p>
-                        <label className = "sign" for='Last Name'> Last Name </label>
-                        <input
-                            onChange={(e) => this.updateLname(e)}
-                            type='text' name="lastName" required />
-                    </p>
-                    <div className="inputError">
-                        {this.state.invalidLName}
-                    </div>
-                    <p>
-                        <label className = "sign" for='Email'> Email </label>
-                        <input
-                            onChange={(e) => this.updateEmail(e)}
-                            type='text' name='Email' required
-                            placeholder=" SightLife Email" />
-                    </p>
-                    <div className="inputError">
-                        {this.state.invalidEmail}
-                    </div>
-                    <p>
-                        <label className = "sign" for='Password'> Password </label>
-                        <input
-                            onChange={(e) => this.updatePassword(e)}
-                            type='password' name='Password' required/>
-                    </p>
-                    <div className="inputError">
-                        {this.state.invalidPassword}
-                    </div>
-                    <ul id="pList">
-                        <li>A password requires at least 8 characters</li>
-                        <li>A password requires one special character (ex: @!?/)</li>
-                        <li>A password requires one number</li>
-                    </ul>
-                    <p>
-                        <label className = "sign" for='Re-Enter Password'> Re-enter Password </label>
-                        <input
-                            onChange={(e) => this.updateRePassword(e)}
-                            type='password' name='Re-Password' required />
-                    </p>
-                    <div className="inputError">
-                        {this.state.invalidRePassword}
-                    </div>
-                </div>
-                    <p>
-                        <button
-                            onClick={() => this.submitAccount()}
-                            class='preview'> Create Account</button>
-                        {/* <input type="submit" value="Submit"></input> */}
-                    </p>
+                    <h1> Create Account </h1>
+                    <div className="form">
+                        <div className="SignBox">
+                            <p>
+                                <label className="sign" for='First Name'> First Name </label>
+                                <input
+                                    onChange={(e) => this.updateFname(e)}
+                                    type='text' name="firstName" required />
+                            </p>
+                            <div className="inputError">
+                                {this.state.invalidFName}
+                            </div>
+                            <p>
+                                <label className="sign" for='Last Name'> Last Name </label>
+                                <input
+                                    onChange={(e) => this.updateLname(e)}
+                                    type='text' name="lastName" required />
+                            </p>
+                            <div className="inputError">
+                                {this.state.invalidLName}
+                            </div>
+                            <p>
+                                <label className="sign" for='Email'> Email </label>
+                                <input
+                                    onChange={(e) => this.updateEmail(e)}
+                                    type='text' name='Email' required
+                                    placeholder=" SightLife Email" />
+                            </p>
+                            <div className="inputError">
+                                {this.state.invalidEmail}
+                            </div>
+                            <div className="inputError">
+                                {this.state.invalidDuplciateEmail}
+                            </div>
+                            <p>
+                                <label className="sign" for='Password'> Password </label>
+                                <input
+                                    onChange={(e) => this.updatePassword(e)}
+                                    type='password' name='Password' required />
+                            </p>
+                            <div className="inputError">
+                                {this.state.invalidPassword}
+                            </div>
+                            <ul id="pList">
+                                <li>A password requires at least 8 characters</li>
+                                <li>A password requires one special character (ex: @!?/)</li>
+                                <li>A password requires one number</li>
+                            </ul>
+                            <p>
+                                <label className="sign" for='Re-Enter Password'> Re-enter Password </label>
+                                <input
+                                    onChange={(e) => this.updateRePassword(e)}
+                                    type='password' name='Re-Password' required />
+                            </p>
+                            <div className="inputError">
+                                {this.state.invalidRePassword}
+                            </div>
+                        </div>
+                        <p>
+                            <button
+                                onClick={() => this.submitAccount()}
+                                class='preview'> Create Account</button>
+                            {/* <input type="submit" value="Submit"></input> */}
+                        </p>
 
-                <div class='account'>
-                    <p class="account"> Already have an account? </p>
-                </div>
+                        <div class='account'>
+                            <p class="account"> Already have an account? </p>
+                        </div>
 
-                <div class='account2'>
-                    <a class='create'> <Link to="/signIn" onClick={() => this.props.disableSignInStatus()}>Sign In</Link></a>
-                </div>
+                        <div class='account2'>
+                            <a class='create'> <Link to="/signIn" onClick={() => this.props.disableSignInStatus()}>Sign In</Link></a>
+                        </div>
 
+                    </div>
                 </div>
-            </div>
-            ) 
+            )
         }
         return (
             <div>
