@@ -7,20 +7,6 @@ This repository holds information and code for SightLife's Global Score Card, a 
 
 The Global Score Card will operate as a dashboard, creating data visualizations based upon inputted data to help SightLife see trends, compare the actual metrics to their target metrics, and improve upon their current methods of tracking information.
 
-## Instructions
-
-### Building
-
-**In Progress**
-
-### Deployment
-
-**In Progress**
-
-## Contributions
-
-**In Progress**
-
 ## Contact Information
 
 Role | Name | Email
